@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://surflog.coldsurf.io
+
+# Sitemaps
+Sitemap: https://surflog.coldsurf.io/sitemap.xml
+Sitemap: https://surflog.coldsurf.io/server-sitemap.xml

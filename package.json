@@ -1,0 +1,6 @@
+{
+  "name": "@coldsurfers/blogs",
+  "workspaces": {
+    "packages": ["packages/**"]
+  }
+}
