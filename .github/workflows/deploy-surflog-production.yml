@@ -1,5 +1,6 @@
 name: deploy surflog production website
-"on":
+
+on:
   push:
     branches:
       - main

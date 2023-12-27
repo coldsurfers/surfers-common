@@ -1,5 +1,6 @@
 name: deploy surflog preview website
-"on":
+
+on:
   paths:
     - 'packages/surflog/**'
   pull_request:
