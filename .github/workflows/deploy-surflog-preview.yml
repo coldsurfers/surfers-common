@@ -1,9 +1,9 @@
 name: deploy surflog preview website
 
 on:
-  paths:
-    - 'packages/surflog/**'
   pull_request:
+    paths:
+      - 'packages/surflog/**'
 
 env:
   NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
