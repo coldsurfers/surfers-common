@@ -8,6 +8,8 @@ import { renderBlock } from '../../../components/notion/renderer'
 import styles from '../../../styles/post.module.css'
 import { getInternalPosts } from '../../../lib/utils'
 
+export const revalidate = 60
+
 // Return a list of `params` to populate the [slug] dynamic segment
 export async function generateStaticParams() {
   const posts = await getInternalPosts()
