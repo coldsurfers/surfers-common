@@ -1,6 +1,6 @@
 {
   "name": "@coldsurfers/notion-utils",
-  "version": "1.0.1-rc.7",
+  "version": "1.0.1-rc.8",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "source": "src/",
