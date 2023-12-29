@@ -6,7 +6,7 @@ import {
   getBlocks as getBlocksNotion,
 } from '@coldsurfers/notion-utils'
 
-export const revalidate = 60 // revalidate the data at most every hour
+export const revalidate = 3600 // revalidate the data at most every hour
 
 export const databaseId = process.env.NOTION_DATABASE_ID
 
