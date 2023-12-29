@@ -63,7 +63,7 @@
     }
   },
   "dependencies": {
-    "@coldsurfers/cloudinary-utils": "1.0.0",
-    "@coldsurfers/shared-utils": "1.0.0"
+    "@coldsurfers/cloudinary-utils": "1.0.1-rc.0",
+    "@coldsurfers/shared-utils": "1.0.1-rc.0"
   }
 }
