@@ -43,10 +43,10 @@
   dependencies:
     open-color "^1.9.1"
 
-"@coldsurfers/ocean-road@1.5.1-rc.1":
-  version "1.5.1-rc.1"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/ocean-road/1.5.1-rc.1/1afe3ae8f34cb8cf191d9293c275dce7bb7554c7#1afe3ae8f34cb8cf191d9293c275dce7bb7554c7"
-  integrity sha512-U6q6DiQYgVfNuom9xB37OPLz2BP3tNMcTGFk4EJ9EkcaBwO4FIu7x5Y9lEoaNinISgGj3O1ShMMlStcOmJIZww==
+"@coldsurfers/ocean-road@1.11.1-rc.0":
+  version "1.11.1-rc.0"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/ocean-road/1.11.1-rc.0/2d54f636159c2018c5bec26bbbc8919483d668a1#2d54f636159c2018c5bec26bbbc8919483d668a1"
+  integrity sha512-WIMYHuD/LMUcCxVbKqW8MV5wjcnk2vbP969W2n/VM6Lm9Nl68IoYUMwyxgaAG/s9aw9JKYGyl0D9tguIi+LtqQ==
   dependencies:
     "@coldsurfers/design-tokens" "1.10.0"
 
