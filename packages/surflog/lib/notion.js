@@ -1,20 +1,31 @@
 import { cache } from 'react'
-import { blog } from '@coldsurfers/notion-utils'
+import { queryDetail, queryList, retrievePage } from '@coldsurfers/notion-utils'
 
 export const revalidate = 3600 // revalidate the data at most every hour
 
 export const databaseId = process.env.NOTION_DATABASE_ID
 
 export const getAllPosts = cache(
-  async () => await blog.getAllPosts({ platform: 'all' })
+  async () =>
+    await queryList({
+      platform: 'surflog',
+      direction: 'descending',
+      timestamp: 'created_time',
+    })
 )
 
-export const getPage = cache(
-  async (pageId) => await blog.getPostDetailByPageId(pageId)
-)
+export const getPage = cache(async (pageId) => await retrievePage(pageId))
 
 export const getPageFromSlug = cache(
-  async (slug) => await blog.getPostDetailBySlug(slug)
+  async (slug) =>
+    await queryDetail({
+      property: 'Slug',
+      formula: {
+        string: {
+          equals: slug,
+        },
+      },
+    })
 )
 
-export const getBlocks = cache(async (blockID) => await blog.getBlocks(blockID))
+export const getBlocks = cache(async (blockID) => await getBlocks(blockID))
