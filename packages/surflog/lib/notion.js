@@ -1,5 +1,10 @@
 import { cache } from 'react'
-import { queryDetail, queryList, retrievePage } from '@coldsurfers/notion-utils'
+import {
+  queryDetail,
+  queryList,
+  retrievePage,
+  getBlocks as getBlocksNotion,
+} from '@coldsurfers/notion-utils'
 
 export const revalidate = 3600 // revalidate the data at most every hour
 
@@ -28,4 +33,6 @@ export const getPageFromSlug = cache(
     })
 )
 
-export const getBlocks = cache(async (blockID) => await getBlocks(blockID))
+export const getBlocks = cache(
+  async (blockID) => await getBlocksNotion(blockID)
+)
