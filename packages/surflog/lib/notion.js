@@ -34,5 +34,9 @@ export const getPageFromSlug = cache(
 )
 
 export const getBlocks = cache(
-  async (blockID) => await getBlocksNotion(blockID)
+  async (blockId) =>
+    await getBlocksNotion({
+      blockId,
+      withUploadCloudinary: true,
+    })
 )

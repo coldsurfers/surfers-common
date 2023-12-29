@@ -50,7 +50,13 @@ export const queryDetail = async (
   return null;
 };
 
-export const getBlocks = async (_blockId: string) => {
+export const getBlocks = async ({
+  blockId: _blockId,
+  withUploadCloudinary = false,
+}: {
+  blockId: string;
+  withUploadCloudinary?: boolean;
+}) => {
   const blockId = _blockId.replaceAll("-", "");
 
   let next: string | undefined = "";
@@ -79,10 +85,17 @@ export const getBlocks = async (_blockId: string) => {
       children: any;
     };
     if (generated.has_children) {
-      const children = await getBlocks(block.id);
+      const children = await getBlocks({
+        blockId: block.id,
+        withUploadCloudinary,
+      });
       generated.children = children;
     }
-    if (process.env.NODE_ENV === "production" && generated.type === "image") {
+    if (
+      process.env.NODE_ENV === "production" &&
+      generated.type === "image" &&
+      withUploadCloudinary
+    ) {
       if (generated.image.type === "file") {
         const cloudinary = await uploadCloudinary(generated.image.file.url);
         generated.image.file.url = cloudinary.secure_url;
