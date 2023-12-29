@@ -1,0 +1,31 @@
+{
+  "name": "@coldsurfers/cloudinary-utils",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "@coldsurfers/shared-utils": "1.0.0",
+    "axios": "^1.6.3",
+    "form-data": "^4.0.0",
+    "fs": "^0.0.1-security",
+    "sha1": "^1.1.1",
+    "stream": "^0.0.2",
+    "typescript": "^5.3.3",
+    "util": "^0.12.5"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc"
+  },
+  "peerDependencies": {
+    "axios": "^1.6.3",
+    "form-data": "^4.0.0",
+    "fs": "^0.0.1-security",
+    "sha1": "^1.1.1",
+    "stream": "^0.0.2",
+    "util": "^0.12.5"
+  },
+  "dependencies": {
+    "@coldsurfers/shared-utils": "1.0.0"
+  }
+}

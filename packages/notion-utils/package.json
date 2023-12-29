@@ -61,5 +61,9 @@
     "hooks": {
       "after:git:release": "git reset --hard HEAD"
     }
+  },
+  "dependencies": {
+    "@coldsurfers/cloudinary-utils": "1.0.0",
+    "@coldsurfers/shared-utils": "1.0.0"
   }
 }

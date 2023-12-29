@@ -3,8 +3,8 @@ import {
   BlockObjectResponse,
   PartialBlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import { uploadCloudinary } from "./cloudinary";
-import getRandomInt from "../libs/getRandomInt";
+import { getRandomInt } from "@coldsurfers/shared-utils";
+import { uploadCloudinary } from "@coldsurfers/cloudinary-utils";
 
 const databaseId = process.env.NOTION_DATABASE_ID ?? "";
 

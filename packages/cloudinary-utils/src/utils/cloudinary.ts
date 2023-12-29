@@ -4,7 +4,7 @@ import axios from "axios";
 import util from "util";
 import stream from "stream";
 import FormData from "form-data";
-import generateUUID from "../libs/generateUUID";
+import { generateUUID } from "@coldsurfers/shared-utils";
 
 const pipeline = util.promisify(stream.pipeline);
 
