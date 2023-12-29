@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "yarn workspace @coldsurfers/notion-utils build",
+    "prebuild": "yarn workspace @coldsurfers/shared-utils build && yarn workspace @coldsurfers/cloudinary-utils build && yarn workspace @coldsurfers/notion-utils build",
     "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint --fix",
