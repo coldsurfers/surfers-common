@@ -1,16 +1,12 @@
-import { Client } from "@notionhq/client";
 import {
   BlockObjectResponse,
   PartialBlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import { getRandomInt } from "@coldsurfers/shared-utils";
 import { uploadCloudinary } from "@coldsurfers/cloudinary-utils";
+import { notionInstance } from "..";
 
 const databaseId = process.env.NOTION_DATABASE_ID ?? "";
-
-const notion = new Client({
-  auth: process.env.NOTION_TOKEN,
-});
 
 interface GetDatabaseParams {
   platform?: "surflog" | "techlog" | "all";
@@ -27,7 +23,7 @@ const blogUtils = {
               contains: platform,
             },
           };
-    const response = await notion.databases.query({
+    const response = await notionInstance.databases.query({
       database_id: databaseId,
       sorts: [
         {
@@ -40,11 +36,11 @@ const blogUtils = {
     return response.results;
   },
   getPostDetailByPageId: async (pageId: string) => {
-    const response = await notion.pages.retrieve({ page_id: pageId });
+    const response = await notionInstance.pages.retrieve({ page_id: pageId });
     return response;
   },
   getPostDetailBySlug: async (slug: string) => {
-    const response = await notion.databases.query({
+    const response = await notionInstance.databases.query({
       database_id: databaseId,
       filter: {
         property: "Slug",
@@ -67,7 +63,7 @@ const blogUtils = {
     const list: (BlockObjectResponse | PartialBlockObjectResponse)[] = [];
     while (typeof next === "string") {
       const { results, has_more, next_cursor } =
-        await notion.blocks.children.list({
+        await notionInstance.blocks.children.list({
           block_id: blockId,
           start_cursor: next || undefined,
         });
