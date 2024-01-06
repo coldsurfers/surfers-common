@@ -46,7 +46,9 @@
     "prerelease": "yarn build",
     "prerelease:rc": "yarn build",
     "release": "release-it minor --ci",
-    "release:rc": "release-it --ci --preRelease=rc"
+    "release:rc": "release-it --ci --preRelease=rc",
+    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "yarn lint --fix"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
