@@ -55,7 +55,8 @@
   },
   "release-it": {
     "git": {
-      "commitMessage": "chore: release @coldsurfers/notion-utils v${version}"
+      "commitMessage": "chore: release @coldsurfers/notion-utils v${version}",
+      "tagName": "notion-utils-v${version}"
     },
     "github": {
       "release": true

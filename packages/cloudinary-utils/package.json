@@ -51,7 +51,8 @@
   },
   "release-it": {
     "git": {
-      "commitMessage": "chore: release @coldsurfers/cloudinary-utils v${version}"
+      "commitMessage": "chore: release @coldsurfers/cloudinary-utils v${version}",
+      "tagName": "cloudinary-utils-v${version}"
     },
     "github": {
       "release": true
