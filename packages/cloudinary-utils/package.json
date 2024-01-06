@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@coldsurfers/shared-utils": "1.0.0",
+    "@coldsurfers/shared-utils": "1.1.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "axios": "^1.6.3",
@@ -70,6 +70,6 @@
     "util": "^0.12.5"
   },
   "dependencies": {
-    "@coldsurfers/shared-utils": "1.0.0"
+    "@coldsurfers/shared-utils": "1.1.0"
   }
 }
