@@ -46,14 +46,17 @@
     "prerelease": "yarn build",
     "prerelease:rc": "yarn build",
     "release": "release-it minor --ci",
-    "release:rc": "release-it --ci --preRelease=rc"
+    "release:rc": "release-it --ci --preRelease=rc",
+    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "yarn lint --fix"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
   "release-it": {
     "git": {
-      "commitMessage": "chore: release @coldsurfers/notion-utils v${version}"
+      "commitMessage": "chore: release @coldsurfers/notion-utils v${version}",
+      "tagName": "notion-utils-v${version}"
     },
     "github": {
       "release": true
@@ -64,6 +67,6 @@
   },
   "dependencies": {
     "@coldsurfers/cloudinary-utils": "1.0.1-rc.0",
-    "@coldsurfers/shared-utils": "1.0.1-rc.0"
+    "@coldsurfers/shared-utils": "1.1.0"
   }
 }
