@@ -2,28 +2,28 @@ import {
   BlockObjectResponse,
   PartialBlockObjectResponse,
   QueryDatabaseParameters,
-} from "@notionhq/client/build/src/api-endpoints";
-import { uploadCloudinary } from "@coldsurfers/cloudinary-utils";
-import { getRandomInt } from "@coldsurfers/shared-utils";
-import { notionInstance } from "..";
+} from '@notionhq/client/build/src/api-endpoints'
+import { uploadCloudinary } from '@coldsurfers/cloudinary-utils'
+import { getRandomInt } from '@coldsurfers/shared-utils'
+import { notionInstance } from '..'
 
-const databaseId = process.env.NOTION_DATABASE_ID ?? "";
+const databaseId = process.env.NOTION_DATABASE_ID ?? ''
 
 export const queryList = async ({
   platform,
   direction,
   timestamp,
 }: {
-  platform: "surflog" | "techlog" | "store";
-  direction: "ascending" | "descending";
-  timestamp: "created_time" | "last_edited_time";
+  platform: 'surflog' | 'techlog' | 'store'
+  direction: 'ascending' | 'descending'
+  timestamp: 'created_time' | 'last_edited_time'
 }) => {
   const platformFilter = {
-    property: "platform",
+    property: 'platform',
     multi_select: {
       contains: platform,
     },
-  };
+  }
   const res = await notionInstance.databases.query({
     database_id: databaseId,
     sorts: [
@@ -33,46 +33,46 @@ export const queryList = async ({
       },
     ],
     filter: platformFilter,
-  });
-  return res.results;
-};
+  })
+  return res.results
+}
 
 export const queryDetail = async (
-  filter: QueryDatabaseParameters["filter"]
+  filter: QueryDatabaseParameters['filter']
 ) => {
   const res = await notionInstance.databases.query({
     database_id: databaseId,
     filter,
-  });
+  })
   if (res.results.length) {
-    return res.results[0];
+    return res.results[0]
   }
-  return null;
-};
+  return null
+}
 
 export const getBlocks = async ({
   blockId: _blockId,
   withUploadCloudinary = false,
 }: {
-  blockId: string;
-  withUploadCloudinary?: boolean;
+  blockId: string
+  withUploadCloudinary?: boolean
 }) => {
-  const blockId = _blockId.replaceAll("-", "");
+  const blockId = _blockId.replaceAll('-', '')
 
-  let next: string | undefined = "";
-  const list: (BlockObjectResponse | PartialBlockObjectResponse)[] = [];
-  while (typeof next === "string") {
+  let next: string | undefined = ''
+  const list: (BlockObjectResponse | PartialBlockObjectResponse)[] = []
+  while (typeof next === 'string') {
     const { results, has_more, next_cursor } =
       await notionInstance.blocks.children.list({
         block_id: blockId,
         start_cursor: next || undefined,
-      });
+      })
     if (has_more && next_cursor) {
-      next = next_cursor;
+      next = next_cursor
     } else {
-      next = undefined;
+      next = undefined
     }
-    list.push(...results);
+    list.push(...results)
   }
 
   // Fetches all child blocks recursively
@@ -82,63 +82,63 @@ export const getBlocks = async ({
     const generated = {
       ...block,
     } as BlockObjectResponse & {
-      children: any;
-    };
+      children: any
+    }
     if (generated.has_children) {
       const children = await getBlocks({
         blockId: block.id,
         withUploadCloudinary,
-      });
-      generated.children = children;
+      })
+      generated.children = children
     }
     if (
-      process.env.NODE_ENV === "production" &&
-      generated.type === "image" &&
+      process.env.NODE_ENV === 'production' &&
+      generated.type === 'image' &&
       withUploadCloudinary
     ) {
-      if (generated.image.type === "file") {
-        const cloudinary = await uploadCloudinary(generated.image.file.url);
-        generated.image.file.url = cloudinary.secure_url;
+      if (generated.image.type === 'file') {
+        const cloudinary = await uploadCloudinary(generated.image.file.url)
+        generated.image.file.url = cloudinary.secure_url
       }
     }
-    return generated;
-  });
+    return generated
+  })
 
   return Promise.all(childBlocks).then((blocks) =>
     blocks.reduce((acc, curr) => {
-      if (curr.type === "bulleted_list_item") {
-        if ((acc[acc.length - 1] as any)?.type === "bulleted_list") {
-          (
+      if (curr.type === 'bulleted_list_item') {
+        if ((acc[acc.length - 1] as any)?.type === 'bulleted_list') {
+          ;(
             acc[acc.length - 1][(acc[acc.length - 1] as any).type] as any
-          ).children?.push(curr);
+          ).children?.push(curr)
         } else {
           acc.push({
             id: getRandomInt(10 ** 99, 10 ** 100).toString(),
-            type: "bulleted_list",
+            type: 'bulleted_list',
             bulleted_list: { children: [curr] },
-          } as never);
+          } as never)
         }
-      } else if (curr.type === "numbered_list_item") {
-        if ((acc[acc.length - 1] as any)?.type === "numbered_list") {
-          (
+      } else if (curr.type === 'numbered_list_item') {
+        if ((acc[acc.length - 1] as any)?.type === 'numbered_list') {
+          ;(
             acc[acc.length - 1][(acc[acc.length - 1] as any).type] as any
-          ).children?.push(curr);
+          ).children?.push(curr)
         } else {
           acc.push({
             id: getRandomInt(10 ** 99, 10 ** 100).toString(),
-            type: "numbered_list",
+            type: 'numbered_list',
             numbered_list: { children: [curr] },
-          } as never);
+          } as never)
         }
       } else {
-        acc.push(curr as never);
+        acc.push(curr as never)
       }
-      return acc;
+      return acc
     }, [])
-  );
-};
+  )
+}
 
 export const retrievePage = async (pageId: string) => {
-  const response = await notionInstance.pages.retrieve({ page_id: pageId });
-  return response;
-};
+  const response = await notionInstance.pages.retrieve({ page_id: pageId })
+  return response
+}

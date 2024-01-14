@@ -1,2 +1,2 @@
-export * from "./utils";
-export { default as notionInstance } from "./notionInstance";
+export * from './utils'
+export { default as notionInstance } from './notionInstance'

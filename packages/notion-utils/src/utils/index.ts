@@ -1,1 +1,1 @@
-export * from "./notions";
+export * from './notions'
