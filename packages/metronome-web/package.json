@@ -34,8 +34,5 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "2.6.2",
     "typescript": "4.6.3"
-  },
-  "resolutions": {
-    "@types/react": "18.0.1"
   }
 }
