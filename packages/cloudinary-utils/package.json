@@ -38,6 +38,7 @@
     "util": "^0.12.5"
   },
   "scripts": {
+    "prebuild": "yarn workspace @coldsurfers/shared-utils build",
     "build": "rm -rf dist && tsc",
     "prerelease": "yarn build",
     "prerelease:rc": "yarn build",
