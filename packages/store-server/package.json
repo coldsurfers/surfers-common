@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "NODE_ENV=development npx ts-node ./src/server.ts",
+    "start": "NODE_ENV=production node ./dist/server.js",
+    "build": "tsc && cp -R ./src/config ./dist/config",
+    "deploy": "yarn pm2 start ./src/config/ecosystem.config.js"
+  },
+  "devDependencies": {
+    "@types/nconf": "^0.10.6",
+    "@types/node": "^20",
+    "pm2": "^5.3.0",
+    "prisma": "^5.7.1",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^5.8.0",
+    "@fastify/cors": "^8.4.2",
+    "@fastify/jwt": "^7.2.4",
+    "@prisma/client": "^5.7.1",
+    "fastify": "^4.24.3",
+    "google-auth-library": "^9.4.1",
+    "nconf": "^0.12.1",
+    "uuidv4": "^6.2.13",
+    "zod": "^3.22.4"
+  }
+}
