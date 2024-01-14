@@ -1,23 +1,24 @@
 {
-  "name": "@coldsurfers/louder-server",
+  "name": "@coldsurfers/wamuseum-server",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "main": "index.js",
   "scripts": {
     "build": "tsc && cp -R ./src/config ./dist/config",
+    "db:generate": "yarn prisma format && yarn prisma generate",
+    "db:push": "yarn prisma db push",
     "deploy": "yarn pm2 start ./src/config/ecosystem.config.js",
     "dev": "NODE_ENV=development npx ts-node ./src/server.ts",
-    "start": "NODE_ENV=production node ./dist/server.js",
     "postinstall": "yarn prisma generate",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
-    "db:generate": "yarn prisma format && yarn prisma generate",
-    "db:push": "yarn prisma db push"
+    "start": "NODE_ENV=production node ./dist/server.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.484.0",
     "@aws-sdk/s3-presigned-post": "^3.484.0",
+    "@coldsurfers/mailer-utils": "1.0.0",
     "@coldsurfers/shared-utils": "^1.0.1-rc.0",
     "@fastify/autoload": "^5.8.0",
     "@fastify/cors": "^8.5.0",

@@ -1,13 +1,13 @@
 import { FastifyError, RouteHandler } from 'fastify'
 import { z } from 'zod'
 import nconf from 'nconf'
+import { sendEmail } from '@coldsurfers/mailer-utils'
 import OAuth2Client from '../../lib/OAuth2Client'
 import Account from '../models/Account'
 import generateAuthTokenFromAccount from '../../lib/generateAuthTokenFromAccount'
 import { JWTDecoded } from '../../types/jwt'
 import AuthToken from '../models/AuthToken'
 import Staff from '../models/Staff'
-import { sendEmail } from '../../lib/mailer'
 import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
 
 const mailerSubject = '[Admin Request] Admin request has been submitted'
@@ -70,9 +70,17 @@ export const postAccountsSignInCtrl: RouteHandler<{
       }).create()
       if (!newAccount) return rep.status(500).send()
       sendEmail({
-        to: nconf.get('MAILER_EMAIL_ADDRESS'),
+        to: gmail,
+        from: nconf.get('MAILER_EMAIL_ADDRESS'),
         subject: mailerSubject,
         text: mailerText(gmail),
+        smtpOptions: {
+          service: nconf.get('MAILER_SERVICE'),
+          auth: {
+            user: nconf.get('MAILER_EMAIL_ADDRESS'),
+            pass: nconf.get('secrets').MAILER_EMAIL_APP_PASSWORD,
+          },
+        },
       })
       return rep.status(201).send({
         account: newAccount.serialize(),
