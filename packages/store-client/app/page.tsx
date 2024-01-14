@@ -20,12 +20,13 @@ const getAllPosts = cache(
 
 // type A = PageObjectResponse
 
-export async function getInternalPosts(
+async function getInternalPosts(
   options = {
     status: 'Published',
   }
 ) {
   const { status = 'Published' } = options
+  console.log(status)
   try {
     const rawPosts = (await getAllPosts()) as PageObjectResponse[]
     const posts = rawPosts.map((post) => {
