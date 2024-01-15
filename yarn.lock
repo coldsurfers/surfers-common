@@ -699,12 +699,6 @@
   dependencies:
     open-color "^1.9.1"
 
-"@coldsurfers/notion-utils@file:packages/notion-utils":
-  version "1.0.1-rc.10"
-  dependencies:
-    "@coldsurfers/cloudinary-utils" "1.0.1-rc.0"
-    "@coldsurfers/shared-utils" "1.1.0"
-
 "@coldsurfers/ocean-road@1.11.1-rc.0":
   version "1.11.1-rc.0"
   resolved "https://npm.pkg.github.com/download/@coldsurfers/ocean-road/1.11.1-rc.0/2d54f636159c2018c5bec26bbbc8919483d668a1#2d54f636159c2018c5bec26bbbc8919483d668a1"
