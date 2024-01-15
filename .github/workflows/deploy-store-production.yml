@@ -1,22 +1,28 @@
-name: deploy surflog production website
+name: deploy store client production website
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'packages/surflog/**'
+      - 'packages/store-client/**'
   workflow_dispatch:
 
 env:
+  # org secrets
   NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-  NOTION_DATABASE_ID: ${{ secrets.NOTION_BLOG_DATABASE_ID }}
   CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
   CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
-  SITE_URL: ${{ secrets.SITE_URL }}
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_SURFLOG_PROJECT_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_STORE_CLIENT_PROJECT_ID }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  # repo secrets
+  SITE_URL: ${{ secrets.COLDSURF_STORE_SITE_URL }}
+  GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.COLDSURF_STORE_GOOGLE_OAUTH_CLIENT_ID }}
+  GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.COLDSURF_STORE_GOOGLE_OAUTH_CLIENT_SECRET }}
+  AUTH_SECRET: ${{ secrets.COLDSURF_STORE_AUTH_SECRET }}
+  BASE_URL: ${{ secrets.COLDSURF_STORE_BASE_URL }}
+  NOTION_DATABASE_ID: ${{ secrets.NOTION_COLDSURF_STORE_DATABASE_ID }}
 
 jobs:
   deploy:
@@ -30,10 +36,10 @@ jobs:
       - run: npm config set '//npm.pkg.github.com/:_authToken' ${{ secrets.GITHUB_TOKEN }}
       - run: yarn super-install
       - run: yarn build
-        working-directory: ./packages/surflog
+        working-directory: ./packages/store-client
       - run: npx vercel pull --yes --token ${{ secrets.VERCEL_TOKEN }}
-        working-directory: ./packages/surflog
+        working-directory: ./packages/store-client
       - run: npx vercel build --prod
-        working-directory: ./packages/surflog
+        working-directory: ./packages/store-client
       - run: npx vercel deploy --prod --prebuilt --token ${{ secrets.VERCEL_TOKEN }}
-        working-directory: ./packages/surflog
+        working-directory: ./packages/store-client

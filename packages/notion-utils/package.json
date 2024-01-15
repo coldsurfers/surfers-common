@@ -42,6 +42,7 @@
     "sha1": "^1.1.1"
   },
   "scripts": {
+    "prebuild": "yarn workspace @coldsurfers/cloudinary-utils build && yarn workspace @coldsurfers/shared-utils build",
     "build": "rm -rf dist && tsc",
     "prerelease": "yarn build",
     "prerelease:rc": "yarn build",
