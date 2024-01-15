@@ -15,7 +15,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@coldsurfers/notion-utils": "1.0.1-rc.10",
+    "@coldsurfers/notion-utils": "file:../notion-utils",
     "@coldsurfers/ocean-road": "1.5.1-rc.4",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
