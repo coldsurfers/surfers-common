@@ -34,7 +34,7 @@ jobs:
           cache: "yarn"
       - run: npm config set @coldsurfers:registry https://npm.pkg.github.com/
       - run: npm config set '//npm.pkg.github.com/:_authToken' ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn install --immutable
+      - run: yarn super-install
       - run: yarn build
         working-directory: ./packages/store-client
       - run: npx vercel pull --yes --token ${{ secrets.VERCEL_TOKEN }}

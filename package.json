@@ -3,5 +3,8 @@
   "private": true,
   "workspaces": {
     "packages": ["packages/*"]
+  },
+  "scripts": {
+    "super-install": "yarn install --immutable --force || yarn install --immutable --force"
   }
 }
