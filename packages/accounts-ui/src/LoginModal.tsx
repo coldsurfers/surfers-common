@@ -2,9 +2,7 @@
 
 import styled from '@emotion/styled'
 import { MouseEventHandler, useCallback, useRef } from 'react'
-import Modal from './Modal'
-import ModalPortal from './ModalPortal'
-import Button from './Button'
+import { Modal, ModalPortal, Button } from '@coldsurfers/surfers-ui'
 
 const CustomModal = styled(Modal.Container)`
   width: 350px;
