@@ -7,10 +7,13 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "create:env:ci": "yarn ts-node ./libs/createDotEnv.ts"
   },
   "workspaces": {
-    "nohoist": ["**"]
+    "nohoist": [
+      "**"
+    ]
   },
   "dependencies": {
     "@coldsurfers/notion-utils": "1.0.1-rc.10",
@@ -35,6 +38,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
