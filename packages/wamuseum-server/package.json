@@ -9,8 +9,8 @@
     "db:generate": "yarn prisma format --schema ../../prisma/schema.prisma && yarn prisma generate --schema ../../prisma/schema.prisma",
     "db:push": "yarn prisma db push --schema ../../prisma/schema.prisma",
     "deploy": "yarn pm2 start ./src/config/ecosystem.config.js",
-    "dev": "NODE_ENV=development npx ts-node ./src/server.ts",
-    "postinstall": "yarn prisma generate",
+    "dev": "NODE_ENV=development ts-node ./src/server.ts",
+    "postinstall": "yarn db:generate",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
     "start": "NODE_ENV=production node ./dist/server.js"
@@ -53,6 +53,7 @@
     "pm2": "^5.3.0",
     "prettier": "^2.8.1",
     "prisma": "^5.7.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
