@@ -1,7 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
-import { MouseEventHandler, useRef } from 'react'
+import { MouseEventHandler, useCallback, useRef } from 'react'
 import Modal from './Modal'
 import ModalPortal from './ModalPortal'
 import Button from './Button'
@@ -32,12 +32,21 @@ export default function LoginModal({
   onClickBackground,
 }: Props) {
   const modalBackgroundRef = useRef<HTMLDivElement>(null)
+  // eslint-disable-next-line no-underscore-dangle
+  const _onClickBackground = useCallback<MouseEventHandler<HTMLDivElement>>(
+    (e) => {
+      if (modalBackgroundRef.current?.isEqualNode(e.target as Node)) {
+        onClickBackground?.(e)
+      }
+    },
+    []
+  )
   return (
     isOpen && (
       <ModalPortal>
         <Modal.Background
           ref={modalBackgroundRef}
-          onClickBackground={onClickBackground}
+          onClickBackground={_onClickBackground}
         >
           <CustomModal>
             <ModalTitle>ColdSurf Store</ModalTitle>
