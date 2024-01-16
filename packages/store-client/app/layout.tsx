@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
 import LayoutWrapper from '@/components/LayoutWrapper'
-import { MODAL_PORTAL_ID } from '@/libs/constants'
 import { auth } from '@/libs/auth'
 import GlobalStyle from '@/components/GlobalStyle'
 
@@ -26,7 +25,6 @@ export default async function RootLayout({
       </head>
       <body className={inter.className}>
         <LayoutWrapper session={session}>{children}</LayoutWrapper>
-        <div id={MODAL_PORTAL_ID}></div>
       </body>
     </html>
   )

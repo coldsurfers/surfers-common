@@ -17,7 +17,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "yarn workspace @coldsurfers/surfers-ui build",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix"
   },

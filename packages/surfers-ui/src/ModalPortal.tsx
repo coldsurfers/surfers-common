@@ -6,4 +6,6 @@ const ModalPortal = ({ children }: PropsWithChildren<{}>) =>
   // eslint-disable-next-line no-undef
   createPortal(children, document.getElementById(MODAL_PORTAL_ID)!)
 
+ModalPortal.Pillar = () => <div id={MODAL_PORTAL_ID} />
+
 export default ModalPortal

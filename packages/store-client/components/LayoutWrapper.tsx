@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider, signIn } from 'next-auth/react'
 import { Session } from 'next-auth/types'
 import { LoginModal } from '@coldsurfers/accounts-ui'
+import { ModalPortal } from '@coldsurfers/surfers-ui'
 import Header from './Header'
 import Footer from './Footer'
 import { useLoginModalStore } from '@/stores/loginModalStore'
@@ -33,20 +34,23 @@ export default function LayoutWrapper({
 }>) {
   const { isOpen, close } = useLoginModalStore()
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <Container>
-          <Header />
-          <ChildrenWrapper>{children}</ChildrenWrapper>
-          <Footer />
-          <LoginModal
-            isOpen={isOpen}
-            onClickBackground={close}
-            // eslint-disable-next-line no-void
-            onClickGoogleLogin={async () => void (await signIn('google'))}
-          />
-        </Container>
-      </QueryClientProvider>
-    </SessionProvider>
+    <>
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <Container>
+            <Header />
+            <ChildrenWrapper>{children}</ChildrenWrapper>
+            <Footer />
+            <LoginModal
+              isOpen={isOpen}
+              onClickBackground={close}
+              // eslint-disable-next-line no-void
+              onClickGoogleLogin={async () => void (await signIn('google'))}
+            />
+          </Container>
+        </QueryClientProvider>
+      </SessionProvider>
+      <ModalPortal.Pillar />
+    </>
   )
 }
