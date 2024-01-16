@@ -25,8 +25,8 @@ async function getInternalPosts(
     status: 'Published',
   }
 ) {
+  // eslint-disable-next-line no-unused-vars
   const { status = 'Published' } = options
-  console.log(status)
   try {
     const rawPosts = (await getAllPosts()) as PageObjectResponse[]
     const posts = rawPosts.map((post) => {
@@ -35,7 +35,6 @@ async function getInternalPosts(
       const { properties } = post
       const slugProperty = properties.Slug
       const nameProperty = properties.Name
-      console.log(nameProperty)
 
       let slug: string | undefined = ''
       let title: string | undefined = ''
