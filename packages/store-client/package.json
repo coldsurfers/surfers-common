@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "yarn workspace @coldsurfers/notion-utils build",
+    "prebuild": "yarn workspace @coldsurfers/notion-utils build && yarn workspace @coldsurfers/accounts-ui build",
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
@@ -16,6 +16,7 @@
     ]
   },
   "dependencies": {
+    "@coldsurfers/accounts-ui": "1.0.0",
     "@coldsurfers/notion-utils": "1.0.1-rc.10",
     "@coldsurfers/ocean-road": "1.5.1-rc.4",
     "@emotion/react": "^11.11.1",
