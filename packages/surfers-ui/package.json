@@ -1,5 +1,5 @@
 {
-  "name": "@coldsurfers/accounts-ui",
+  "name": "@coldsurfers/surfers-ui",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,19 +16,11 @@
   },
   "license": "MIT",
   "scripts": {
-    "prebuild": "yarn workspace @coldsurfers/surfers-ui build",
     "build": "tsc",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix"
   },
-  "peerDependencies": {
-    "@coldsurfers/surfers-ui": "1.0.0",
-    "@emotion/styled": "^11.11.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "devDependencies": {
-    "@coldsurfers/surfers-ui": "1.0.0",
     "@emotion/styled": "^11.11.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
@@ -44,5 +36,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@emotion/styled": "^11.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
