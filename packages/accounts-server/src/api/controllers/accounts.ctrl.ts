@@ -61,6 +61,7 @@ export const postAccountsSignInCtrl: RouteHandler<{
     if (!gmail) return rep.status(400).send()
 
     const existingAccount = await Account.findByEmail(gmail)
+
     // sign "up" flow
     if (!existingAccount) {
       const newAccount = await new Account({
@@ -68,6 +69,9 @@ export const postAccountsSignInCtrl: RouteHandler<{
         provider: 'google',
       }).create()
       if (!newAccount) return rep.status(500).send()
+      const accountAuthToken = await (
+        await generateAuthTokenFromAccount(newAccount)
+      ).create()
       sendEmail({
         to: gmail,
         from: nconf.get('MAILER_EMAIL_ADDRESS'),
@@ -83,7 +87,7 @@ export const postAccountsSignInCtrl: RouteHandler<{
       })
       return rep.status(201).send({
         account: newAccount.serialize(),
-        auth_token: null,
+        auth_token: accountAuthToken.serialize(),
       })
     }
 
