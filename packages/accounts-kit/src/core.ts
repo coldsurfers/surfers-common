@@ -14,6 +14,7 @@ class AccountsKit {
   ): Promise<PostAccountsSignInCtrlResponseSchemaType> {
     const res = await new HttpRequest().request('/accounts/signin', {
       body: JSON.stringify(body),
+      method: 'POST',
     })
     return (await res.json()) as PostAccountsSignInCtrlResponseSchemaType
   }
