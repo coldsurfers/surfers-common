@@ -33,7 +33,7 @@ async function main() {
       origin:
         process.env.NODE_ENV === 'development'
           ? ['http://localhost:3000']
-          : ['https://wamuseum.coldsurf.io'],
+          : ['https://accounts.coldsurf.io'],
       preflight: true,
       optionsSuccessStatus: 200,
       methods: ['GET', 'POST', 'OPTIONS', 'PATCH', 'PUT', 'DELETE'],
