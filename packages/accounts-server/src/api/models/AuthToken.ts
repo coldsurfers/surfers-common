@@ -1,10 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+import { AuthTokenSerializedSchemaType } from '@coldsurfers/accounts-schema'
 import { prisma } from '../database/prisma'
-
-export type AuthTokenSerialized = {
-  access_token: string
-  refresh_token: string
-}
 
 export default class AuthToken {
   public id?: string
@@ -89,7 +85,7 @@ export default class AuthToken {
     return authToken
   }
 
-  public serialize(): AuthTokenSerialized {
+  public serialize(): AuthTokenSerializedSchemaType {
     return {
       access_token: this.access_token,
       refresh_token: this.refresh_token,

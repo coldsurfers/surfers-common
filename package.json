@@ -2,9 +2,14 @@
   "name": "@coldsurfers/surfers-common",
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"]
+    "packages": [
+      "packages/*"
+    ]
   },
   "scripts": {
     "super-install": "yarn install --immutable --force || yarn install --immutable --force"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
   }
 }

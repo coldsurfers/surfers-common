@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "rootDir": "./",
+        "paths": {
+            "@coldsurfers/accounts-kit": [
+                "./packages/accounts-kit/src/core.ts"
+            ],
+            "@coldsurfers/accounts-schema": [
+                "./packages/accounts-schema/src/index.ts"
+            ],
+            "@coldsurfers/accounts-ui": [
+                "./packages/accounts-ui/src/index.ts"
+            ],
+            "@coldsurfers/cloudinary-utils": [
+                "./packages/cloudinary-utils/src/index.ts"
+            ],
+            "@coldsurfers/mailer-utils": [
+                "./packages/mailer-utils/src/index.ts"
+            ],
+            "@coldsurfers/notion-utils": [
+                "./packages/notion-utils/src/index.ts"
+            ],
+            "@coldsurfers/shared-utils": [
+                "./packages/shared-utils/src/index.ts"
+            ],
+            "@coldsurfers/surfers-ui": [
+                "./packages/surfers-ui/src/index.ts"
+            ],
+        }
+    }
+}
