@@ -16,15 +16,12 @@
     "start": "NODE_ENV=production node ./dist/server.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.484.0",
-    "@aws-sdk/s3-presigned-post": "^3.484.0",
     "@coldsurfers/mailer-utils": "1.0.0",
     "@coldsurfers/shared-utils": "^1.0.1-rc.0",
     "@coldsurfers/accounts-schema": "1.0.0",
     "@fastify/autoload": "^5.8.0",
     "@fastify/cors": "^8.5.0",
     "@fastify/jwt": "^7.2.4",
-    "@fastify/static": "^6.12.0",
     "@prisma/client": "5.8.0",
     "crypto-js": "^4.2.0",
     "fastify": "^4.25.2",
