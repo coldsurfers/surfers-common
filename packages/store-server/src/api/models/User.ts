@@ -21,7 +21,7 @@ export default class User {
   }
 
   public static async findByEmail(email: string) {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.account.findUnique({
       where: {
         email,
       },
@@ -31,7 +31,7 @@ export default class User {
   }
 
   public async create() {
-    const user = await prisma.user.create({
+    const user = await prisma.account.create({
       data: {
         email: this.email,
       },
