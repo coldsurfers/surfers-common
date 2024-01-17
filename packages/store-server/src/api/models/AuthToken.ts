@@ -37,7 +37,7 @@ export default class AuthToken {
     // eslint-disable-next-line no-return-await
     return await prisma.authToken.findUnique({
       where: {
-        user_id: userId,
+        account_id: userId,
       },
     })
   }
@@ -58,9 +58,9 @@ export default class AuthToken {
     // eslint-disable-next-line no-return-await
     return await prisma.authToken.create({
       data: {
-        auth_token: this.auth_token,
+        access_token: this.auth_token,
         refresh_token: this.refresh_token,
-        user_id: this.user_id,
+        account_id: this.user_id,
       },
     })
   }

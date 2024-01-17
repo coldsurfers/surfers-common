@@ -48,11 +48,11 @@ export const socialSignInCtrl: RouteHandler<{
         ),
         user_id: user.id,
       })
-      const { refresh_token, auth_token } = await authToken.create()
+      const { refresh_token, access_token } = await authToken.create()
 
       return res.status(200).send({
         refresh_token,
-        auth_token,
+        access_token,
         user,
       })
     }
