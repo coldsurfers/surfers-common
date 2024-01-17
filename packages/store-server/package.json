@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "NODE_ENV=development npx ts-node ./src/server.ts",
     "start": "NODE_ENV=production node ./dist/server.js",
-    "build": "tsc && cp -R ./src/config ./dist/config",
+    "build": "rm -rf dist && tsc && cp -R ./src/config ./dist/config",
     "deploy": "yarn pm2 start ./src/config/ecosystem.config.js",
     "db:generate": "yarn prisma format --schema ../../prisma/schema.prisma && yarn prisma generate --schema ../../prisma/schema.prisma",
     "db:push": "yarn prisma db push --schema ../../prisma/schema.prisma",
