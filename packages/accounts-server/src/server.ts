@@ -4,7 +4,6 @@ import path from 'path'
 import AutoLoad from '@fastify/autoload'
 import cors from '@fastify/cors'
 import jwt from '@fastify/jwt'
-import fastifyMultipart from '@fastify/multipart'
 
 export const fastify = Fastify({
   ignoreTrailingSlash: true,
@@ -41,13 +40,6 @@ async function main() {
         'Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'.split(
           ', '
         ),
-    })
-    await fastify.register(fastifyMultipart, {
-      limits: {
-        // 1mb * 50 -> bytes
-        fileSize: 1000000 * 50,
-      },
-      attachFieldsToBody: false,
     })
 
     await fastify.register(AutoLoad, {
