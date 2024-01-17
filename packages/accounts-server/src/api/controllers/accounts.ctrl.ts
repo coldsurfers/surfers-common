@@ -7,12 +7,11 @@ import Account from '../models/Account'
 import generateAuthTokenFromAccount from '../../lib/generateAuthTokenFromAccount'
 import { JWTDecoded } from '../../types/jwt'
 import AuthToken from '../models/AuthToken'
-import Staff from '../models/Staff'
 import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
 
-const mailerSubject = '[Admin Request] Admin request has been submitted'
+const mailerSubject = '[New Account] New account has been created'
 const mailerText = (gmail: string) =>
-  `Hello, coldsurf administrator. You've got request email.\nNew comer email: ${gmail}`
+  `Hello, coldsurf administrator. You've got new account.\nNew account email: ${gmail}`
 
 const PostAccountsSignInCtrlBodySchema = z.object({
   provider: z.string(),
@@ -62,6 +61,7 @@ export const postAccountsSignInCtrl: RouteHandler<{
     if (!gmail) return rep.status(400).send()
 
     const existingAccount = await Account.findByEmail(gmail)
+
     // sign "up" flow
     if (!existingAccount) {
       const newAccount = await new Account({
@@ -69,6 +69,9 @@ export const postAccountsSignInCtrl: RouteHandler<{
         provider: 'google',
       }).create()
       if (!newAccount) return rep.status(500).send()
+      const accountAuthToken = await (
+        await generateAuthTokenFromAccount(newAccount)
+      ).create()
       sendEmail({
         to: gmail,
         from: nconf.get('MAILER_EMAIL_ADDRESS'),
@@ -84,7 +87,7 @@ export const postAccountsSignInCtrl: RouteHandler<{
       })
       return rep.status(201).send({
         account: newAccount.serialize(),
-        auth_token: null,
+        auth_token: accountAuthToken.serialize(),
       })
     }
 
@@ -92,10 +95,6 @@ export const postAccountsSignInCtrl: RouteHandler<{
     const { id: existingAccountId } = existingAccount
 
     if (!existingAccountId) return rep.status(404).send()
-
-    const staff = await Staff.findByAccountId(existingAccountId)
-
-    if (!staff?.is_staff) return rep.status(404).send()
 
     const accountAuthToken = await (
       await generateAuthTokenFromAccount(existingAccount)

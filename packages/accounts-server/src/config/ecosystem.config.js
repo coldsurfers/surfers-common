@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'coldsurf louder server',
+      name: 'coldsurf accounts server',
       script: 'node ./dist/server.js',
     },
   ],
