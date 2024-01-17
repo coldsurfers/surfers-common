@@ -1,8 +1,23 @@
 {
   "name": "@coldsurfers/accounts-schema",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "source": "src/",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist && tsc --project ./tsconfig.build.json"
+  },
   "peerDependencies": {
     "zod": "^3.22.4"
   },

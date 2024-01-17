@@ -4,7 +4,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "tsc && cp -R ./src/config ./dist/config",
+    "prebuild": "yarn workspace @coldsurfers/mailer-utils build && yarn workspace @coldsurfers/shared-utils build && yarn workspace @coldsurfers/accounts-schema build",
+    "build": "rm -rf dist && tsc --project ./tsconfig.build.json && cp -R ./src/config ./dist/config",
     "db:generate": "yarn prisma format --schema ../../prisma/schema.prisma && yarn prisma generate --schema ../../prisma/schema.prisma",
     "db:push": "yarn prisma db push --schema ../../prisma/schema.prisma",
     "deploy": "yarn pm2 start ./src/config/ecosystem.config.js",
@@ -52,7 +53,7 @@
     "pm2": "^5.3.0",
     "prettier": "^2.8.1",
     "prisma": "^5.7.1",
-    "ts-node": "^10.9.2",
+    "ts-node": "11.0.0-beta.1",
     "typescript": "^5.3.3"
   }
 }
