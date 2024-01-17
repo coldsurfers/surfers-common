@@ -80,7 +80,7 @@ export default async function Home() {
   const posts = await getInternalPosts()
 
   return posts?.map((post) => (
-    <Link href={`/article/${post.slug}`}>
+    <Link href={`/item/${post.slug}`}>
       <h1>{post.title}</h1>
     </Link>
   ))
