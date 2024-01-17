@@ -1,5 +1,9 @@
+import {
+  PostAccountsSignInCtrlBodySchema,
+  PostAccountsSignInCtrlBodySchemaType,
+  PostAccountsSignInCtrlResponseSchemaType,
+} from '@coldsurfers/accounts-schema'
 import { FastifyError, RouteHandler } from 'fastify'
-import { z } from 'zod'
 import nconf from 'nconf'
 import { sendEmail } from '@coldsurfers/mailer-utils'
 import OAuth2Client from '../../lib/OAuth2Client'
@@ -12,15 +16,6 @@ import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
 const mailerSubject = '[New Account] New account has been created'
 const mailerText = (gmail: string) =>
   `Hello, coldsurf administrator. You've got new account.\nNew account email: ${gmail}`
-
-const PostAccountsSignInCtrlBodySchema = z.object({
-  provider: z.string(),
-  access_token: z.string(),
-})
-
-type PostAccountsSignInCtrlBodySchemaType = z.infer<
-  typeof PostAccountsSignInCtrlBodySchema
->
 
 export const getAccountsListCtrl: RouteHandler<{
   Querystring: {
@@ -46,6 +41,7 @@ export const getAccountsListCtrl: RouteHandler<{
 }
 
 export const postAccountsSignInCtrl: RouteHandler<{
+  Reply: PostAccountsSignInCtrlResponseSchemaType
   Body: PostAccountsSignInCtrlBodySchemaType
 }> = async (req, rep) => {
   try {
@@ -106,7 +102,7 @@ export const postAccountsSignInCtrl: RouteHandler<{
     })
   } catch (e) {
     const error = e as FastifyError
-    return rep.status(error.statusCode ?? 500).send(error)
+    return rep.status(error.statusCode ?? 500).send()
   }
 }
 

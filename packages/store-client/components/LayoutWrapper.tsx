@@ -4,12 +4,12 @@ import { PropsWithChildren } from 'react'
 import styled from '@emotion/styled'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider, signIn } from 'next-auth/react'
-import { Session } from 'next-auth/types'
 import { LoginModal } from '@coldsurfers/accounts-ui'
 import { ModalPortal } from '@coldsurfers/surfers-ui'
+import { Session } from 'next-auth'
 import Header from './Header'
 import Footer from './Footer'
-import { useLoginModalStore } from '@/stores/loginModalStore'
+import { useLoginModalStore } from '../stores/loginModalStore'
 
 const Container = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ export default function LayoutWrapper({
   children,
   session,
 }: PropsWithChildren<{
-  session?: Session | null
+  session: Session | null
 }>) {
   const { isOpen, close } = useLoginModalStore()
   return (

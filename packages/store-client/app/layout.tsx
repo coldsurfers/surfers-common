@@ -1,9 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
-import LayoutWrapper from '@/components/LayoutWrapper'
-import { auth } from '@/libs/auth'
-import GlobalStyle from '@/components/GlobalStyle'
+import GlobalStyle from '@coldsurfers/store-client/components/GlobalStyle'
+import LayoutWrapper from '../components/LayoutWrapper'
+import { auth } from '../libs/auth'
 
 const inter = Inter({ subsets: ['latin'] })
 
