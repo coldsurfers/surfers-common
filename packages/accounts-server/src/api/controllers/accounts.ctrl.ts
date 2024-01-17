@@ -7,12 +7,11 @@ import Account from '../models/Account'
 import generateAuthTokenFromAccount from '../../lib/generateAuthTokenFromAccount'
 import { JWTDecoded } from '../../types/jwt'
 import AuthToken from '../models/AuthToken'
-import Staff from '../models/Staff'
 import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
 
-const mailerSubject = '[Admin Request] Admin request has been submitted'
+const mailerSubject = '[New Account] New account has been created'
 const mailerText = (gmail: string) =>
-  `Hello, coldsurf administrator. You've got request email.\nNew comer email: ${gmail}`
+  `Hello, coldsurf administrator. You've got new account.\nNew account email: ${gmail}`
 
 const PostAccountsSignInCtrlBodySchema = z.object({
   provider: z.string(),
@@ -92,10 +91,6 @@ export const postAccountsSignInCtrl: RouteHandler<{
     const { id: existingAccountId } = existingAccount
 
     if (!existingAccountId) return rep.status(404).send()
-
-    const staff = await Staff.findByAccountId(existingAccountId)
-
-    if (!staff?.is_staff) return rep.status(404).send()
 
     const accountAuthToken = await (
       await generateAuthTokenFromAccount(existingAccount)
