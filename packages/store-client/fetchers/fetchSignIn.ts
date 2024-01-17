@@ -1,6 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { z } from 'zod'
-import { UserSchema } from '@/models/User'
-import axiosClient from '@/libs/axiosClient'
+import axiosClient from '@coldsurfers/store-client/libs/axiosClient'
+import { UserSchema } from '@coldsurfers/store-client/models/User'
 
 const FetchSignInBodySchema = z.object({
   social_token: z.string(),

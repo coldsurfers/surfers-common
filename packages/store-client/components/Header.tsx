@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { useCallback } from 'react'
 import Button from './Button'
-import { useLoginModalStore } from '@/stores/loginModalStore'
+import { useLoginModalStore } from '../stores/loginModalStore'
 
 const Container = styled.div`
   width: 100%;

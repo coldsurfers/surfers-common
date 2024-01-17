@@ -27,6 +27,9 @@
             "@coldsurfers/surfers-ui": [
                 "./packages/surfers-ui/src/index.ts"
             ],
+            "@coldsurfers/store-client/*": [
+                "./packages/store-client/*"
+            ]
         }
     }
 }
