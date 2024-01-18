@@ -43,7 +43,7 @@
   },
   "scripts": {
     "prebuild": "yarn workspace @coldsurfers/cloudinary-utils build && yarn workspace @coldsurfers/shared-utils build",
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc --project ./tsconfig.build.json",
     "prerelease": "yarn build",
     "prerelease:rc": "yarn build",
     "release": "release-it minor --ci",

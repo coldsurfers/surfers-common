@@ -3,6 +3,7 @@ import {
   PartialBlockObjectResponse,
   QueryDatabaseParameters,
 } from '@notionhq/client/build/src/api-endpoints'
+// eslint-disable-next-line import/no-unresolved
 import { uploadCloudinary } from '@coldsurfers/cloudinary-utils'
 import { getRandomInt } from '@coldsurfers/shared-utils'
 import { notionInstance } from '..'

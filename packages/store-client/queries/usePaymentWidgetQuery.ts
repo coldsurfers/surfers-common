@@ -11,5 +11,6 @@ export default function usePaymentWidgetQuery(
       // ------  결제위젯 초기화 ------
       // @docs https://docs.tosspayments.com/reference/widget-sdk#sdk-설치-및-초기화
       loadPaymentWidget(clientKey, customerKey),
+    refetchOnWindowFocus: false,
   })
 }
