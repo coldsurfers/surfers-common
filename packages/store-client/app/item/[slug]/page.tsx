@@ -4,6 +4,7 @@ import {
 } from '@coldsurfers/notion-utils'
 import { NextPage } from 'next'
 import { cache } from 'react'
+import { PartialDatabaseObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import PageInner from './PageInner'
 
 const getPageFromSlug = cache(
@@ -24,7 +25,7 @@ const getBlocks = cache(
     // eslint-disable-next-line no-return-await
     await getBlocksNotion({
       blockId,
-      withUploadCloudinary: process.env.NODE_ENV === 'production',
+      withUploadCloudinary: false,
     })
 )
 
@@ -34,7 +35,11 @@ const ItemSlugPage: NextPage<{
   }
 }> = async ({ params }) => {
   const { slug } = params
-  const data = await getPageFromSlug(slug)
+  const data = (await getPageFromSlug(slug)) as PartialDatabaseObjectResponse
+  const { price: priceProp } = data.properties
+  // @ts-ignore
+  const price: number =
+    priceProp.type === 'number' ? priceProp.number : undefined
   const pageId = data?.id
   if (!pageId) throw Error('')
 
@@ -42,7 +47,7 @@ const ItemSlugPage: NextPage<{
 
   return (
     <>
-      <PageInner blocks={blocks} />
+      <PageInner blocks={blocks} price={price} />
     </>
   )
 }

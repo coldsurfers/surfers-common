@@ -1,13 +1,7 @@
 import styled from '@emotion/styled'
 import { Modal, ModalPortal } from '@coldsurfers/surfers-ui'
 import { nanoid } from 'nanoid'
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { MouseEventHandler, useCallback, useEffect, useRef } from 'react'
 import { PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk'
 import usePaymentWidgetQuery from '../queries/usePaymentWidgetQuery'
 
@@ -26,11 +20,13 @@ const CustomModal = styled(Modal.Container)`
 interface Props {
   isOpen?: boolean
   onClickBackground?: MouseEventHandler<HTMLDivElement>
+  price: number
 }
 
 export default function PaymentModal({
   isOpen = false,
   onClickBackground,
+  price,
 }: Props) {
   const modalBackgroundRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line no-underscore-dangle
@@ -47,7 +43,6 @@ export default function PaymentModal({
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance['renderPaymentMethods']
   > | null>(null)
-  const [price] = useState(50_000)
   useEffect(() => {
     if (!isOpen || !paymentWidget) return
     // ------  결제위젯 렌더링 ------

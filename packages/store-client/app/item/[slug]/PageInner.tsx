@@ -13,17 +13,26 @@ const PageInnerLayout = styled.div`
   }
 `
 
-export default function PageInner({ blocks }: { blocks: any[] }) {
+export default function PageInner({
+  blocks,
+  price,
+}: {
+  blocks: any[]
+  price?: number
+}) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <PageInnerLayout>
       <PageNotionBlock blocks={blocks} />
       <button onClick={() => setIsOpen(true)}>결제하기</button>
-      <PaymentModal
-        isOpen={isOpen}
-        onClickBackground={() => setIsOpen(false)}
-      />
+      {typeof price === 'number' && (
+        <PaymentModal
+          isOpen={isOpen}
+          onClickBackground={() => setIsOpen(false)}
+          price={price}
+        />
+      )}
     </PageInnerLayout>
   )
 }
