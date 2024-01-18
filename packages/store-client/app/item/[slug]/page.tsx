@@ -6,7 +6,7 @@ import { NextPage } from 'next'
 import { cache } from 'react'
 import PageInner from './PageInner'
 
-export const getPageFromSlug = cache(
+const getPageFromSlug = cache(
   async (slug: string) =>
     // eslint-disable-next-line no-return-await
     await queryDetail({
@@ -19,7 +19,7 @@ export const getPageFromSlug = cache(
     })
 )
 
-export const getBlocks = cache(
+const getBlocks = cache(
   async (blockId: string) =>
     // eslint-disable-next-line no-return-await
     await getBlocksNotion({
