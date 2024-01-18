@@ -1,4 +1,7 @@
-import { queryDetail } from '@coldsurfers/notion-utils'
+import {
+  getBlocks as getBlocksNotion,
+  queryDetail,
+} from '@coldsurfers/notion-utils'
 import { NextPage } from 'next'
 import { cache } from 'react'
 import PageInner from './PageInner'
@@ -16,6 +19,15 @@ export const getPageFromSlug = cache(
     })
 )
 
+export const getBlocks = cache(
+  async (blockId: string) =>
+    // eslint-disable-next-line no-return-await
+    await getBlocksNotion({
+      blockId,
+      withUploadCloudinary: false,
+    })
+)
+
 const ItemSlugPage: NextPage<{
   params: {
     slug: string
@@ -23,9 +35,16 @@ const ItemSlugPage: NextPage<{
 }> = async ({ params }) => {
   const { slug } = params
   const data = await getPageFromSlug(slug)
-  console.log(data)
+  const pageId = data?.id
+  if (!pageId) throw Error('')
 
-  return <PageInner />
+  const blocks = await getBlocks(pageId)
+
+  return (
+    <>
+      <PageInner blocks={blocks} />
+    </>
+  )
 }
 
 export default ItemSlugPage

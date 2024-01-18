@@ -29,6 +29,9 @@
             ],
             "@coldsurfers/store-client/*": [
                 "./packages/store-client/*"
+            ],
+            "@coldsurfers/notion-renderer": [
+                "./packages/notion-renderer/src/index.ts"
             ]
         }
     }
