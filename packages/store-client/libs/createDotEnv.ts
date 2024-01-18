@@ -11,6 +11,8 @@ function createDotEnv() {
     'BASE_URL',
     'NOTION_DATABASE_ID',
     'NOTION_TOKEN',
+    'CLOUDINARY_API_KEY',
+    'CLOUDINARY_API_SECRET',
   ]
   let targetData = ''
   targetEnvnames.forEach((envname, index) => {
