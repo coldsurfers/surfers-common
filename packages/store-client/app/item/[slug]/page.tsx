@@ -24,7 +24,7 @@ const getBlocks = cache(
     // eslint-disable-next-line no-return-await
     await getBlocksNotion({
       blockId,
-      withUploadCloudinary: false,
+      withUploadCloudinary: process.env.NODE_ENV === 'production',
     })
 )
 
