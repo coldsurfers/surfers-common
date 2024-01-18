@@ -7,9 +7,12 @@ import styled from '@emotion/styled'
 import PageNotionBlock from './PageNotionBlock'
 
 const PageInnerLayout = styled.div`
-  img {
-    width: 100%;
-    height: auto;
+  figure {
+    margin: 0;
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 `
 

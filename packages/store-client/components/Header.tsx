@@ -9,7 +9,8 @@ import { useLoginModalStore } from '../stores/loginModalStore'
 
 const Container = styled.div`
   width: 100%;
-  padding: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   display: flex;
   align-items: center;
 `
