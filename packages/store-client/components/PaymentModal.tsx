@@ -15,6 +15,7 @@ const CustomModal = styled(Modal.Container)`
   width: 750px;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
 `
 
 interface Props {
