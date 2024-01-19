@@ -38,7 +38,7 @@ const ItemSlugPage: NextPage<{
   const data = (await getPageFromSlug(slug)) as PartialDatabaseObjectResponse
   const { price: priceProp } = data.properties
   // @ts-ignore
-  const price: number =
+  const price: number | undefined =
     priceProp.type === 'number' ? priceProp.number : undefined
   const pageId = data?.id
   if (!pageId) throw Error('')

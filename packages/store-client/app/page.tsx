@@ -7,6 +7,7 @@ import {
 } from '@notionhq/client/build/src/api-endpoints'
 import Link from 'next/link'
 import { cache } from 'react'
+import styles from './styles.module.css'
 
 const getAllPosts = cache(
   async () =>
@@ -35,9 +36,13 @@ async function getInternalPosts(
       const { properties } = post
       const slugProperty = properties.Slug
       const nameProperty = properties.Name
+      const priceProperty = properties.price
+      const thumbnailProperty = properties.Thumbnail
 
       let slug: string | undefined = ''
       let title: string | undefined = ''
+      let price: number | null = null
+      let thumbnailURL: string | undefined = ''
 
       if (slugProperty.type === 'rich_text') {
         slug = slugProperty.rich_text.at(0)?.plain_text
@@ -46,6 +51,14 @@ async function getInternalPosts(
       if (nameProperty.type === 'title') {
         title = nameProperty.title.at(0)?.plain_text
         // console.log(slugProperty.rich_text.at(0)?.plain_text)
+      }
+      if (priceProperty.type === 'number') {
+        price = priceProperty.number
+      }
+      if (thumbnailProperty.type === 'files') {
+        const thumbFile = thumbnailProperty.files.at(0)
+        thumbnailURL =
+          thumbFile?.type === 'file' ? thumbFile.file.url : undefined
       }
       // console.log(post.properties, slugProperty)
 
@@ -63,6 +76,8 @@ async function getInternalPosts(
         }),
         slug,
         title,
+        thumbnailURL,
+        price,
         // status: postStatus,
       }
     })
@@ -79,9 +94,14 @@ async function getInternalPosts(
 export default async function Home() {
   const posts = await getInternalPosts()
 
-  return posts?.map((post) => (
-    <Link href={`/item/${post.slug}`}>
-      <h1>{post.title}</h1>
-    </Link>
-  ))
+  return (
+    <section className={styles.wrapper}>
+      {posts?.map((post) => (
+        <Link href={`/item/${post.slug}`}>
+          <img src={post.thumbnailURL} />
+          <h1>{post.title}</h1>
+        </Link>
+      ))}
+    </section>
+  )
 }

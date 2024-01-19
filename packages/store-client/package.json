@@ -18,8 +18,8 @@
     "@coldsurfers/accounts-kit": "1.0.0",
     "@coldsurfers/accounts-schema": "1.0.0",
     "@coldsurfers/accounts-ui": "1.0.0",
-    "@coldsurfers/notion-utils": "1.0.1-rc.10",
     "@coldsurfers/notion-renderer": "1.0.0",
+    "@coldsurfers/notion-utils": "1.0.1-rc.10",
     "@coldsurfers/ocean-road": "1.5.1-rc.4",
     "@coldsurfers/surfers-ui": "1.0.0",
     "@emotion/react": "^11.11.1",
@@ -45,6 +45,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-plugin-css-modules": "^5.0.2"
   }
 }
