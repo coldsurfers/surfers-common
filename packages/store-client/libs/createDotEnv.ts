@@ -13,6 +13,8 @@ function createDotEnv() {
     'NOTION_TOKEN',
     'CLOUDINARY_API_KEY',
     'CLOUDINARY_API_SECRET',
+    'TOSS_PAYMENTS_CLIENT_KEY',
+    'TOSS_PAYMENTS_CLIENT_SECRET',
   ]
   let targetData = ''
   targetEnvnames.forEach((envname, index) => {

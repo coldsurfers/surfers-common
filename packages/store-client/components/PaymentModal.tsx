@@ -8,7 +8,7 @@ import usePaymentWidgetQuery from '../queries/usePaymentWidgetQuery'
 // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
 // TODO: customerKey는 구매자와 1:1 관계로 무작위한 고유값을 생성하세요.
 // @docs https://docs.tosspayments.com/reference/using-api/api-keys
-const clientKey = 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm'
+const clientKey = process.env.TOSS_PAYMENTS_CLIENT_KEY ?? ''
 const customerKey = nanoid()
 
 const CustomModal = styled(Modal.Container)`
@@ -85,8 +85,8 @@ export default function PaymentModal({
                     customerName: '김토스',
                     customerEmail: 'customer123@gmail.com',
                     customerMobilePhone: '01012341234',
-                    successUrl: `${window.location.origin}/success`,
-                    failUrl: `${window.location.origin}/fail`,
+                    successUrl: `${window.location.origin}/payments/success`,
+                    failUrl: `${window.location.origin}/payments/fail`,
                   })
                 } catch (error) {
                   // 에러 처리하기
