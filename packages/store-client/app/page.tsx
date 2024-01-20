@@ -1,10 +1,5 @@
 import { queryList } from '@coldsurfers/notion-utils'
-import {
-  PageObjectResponse,
-  // PartialPageObjectResponse,
-  // RichTextItemResponse,
-  // TextRichTextItemResponse,
-} from '@notionhq/client/build/src/api-endpoints'
+import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import Link from 'next/link'
 import { cache } from 'react'
 import styles from './styles.module.css'
@@ -18,8 +13,6 @@ const getAllPosts = cache(
       timestamp: 'created_time',
     })
 )
-
-// type A = PageObjectResponse
 
 async function getInternalPosts(
   options = {
@@ -46,11 +39,9 @@ async function getInternalPosts(
 
       if (slugProperty.type === 'rich_text') {
         slug = slugProperty.rich_text.at(0)?.plain_text
-        // console.log(slugProperty.rich_text.at(0)?.plain_text)
       }
       if (nameProperty.type === 'title') {
         title = nameProperty.title.at(0)?.plain_text
-        // console.log(slugProperty.rich_text.at(0)?.plain_text)
       }
       if (priceProperty.type === 'number') {
         price = priceProperty.number
@@ -60,11 +51,6 @@ async function getInternalPosts(
         thumbnailURL =
           thumbFile?.type === 'file' ? thumbFile.file.url : undefined
       }
-      // console.log(post.properties, slugProperty)
-
-      // const title = post.properties?.Name?.title
-      // console.log(title)
-      // const postStatus = post.properties.Status.status.name
       return {
         id: post.id,
         createdTime,
@@ -78,13 +64,10 @@ async function getInternalPosts(
         title,
         thumbnailURL,
         price,
-        // status: postStatus,
       }
     })
 
     return posts
-
-    // return posts.filter((post) => post.status === status)
   } catch (e) {
     console.error(e)
     return null
