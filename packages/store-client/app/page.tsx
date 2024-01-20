@@ -80,10 +80,20 @@ export default async function Home() {
   return (
     <section className={styles.wrapper}>
       {posts?.map((post) => (
-        <Link href={`/item/${post.slug}`}>
-          <img src={post.thumbnailURL} />
-          <h1>{post.title}</h1>
-        </Link>
+        <div className={styles.sectionItem}>
+          <Link href={`/item/${post.slug}`}>
+            <img src={post.thumbnailURL} />
+            <div className={styles.info}>
+              <h1>{post.title}</h1>
+              <h3>
+                {new Intl.NumberFormat('ko-KR', {
+                  style: 'currency',
+                  currency: 'krw',
+                }).format(post.price ?? 0)}
+              </h3>
+            </div>
+          </Link>
+        </div>
       ))}
     </section>
   )
