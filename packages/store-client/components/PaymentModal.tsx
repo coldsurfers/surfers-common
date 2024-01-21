@@ -8,7 +8,7 @@ import usePaymentWidgetQuery from '../queries/usePaymentWidgetQuery'
 // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
 // TODO: customerKey는 구매자와 1:1 관계로 무작위한 고유값을 생성하세요.
 // @docs https://docs.tosspayments.com/reference/using-api/api-keys
-const clientKey = process.env.TOSS_PAYMENTS_CLIENT_KEY ?? ''
+const clientKey = 'test_ck_AQ92ymxN34P2jB1qzPAp3ajRKXvd'
 const customerKey = nanoid()
 
 const CustomModal = styled(Modal.Container)`

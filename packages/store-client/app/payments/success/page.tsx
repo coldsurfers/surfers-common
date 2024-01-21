@@ -23,6 +23,8 @@ interface PaymentsSuccessPageSearchParams {
   amount: string
 }
 
+const clientSecret = 'test_sk_oEjb0gm23PWwz7wWblvN8pGwBJn5'
+
 // eslint-disable-next-line consistent-return
 const getPaymentsInfo = async (params: PaymentsSuccessPageSearchParams) => {
   try {
@@ -31,9 +33,9 @@ const getPaymentsInfo = async (params: PaymentsSuccessPageSearchParams) => {
       params,
       {
         headers: {
-          Authorization: `Basic ${Buffer.from(
-            `${process.env.TOSS_PAYMENTS_CLIENT_SECRET}:`
-          ).toString('base64')}`,
+          Authorization: `Basic ${Buffer.from(`${clientSecret}:`).toString(
+            'base64'
+          )}`,
         },
       }
     )
