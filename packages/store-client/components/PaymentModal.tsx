@@ -1,9 +1,12 @@
+'use client'
+
 import styled from '@emotion/styled'
 import { CTAButton, Modal, ModalPortal } from '@coldsurfers/surfers-ui'
 import { nanoid } from 'nanoid'
 import { MouseEventHandler, useCallback, useEffect, useRef } from 'react'
 import { PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk'
 import usePaymentWidgetQuery from '../queries/usePaymentWidgetQuery'
+import { usePaymentStore } from '../stores/paymentStore'
 
 // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
 // TODO: customerKey는 구매자와 1:1 관계로 무작위한 고유값을 생성하세요.
@@ -30,6 +33,13 @@ export default function PaymentModal({
   onClickBackground,
   price,
 }: Props) {
+  const {
+    orderId,
+    orderName,
+    customerEmail,
+    customerMobilePhone,
+    customerName,
+  } = usePaymentStore()
   const modalBackgroundRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line no-underscore-dangle
   const _onClickBackground = useCallback<MouseEventHandler<HTMLDivElement>>(
@@ -80,11 +90,11 @@ export default function PaymentModal({
                   // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
                   // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
                   await paymentWidget?.requestPayment({
-                    orderId: nanoid(),
-                    orderName: '토스 티셔츠 외 2건',
-                    customerName: '김토스',
-                    customerEmail: 'customer123@gmail.com',
-                    customerMobilePhone: '01012341234',
+                    orderId,
+                    orderName,
+                    customerEmail,
+                    customerMobilePhone,
+                    customerName,
                     successUrl: `${window.location.origin}/payments/success`,
                     failUrl: `${window.location.origin}/payments/fail`,
                   })

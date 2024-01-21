@@ -36,10 +36,14 @@ const ItemSlugPage: NextPage<{
 }> = async ({ params }) => {
   const { slug } = params
   const data = (await getPageFromSlug(slug)) as PartialDatabaseObjectResponse
-  const { price: priceProp } = data.properties
+  const { price: priceProp, Name: nameProp } = data.properties
   // @ts-ignore
   const price: number | undefined =
     priceProp.type === 'number' ? priceProp.number : undefined
+  // @ts-ignore
+  const name: string | undefined =
+    // @ts-ignore
+    nameProp.type === 'title' ? nameProp.title.at(0).plain_text : undefined
   const pageId = data?.id
   if (!pageId) throw Error('')
 
@@ -47,7 +51,7 @@ const ItemSlugPage: NextPage<{
 
   return (
     <>
-      <PageInner blocks={blocks} price={price} />
+      <PageInner blocks={blocks} price={price} title={name} />
     </>
   )
 }
