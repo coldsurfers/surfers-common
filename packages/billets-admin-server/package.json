@@ -1,0 +1,69 @@
+{
+  "name": "@coldsurfers/billets-admin-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
+    "@graphql-codegen/cli": "2.16.1",
+    "@graphql-codegen/introspection": "2.2.3",
+    "@graphql-codegen/typescript": "2.8.5",
+    "@graphql-codegen/typescript-resolvers": "2.7.10",
+    "@types/crypto-js": "^4.1.1",
+    "@types/node": "^18.11.17",
+    "@types/nodemailer": "^6.4.7",
+    "@types/nodemailer-smtp-transport": "^2.7.5",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
+    "prettier": "2.8.1",
+    "prisma": "^5.7.1",
+    "typescript": "^4.9.4"
+  },
+  "scripts": {
+    "debug": "vercel dev --listen 3001",
+    "deploy": "vercel",
+    "build": "tsc",
+    "start": "node --experimental-specifier-resolution=node ./dist/index.js",
+    "postinstall": "yarn prisma:generate",
+    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\" \"vercel/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "yarn lint --fix",
+    "codegen": "graphql-codegen --config ./gql/codegen.yml",
+    "prisma:db-push": "yarn prisma db push --schema ../../prisma/schema.prisma",
+    "prisma:generate": "yarn prisma generate --schema ../../prisma/schema.prisma",
+    "vercel:sync-env": "vercel env pull"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "yarn run lint:fix",
+      "bash -c 'yarn build --noEmit'"
+    ]
+  },
+  "dependencies": {
+    "@apollo/server": "^4.3.0",
+    "@as-integrations/fastify": "^1.2.0",
+    "@aws-sdk/client-s3": "^3.254.0",
+    "@aws-sdk/s3-presigned-post": "^3.254.0",
+    "@prisma/client": "5.8.0",
+    "@vercel/node": "^2.8.2",
+    "crypto-js": "^4.1.1",
+    "csvtojson": "^2.0.10",
+    "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.10.2",
+    "graphql": "^16.6.0",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
+    "nodemailer": "^6.8.0",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "uuidv4": "^6.2.13",
+    "zod": "^3.20.2"
+  }
+}
