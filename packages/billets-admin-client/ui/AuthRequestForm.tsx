@@ -16,6 +16,7 @@ import Loader from './Loader'
 
 interface Props {}
 
+// eslint-disable-next-line no-empty-pattern
 const AuthRequestForm = ({}: Props) => {
   const router = useRouter()
   const [email, setEmail] = useState<string>('')
