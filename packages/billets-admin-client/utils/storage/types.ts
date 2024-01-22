@@ -1,1 +1,1 @@
-export type StorageItem = '@fstvllife/token'
+export type StorageItem = '@billets/token'

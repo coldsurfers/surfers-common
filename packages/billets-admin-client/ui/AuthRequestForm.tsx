@@ -105,7 +105,7 @@ const AuthRequestForm = ({}: Props) => {
             marginBottom: 14,
           }}
         >
-          페스티벌 라이프 어드민
+          Billets 어드민
         </Text>
         <TextInput
           placeholder="이메일"

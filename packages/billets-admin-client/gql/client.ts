@@ -1,3 +1,5 @@
+/* eslint-disable default-case */
+/* eslint-disable no-restricted-syntax */
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
@@ -10,7 +12,7 @@ const httpLink = new HttpLink({
 })
 
 const authLink = setContext((_, { headers }) => {
-  const token = storage.get<string>('@fstvllife/token')
+  const token = storage.get<string>('@billets/token')
   return {
     headers: {
       ...headers,
@@ -19,6 +21,7 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
+// eslint-disable-next-line consistent-return
 const errorLink = onError(({ graphQLErrors, forward, operation }) => {
   if (graphQLErrors) {
     for (const err of graphQLErrors) {
@@ -26,8 +29,8 @@ const errorLink = onError(({ graphQLErrors, forward, operation }) => {
         // Apollo Server sets code to UNAUTHENTICATED
         // when an AuthenticationError is thrown in a resolver
         case 401:
-          if (storage.get<string>('@fstvllife/token')) {
-            storage.remove('@fstvllife/token')
+          if (storage.get<string>('@billets/token')) {
+            storage.remove('@billets/token')
           }
           if (
             NON_AUTH_PATH_WHITE_LIST.every(

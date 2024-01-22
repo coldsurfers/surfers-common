@@ -36,13 +36,14 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (!data?.login) return
+    // eslint-disable-next-line no-shadow
     const { login } = data
     switch (login.__typename) {
       case 'HttpError':
         setErrorMessage(login.message)
         break
       case 'UserWithToken':
-        storage.set('@fstvllife/token', login.token)
+        storage.set('@billets/token', login.token)
         client.refetchQueries({
           include: [ME_QUERY],
         })
@@ -75,7 +76,7 @@ const LoginForm = () => {
             marginBottom: 14,
           }}
         >
-          페스티벌 라이프 어드민
+          Billets 어드민
         </Text>
         <TextInput
           value={email}

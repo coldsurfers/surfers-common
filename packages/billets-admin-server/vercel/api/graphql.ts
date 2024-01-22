@@ -493,8 +493,8 @@ const resolvers: Resolvers = {
       const created = await emailAuthRequest.create()
       await sendEmail({
         to: created.email,
-        subject: '페스티벌 라이프 이메일 인증 번호',
-        text: `페스티벌 라이프의 이메일 인증 번호는 ${created.authcode}입니다. 3분내에 입력 해 주세요.`,
+        subject: 'Billets 이메일 인증 번호',
+        text: `Billets의 이메일 인증 번호는 ${created.authcode}입니다. 3분내에 입력 해 주세요.`,
       })
       return {
         ...created,
@@ -836,11 +836,7 @@ const handler: VercelApiHandler = async (
     // todo: add white list url of cors
     res.setHeader(
       'Access-Control-Allow-Origin',
-      'https://fstvllife-admin-web-yungblud.vercel.app'
-    )
-    res.setHeader(
-      'Access-Control-Allow-Origin',
-      'https://fstvllife-admin-web.vercel.app'
+      'https://billets-admin.coldsurf.io'
     )
   }
   // another common pattern

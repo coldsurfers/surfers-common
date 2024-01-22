@@ -13,12 +13,13 @@ const Header = () => {
   const { data, loading: meLoading, refetch, client } = useMeQuery()
   const me = useMemo(() => {
     if (!data || meLoading) return null
+    // eslint-disable-next-line no-shadow
     const { me } = data
     return me
   }, [data, meLoading])
   const handleLogout = useCallback(() => {
     setShowLoader(true)
-    storage.remove('@fstvllife/token')
+    storage.remove('@billets/token')
     client.refetchQueries({
       include: [ME_QUERY],
     })

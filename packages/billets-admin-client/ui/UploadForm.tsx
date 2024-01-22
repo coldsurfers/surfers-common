@@ -9,8 +9,6 @@ import {
   useState,
 } from 'react'
 import styled from 'styled-components'
-import useCreateConcertMutation from '../hooks/useCreateConcertMutation'
-import validateUrl from '../utils/validateUrl'
 import {
   format,
   isValid,
@@ -20,9 +18,11 @@ import {
   getHours,
   getMinutes,
 } from 'date-fns'
+import { useRouter, useSearchParams } from 'next/navigation'
+import useCreateConcertMutation from '../hooks/useCreateConcertMutation'
+import validateUrl from '../utils/validateUrl'
 import UploadFormDateInput from './UploadFormDateInput'
 import Loader from './Loader'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { presign, uploadToPresignedURL } from '../utils/fetcher'
 import pickFile from '../utils/pickFile'
 import { CONCERT_LIST_QUERY } from '../hooks/useConcertListQuery'
@@ -71,9 +71,9 @@ const formInitialState: FormState = {
   posterUrl: '',
 }
 
-const Label = memo(({ children }: PropsWithChildren<{}>) => {
-  return <Text style={{ marginBottom: 10, fontSize: 16 }}>{children}</Text>
-})
+const Label = memo(({ children }: PropsWithChildren<{}>) => (
+  <Text style={{ marginBottom: 10, fontSize: 16 }}>{children}</Text>
+))
 
 const InputWithLabel = memo(
   ({
@@ -86,30 +86,26 @@ const InputWithLabel = memo(
     onChangeText: (text: string) => void
     label: string
     placeholder?: string
-  }) => {
-    return (
-      <InputWithLabelWrapper>
-        <Label>{label}</Label>
-        <TextInput
-          value={value}
-          onChangeText={onChangeText}
-          placeholder={placeholder}
-        />
-      </InputWithLabelWrapper>
-    )
-  }
+  }) => (
+    <InputWithLabelWrapper>
+      <Label>{label}</Label>
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+      />
+    </InputWithLabelWrapper>
+  )
 )
 
-const AddButton = memo(({ onPress }: { onPress: () => void }) => {
-  return (
-    <Button
-      text={'➕'}
-      color="white"
-      onPress={onPress}
-      style={{ width: 12, height: 12, marginLeft: 'auto' }}
-    />
-  )
-})
+const AddButton = memo(({ onPress }: { onPress: () => void }) => (
+  <Button
+    text={'➕'}
+    color="white"
+    onPress={onPress}
+    style={{ width: 12, height: 12, marginLeft: 'auto' }}
+  />
+))
 
 const UploadForm = () => {
   const searchParams = useSearchParams()
@@ -235,7 +231,7 @@ const UploadForm = () => {
             })),
           }))
         : formInitialState.tickets,
-      posterUrl: firstPoster ? firstPoster : '',
+      posterUrl: firstPoster || '',
     })
   }, [existing])
 
@@ -339,9 +335,9 @@ const UploadForm = () => {
       const { target } = e
       if (!target) return
       const filename = new Date().toISOString()
-      const files = (target as any).files
+      const { files } = target as any
       const presignedData = await presign({
-        filename: filename,
+        filename,
         filetype: 'image/*',
       })
       await uploadToPresignedURL({
@@ -350,16 +346,20 @@ const UploadForm = () => {
       })
       setFormState((prev) => ({
         ...prev,
-        posterUrl: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/poster-thumbnails/${filename}`,
+        posterUrl: `${
+          process.env.NEXT_PUBLIC_S3_BUCKET_URL
+        }/billets/poster-thumbnails/${encodeURIComponent(filename)}`,
       }))
     })
   }, [])
 
-  const formatDate = useCallback((date: Date) => {
-    return isValid(date)
-      ? format(date, 'yyyy-MM-dd hh:mm a')
-      : '올바르지 않은 날짜입니다'
-  }, [])
+  const formatDate = useCallback(
+    (date: Date) =>
+      isValid(date)
+        ? format(date, 'yyyy-MM-dd hh:mm a')
+        : '올바르지 않은 날짜입니다',
+    []
+  )
 
   const createConcert = useCallback(() => {
     if (validation.message) {
@@ -471,13 +471,11 @@ const UploadForm = () => {
           {!concertCategoryId && (
             <option value={0}>카테고리를 선택해주세요.</option>
           )}
-          {concertCategoryList.map((category) => {
-            return (
-              <option key={category.id} value={category.id}>
-                {category.title}
-              </option>
-            )
-          })}
+          {concertCategoryList.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.title}
+            </option>
+          ))}
         </select>
       )}
       <InputWithLabel
@@ -624,76 +622,74 @@ const UploadForm = () => {
                 onPress={() => removeTicket(index)}
               />
             </div>
-            {item.ticketPrices.map((ticketPrice, ticketPriceIndex) => {
-              return (
-                <div
-                  key={ticketPriceIndex}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-end',
-                    width: '50%',
-                    marginLeft: 'auto',
-                    marginRight: '140px',
+            {item.ticketPrices.map((ticketPrice, ticketPriceIndex) => (
+              <div
+                key={ticketPriceIndex}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  width: '50%',
+                  marginLeft: 'auto',
+                  marginRight: '140px',
+                }}
+              >
+                <InputWithLabel
+                  value={ticketPrice.title}
+                  onChangeText={(text) => {
+                    setFormState((prev) => {
+                      const next = [...prev.tickets]
+                      next[index].ticketPrices[ticketPriceIndex].title = text
+                      return {
+                        ...prev,
+                        tickets: next,
+                      }
+                    })
                   }}
-                >
-                  <InputWithLabel
-                    value={ticketPrice.title}
-                    onChangeText={(text) => {
-                      setFormState((prev) => {
-                        const next = [...prev.tickets]
-                        next[index].ticketPrices[ticketPriceIndex].title = text
-                        return {
-                          ...prev,
-                          tickets: next,
-                        }
-                      })
-                    }}
-                    label="티켓 구분"
-                    placeholder="티켓 구분"
-                  />
-                  <div style={{ width: 10 }} />
-                  <InputWithLabel
-                    value={ticketPrice.price}
-                    onChangeText={(text) => {
-                      setFormState((prev) => {
-                        const next = [...prev.tickets]
-                        next[index].ticketPrices[ticketPriceIndex].price = text
-                        return {
-                          ...prev,
-                          tickets: next,
-                        }
-                      })
-                    }}
-                    label="티켓 가격"
-                    placeholder="티켓 가격"
-                  />
-                  <Button
-                    style={{
-                      width: 10,
-                      height: 10,
-                      marginBottom: 20,
-                      marginLeft: 10,
-                    }}
-                    text={'✘'}
-                    onPress={() => {
-                      setFormState((prev) => {
-                        const next = [...prev.tickets]
-                        next[index].ticketPrices = next[
-                          index
-                        ].ticketPrices.filter(
-                          (_, targetIndex) => targetIndex !== ticketPriceIndex
-                        )
-                        return {
-                          ...prev,
-                          tickets: next,
-                        }
-                      })
-                    }}
-                  />
-                </div>
-              )
-            })}
+                  label="티켓 구분"
+                  placeholder="티켓 구분"
+                />
+                <div style={{ width: 10 }} />
+                <InputWithLabel
+                  value={ticketPrice.price}
+                  onChangeText={(text) => {
+                    setFormState((prev) => {
+                      const next = [...prev.tickets]
+                      next[index].ticketPrices[ticketPriceIndex].price = text
+                      return {
+                        ...prev,
+                        tickets: next,
+                      }
+                    })
+                  }}
+                  label="티켓 가격"
+                  placeholder="티켓 가격"
+                />
+                <Button
+                  style={{
+                    width: 10,
+                    height: 10,
+                    marginBottom: 20,
+                    marginLeft: 10,
+                  }}
+                  text={'✘'}
+                  onPress={() => {
+                    setFormState((prev) => {
+                      const next = [...prev.tickets]
+                      next[index].ticketPrices = next[
+                        index
+                      ].ticketPrices.filter(
+                        (_, targetIndex) => targetIndex !== ticketPriceIndex
+                      )
+                      return {
+                        ...prev,
+                        tickets: next,
+                      }
+                    })
+                  }}
+                />
+              </div>
+            ))}
           </InputSectionDivider>
         ))}
       </>

@@ -1,10 +1,10 @@
 import { StorageItem } from './types'
 
 const storage = {
-  set: function (item: StorageItem, value: string) {
+  set(item: StorageItem, value: string) {
     localStorage.setItem(item, value)
   },
-  get: function <ParsedValueT>(item: StorageItem) {
+  get<ParsedValueT>(item: StorageItem) {
     const value = localStorage.getItem(item)
     try {
       if (!value) return null
@@ -15,10 +15,10 @@ const storage = {
       return null
     }
   },
-  remove: function (item: StorageItem) {
+  remove(item: StorageItem) {
     localStorage.removeItem(item)
   },
-  clear: function () {
+  clear() {
     localStorage.clear()
   },
 }

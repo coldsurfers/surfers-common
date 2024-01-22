@@ -13,11 +13,7 @@ const handler: VercelApiHandler = async (
     // todo: add white list url of cors
     res.setHeader(
       'Access-Control-Allow-Origin',
-      'https://fstvllife-admin-web-yungblud.vercel.app'
-    )
-    res.setHeader(
-      'Access-Control-Allow-Origin',
-      'https://fstvllife-admin-web.vercel.app'
+      'https://billets-admin.coldsurf.io'
     )
   }
   // another common pattern
@@ -42,14 +38,14 @@ const handler: VercelApiHandler = async (
 
   const post = await createPresignedPost(s3Client, {
     Bucket: process.env.FSTVLLIFE_ORIGIN_B ?? '',
-    Key: `poster-thumbnails/${req.query.filename}` as string,
+    Key: `billets/poster-thumbnails/${req.query.filename}` as string,
     Fields: {
       acl: 'public-read',
       'Content-Type': req.query.filetype as string,
     },
     Expires: 5, // seconds
     Conditions: [
-      ['content-length-range', 0, 1048576 * 3], // up to 1 MB * 3 = 3 MB
+      ['content-length-range', 0, 1048576 * 10], // up to 1 MB * 10 = 10 MB
     ],
   })
 
