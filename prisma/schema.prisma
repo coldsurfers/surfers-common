@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// accounts
 model Account {
   id           String     @id @default(uuid())
   username     String?    @unique
@@ -40,6 +41,7 @@ model AuthToken {
   created_at    DateTime @default(now())
 }
 
+// louder
 model Track {
   id         String   @id @default(uuid())
   filename   String   @unique
@@ -77,4 +79,73 @@ model Song {
   post       Post?    @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id    String?
   track      Track?
+}
+
+// billets
+
+model EmailAuthRequest {
+  id            Int      @id @default(autoincrement())
+  email         String
+  authcode      String
+  authenticated Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+model ConcertCategory {
+  id        Int       @id @default(autoincrement())
+  title     String
+  concerts  Concert[]
+  createdAt DateTime  @default(now())
+}
+
+model Concert {
+  id                Int             @id @default(autoincrement())
+  artist            String?
+  title             String
+  location          String?
+  date              DateTime?
+  html              String?         @db.Text
+  concertCategoryId Int             @default(1)
+  concertCategory   ConcertCategory @relation(fields: [concertCategoryId], references: [id])
+  posters           ConcertPoster[]
+  tickets           ConcertTicket[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime?
+
+  @@index([concertCategoryId])
+}
+
+model ConcertPoster {
+  id        Int      @id @default(autoincrement())
+  concertId Int
+  concert   Concert  @relation(fields: [concertId], references: [id])
+  imageURL  String
+  createdAt DateTime @default(now())
+
+  @@index([concertId])
+}
+
+model ConcertTicket {
+  id           Int                  @id @default(autoincrement())
+  concertId    Int
+  concert      Concert              @relation(fields: [concertId], references: [id])
+  openDate     DateTime
+  seller       String
+  sellingURL   String
+  createdAt    DateTime             @default(now())
+  ticketPrices ConcertTicketPrice[]
+
+  @@index([concertId])
+}
+
+model ConcertTicketPrice {
+  id              Int           @id @default(autoincrement())
+  concertTicketId Int
+  concertTicket   ConcertTicket @relation(fields: [concertTicketId], references: [id])
+  title           String
+  price           Float
+  priceCurrency   String
+  createdAt       DateTime      @default(now())
+
+  @@index([concertTicketId])
 }
