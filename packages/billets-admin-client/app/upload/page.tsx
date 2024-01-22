@@ -3,13 +3,11 @@
 import styled from 'styled-components'
 import UploadForm from '../../ui/UploadForm'
 
-const UploadPage = () => {
-  return (
-    <Wrapper>
-      <UploadForm />
-    </Wrapper>
-  )
-}
+const UploadPage = () => (
+  <Wrapper>
+    <UploadForm />
+  </Wrapper>
+)
 
 const Wrapper = styled.div`
   flex: 1;
