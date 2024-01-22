@@ -2,8 +2,6 @@
 
 import LoginForm from '../../../ui/LoginForm'
 
-const SignInPage = () => {
-  return <LoginForm />
-}
+const SignInPage = () => <LoginForm />
 
 export default SignInPage

@@ -8,19 +8,18 @@ import {
 } from '@tanstack/react-table'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Concert } from '../gql/schema'
-import useConcertListQuery from '../hooks/useConcertListQuery'
-import Loader from '../ui/Loader'
 import { format } from 'date-fns'
 import styled from 'styled-components'
-import { palette } from 'fstvllife-design-system'
+import { palette, TextInput } from 'fstvllife-design-system'
 import Link from 'next/link'
 import {
   DEFAULT_PAGE,
   DEFAULT_LIMIT,
   DEFAULT_ORDER_BY_CREATED_AT,
 } from '../utils/constants'
-import { TextInput } from 'fstvllife-design-system'
+import Loader from '../ui/Loader'
+import useConcertListQuery from '../hooks/useConcertListQuery'
+import { Concert } from '../gql/schema'
 
 const columnHelper = createColumnHelper<Concert>()
 
@@ -47,7 +46,6 @@ export default function Page() {
       orderBy,
     },
   })
-  console.log('data', data)
   const [jumpPage, setJumpPage] = useState<string>('')
 
   useEffect(() => {
@@ -55,8 +53,8 @@ export default function Page() {
     setLimit(limitParam ? +limitParam : DEFAULT_LIMIT)
   }, [pageParam, limitParam, router])
 
-  const columns = useMemo(() => {
-    return [
+  const columns = useMemo(
+    () => [
       // columnHelper.display({
       //   id: 'actions',
       //   header: () => <input type="checkbox" />,
@@ -133,8 +131,9 @@ export default function Page() {
         },
         footer: (info) => info.column.id,
       }),
-    ]
-  }, [])
+    ],
+    []
+  )
 
   const tableData = useMemo(() => {
     if (!data?.concertList) return [] as Concert[]
@@ -251,7 +250,7 @@ export default function Page() {
               return
             }
             const numberJumpPage = +jumpPage
-            if (isNaN(numberJumpPage)) {
+            if (Number.isNaN(numberJumpPage)) {
               alert('숫자를 입력해주세요')
               return
             }

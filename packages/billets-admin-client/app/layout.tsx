@@ -1,10 +1,11 @@
 'use client'
+
+import { createGlobalStyle } from 'styled-components'
+import { usePathname } from 'next/navigation'
 import GlobalStylesRegistry from './registry/GlobalStylesRegistry'
 import '../styles/global.css'
 import ApolloProviderRegistry from './registry/ApolloProviderRegistry'
 import Header from '../ui/Header'
-import { createGlobalStyle } from 'styled-components'
-import { usePathname } from 'next/navigation'
 
 const GlobalStyle = createGlobalStyle``
 

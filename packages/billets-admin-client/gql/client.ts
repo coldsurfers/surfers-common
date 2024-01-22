@@ -1,11 +1,9 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import storage from '../utils/storage/storage'
 import { onError } from '@apollo/client/link/error'
+import storage from '../utils/storage/storage'
 
 const NON_AUTH_PATH_WHITE_LIST = ['/auth/signin', '/auth/request']
-
-console.log('NEXT_PUBLIC_GRAPHQL_URI', process.env.NEXT_PUBLIC_GRAPHQL_URI)
 
 const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URI,
@@ -23,7 +21,7 @@ const authLink = setContext((_, { headers }) => {
 
 const errorLink = onError(({ graphQLErrors, forward, operation }) => {
   if (graphQLErrors) {
-    for (let err of graphQLErrors) {
+    for (const err of graphQLErrors) {
       switch (err.extensions.code) {
         // Apollo Server sets code to UNAUTHENTICATED
         // when an AuthenticationError is thrown in a resolver
