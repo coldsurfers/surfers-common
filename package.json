@@ -7,11 +7,14 @@
     ],
     "nohoist": [
       "**/billets-admin-server",
-      "**/billets-admin-server/**"
+      "**/billets-admin-server/**",
+      "**/billets-server",
+      "**/billets-server/**"
     ]
   },
   "scripts": {
-    "super-install": "yarn install --immutable --force || yarn install --immutable --force"
+    "super-install": "yarn install --immutable --force || yarn install --immutable --force",
+    "super-remove": "rm -rf ./packages/*/node_modules && rm -rf ./node_modules"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
