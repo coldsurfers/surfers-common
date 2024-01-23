@@ -29,15 +29,16 @@
   },
   "scripts": {
     "debug": "vercel dev --listen 3001",
+    "prisma:copy": "cp -r ../../prisma/schema.prisma ./prisma/schema.prisma",
     "deploy": "vercel",
     "build": "tsc",
     "start": "node --experimental-specifier-resolution=node ./dist/index.js",
-    "postinstall": "yarn prisma:generate",
+    "postinstall": "yarn prisma:copy && yarn prisma:generate",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\" \"vercel/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
     "codegen": "graphql-codegen --config ./gql/codegen.yml",
-    "prisma:db-push": "yarn prisma db push --schema ../../prisma/schema.prisma",
-    "prisma:generate": "yarn prisma generate --schema ../../prisma/schema.prisma",
+    "prisma:db-push": "yarn prisma db push --schema ./prisma/schema.prisma",
+    "prisma:generate": "yarn prisma generate --schema ./prisma/schema.prisma",
     "vercel:sync-env": "vercel env pull"
   },
   "lint-staged": {

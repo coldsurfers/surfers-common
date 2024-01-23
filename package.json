@@ -4,6 +4,10 @@
   "workspaces": {
     "packages": [
       "packages/*"
+    ],
+    "nohoist": [
+      "**/billets-admin-server",
+      "**/billets-admin-server/**"
     ]
   },
   "scripts": {
