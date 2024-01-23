@@ -1,0 +1,51 @@
+{
+  "name": "@coldsurfers/billets-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "@types/crypto-js": "^4.1.1",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "prettier": "2.8.3",
+    "prisma": "^5.7.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.8.0",
+    "@vercel/node": "^2.9.0",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.12.0",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2"
+  },
+  "scripts": {
+    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\" \"vercel/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "yarn lint --fix",
+    "prisma:copy": "cp -r ../../prisma/schema.prisma ./src/prisma/schema.prisma",
+    "postinstall": "yarn prisma:copy && yarn prisma:generate",
+    "debug": "vercel dev --listen 3001",
+    "deploy": "vercel",
+    "build": "tsc",
+    "vercel:sync-env": "vercel env pull",
+    "prisma:db-push": "yarn prisma db push --schema ./src/prisma/schema.prisma",
+    "prisma:generate": "yarn prisma generate --schema ./src/prisma/schema.prisma"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "yarn run lint:fix",
+      "bash -c 'yarn build --noEmit'"
+    ]
+  }
+}
