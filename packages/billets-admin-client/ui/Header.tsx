@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <Wrapper>
-      <Title onClick={() => router.push('/')}>페라 어드민</Title>
+      <Title onClick={() => router.push('/')}>Billets 어드민</Title>
       <ButtonPositioner>
         {me && (
           <>
