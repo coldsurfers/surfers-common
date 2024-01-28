@@ -1,0 +1,18 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# serverless offline build directory
+.build
+
+.env
+.env.prod
+.env.dev
+.env.offline
+.env.offline.dev
+.env.offline.prod
+
+.webpack

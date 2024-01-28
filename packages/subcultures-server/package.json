@@ -1,0 +1,70 @@
+{
+  "name": "grunge-bank-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": "true",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.72",
+    "@types/crypto-js": "3.1.47",
+    "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "^14.14.31",
+    "@types/nodemailer": "^6.4.2",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "aws-sdk": "^2.914.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "2.3.0",
+    "serverless-apigw-binary": "^0.4.4",
+    "serverless-domain-manager": "^5.1.0",
+    "serverless-dotenv-plugin": "^3.8.1",
+    "serverless-offline": "^6.8.0",
+    "serverless-webpack": "5.3.1",
+    "ts-loader": "6.2.1",
+    "typescript": "^4.2.2",
+    "webpack": "4.41.5",
+    "webpack-node-externals": "1.7.2"
+  },
+  "dependencies": {
+    "@graphql-tools/utils": "^7.10.0",
+    "apollo-server-core": "^2.24.0",
+    "apollo-server-express": "^2.21.0",
+    "aws-lambda": "^1.0.6",
+    "body-parser": "^1.19.0",
+    "crypto-js": "3.3.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "graphql-tools": "^7.0.4",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.6.1",
+    "reflect-metadata": "^0.1.13",
+    "serverless-http": "^2.7.0",
+    "typeorm": "^0.2.31"
+  },
+  "workspaces": {
+    "nohoist": [
+      "**"
+    ]
+  },
+  "scripts": {
+    "offline:dev": "cp ./.env.offline.dev ./.env && sls offline --stage dev-offline",
+    "offline:prod": "cp ./.env.offline.prod ./.env && sls offline --stage prod-offline",
+    "deploy:dev": "./ci/deploy_dev.sh",
+    "deploy:prod": "cp ./.env.prod ./.env && rm -rf ./.build && sls deploy --stage prod",
+    "create_domain:dev": "./ci/create_domain_dev.sh",
+    "create_domain:prod": "SLS_DEBUG=* sls create_domain --stage prod",
+    "delete_domain:dev": "SLS_DEBUG=* sls delete_domain --stage dev",
+    "delete_domain:prod": "SLS_DEBUG=* sls delete_domain --stage prod",
+    "lint": "eslint ./src --ext .ts --fix",
+    "lint:tsc": "tsc --noEmit"
+  }
+}
