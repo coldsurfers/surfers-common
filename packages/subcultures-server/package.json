@@ -1,5 +1,5 @@
 {
-  "name": "grunge-bank-server",
+  "name": "@coldsurfers/subcultures-server",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -49,11 +49,6 @@
     "reflect-metadata": "^0.1.13",
     "serverless-http": "^2.7.0",
     "typeorm": "^0.2.31"
-  },
-  "workspaces": {
-    "nohoist": [
-      "**"
-    ]
   },
   "scripts": {
     "offline:dev": "cp ./.env.offline.dev ./.env && sls offline --stage dev-offline",
