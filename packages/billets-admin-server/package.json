@@ -41,12 +41,6 @@
     "prisma:generate": "yarn prisma generate --schema ./prisma/schema.prisma",
     "vercel:sync-env": "vercel env pull"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "yarn run lint:fix",
-      "bash -c 'yarn build --noEmit'"
-    ]
-  },
   "dependencies": {
     "@apollo/server": "^4.3.0",
     "@as-integrations/fastify": "^1.2.0",

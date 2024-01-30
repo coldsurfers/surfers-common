@@ -38,6 +38,7 @@ const cachedGetAccountList = cache(
   }
 )
 
+// eslint-disable-next-line no-unused-vars
 const useGetAccountListQuery = (
   options?: Omit<
     UseQueryOptions<

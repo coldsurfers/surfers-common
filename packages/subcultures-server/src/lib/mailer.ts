@@ -6,33 +6,33 @@ dotenv.config()
 const { MAILER_USER: user, MAILER_PASS: pass } = process.env
 
 interface SendMailParams {
-    to: string
-    validationCode: number
+  to: string
+  validationCode: number
 }
 
 interface SendMailReturnValue {
-    messageId?: string
+  messageId?: string
 }
 
 async function sendMail({
-    to,
-    validationCode,
+  to,
+  validationCode,
 }: SendMailParams): Promise<SendMailReturnValue> {
-    try {
-        const transporter = NodeMailer.createTransport({
-            service: 'gmail',
-            host: 'smtp.gmail.com',
-            auth: {
-                user,
-                pass,
-            },
-        })
+  try {
+    const transporter = NodeMailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      auth: {
+        user,
+        pass,
+      },
+    })
 
-        const res = await transporter.sendMail({
-            from: user,
-            to,
-            subject: 'GrungeBank 이메일 인증 코드',
-            html: `
+    const res = await transporter.sendMail({
+      from: user,
+      to,
+      subject: 'GrungeBank 이메일 인증 코드',
+      html: `
                 <!DOCTYPE html>
                 <html>
                     <head>
@@ -43,17 +43,17 @@ async function sendMail({
                     </body>
                 </html>
             `,
-        })
+    })
 
-        return {
-            messageId: res.messageId,
-        }
-    } catch (e) {
-        console.error(e)
-        return {
-            messageId: undefined,
-        }
+    return {
+      messageId: res.messageId,
     }
+  } catch (e) {
+    console.error(e)
+    return {
+      messageId: undefined,
+    }
+  }
 }
 
 export default sendMail

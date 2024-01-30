@@ -44,7 +44,7 @@
     "prerelease:rc": "yarn build",
     "release": "release-it minor --ci",
     "release:rc": "release-it --ci --preRelease=rc",
-    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint:fix": "yarn lint --fix"
   },
   "publishConfig": {

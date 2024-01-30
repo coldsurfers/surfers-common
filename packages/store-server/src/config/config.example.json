@@ -1,6 +1,6 @@
 {
-    "port": "",
-    "secrets": {
-        "jwt": ""
-    }
+  "port": "",
+  "secrets": {
+    "jwt": ""
+  }
 }

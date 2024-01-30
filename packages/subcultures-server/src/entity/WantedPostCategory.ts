@@ -2,14 +2,14 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('wanted_post_categories')
 class WantedPostCategory {
-    @PrimaryGeneratedColumn('increment')
-    id!: number
+  @PrimaryGeneratedColumn('increment')
+  id!: number
 
-    @Column({ unique: true, length: 255 })
-    value!: string
+  @Column({ unique: true, length: 255 })
+  value!: string
 
-    @Column({ unique: true, length: 255 })
-    label!: string
+  @Column({ unique: true, length: 255 })
+  label!: string
 }
 
 export default WantedPostCategory
