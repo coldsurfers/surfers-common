@@ -5,32 +5,32 @@ module.exports = {
     node: true,
   },
   extends: [
-    "coldsurfers", // for nodejs-typescript, or 'coldsurfers/nodejs-typescript'
+    'coldsurfers', // for nodejs-typescript, or 'coldsurfers/nodejs-typescript'
   ],
   overrides: [
     {
       env: {
         node: true,
       },
-      files: [".eslintrc.{js,cjs}"],
+      files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
-        sourceType: "script",
+        sourceType: 'script',
       },
     },
   ],
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
   rules: {
-    "react/jsx-filename-extension": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/prop-types": [0],
-    "no-bitwise": "off",
-    camelcase: "off",
-    "no-param-reassign": "off",
-    "no-await-in-loop": "off",
-    "no-return-await": "off",
-    "react/no-array-index-key": "off",
+    'react/jsx-filename-extension': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/prop-types': [0],
+    'no-bitwise': 'off',
+    camelcase: 'off',
+    'no-param-reassign': 'off',
+    'no-await-in-loop': 'off',
+    'no-return-await': 'off',
+    'react/no-array-index-key': 'off',
   },
-};
+}

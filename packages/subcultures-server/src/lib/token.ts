@@ -6,21 +6,21 @@ dotenv.config()
 const { JWT_SECRET: secret } = process.env
 
 interface EnvNotPreparedError {
-    name: string
-    message: string
+  name: string
+  message: string
 }
 
 export interface DecodeTokenError {
-    error: VerifyErrors | EnvNotPreparedError
+  error: VerifyErrors | EnvNotPreparedError
 }
 
 export interface DecodeTokenResponse {
-    userId: string
-    iss: string
-    sub: string
-    aud: string
-    exp: number
-    iat: number
+  userId: string
+  iss: string
+  sub: string
+  aud: string
+  exp: number
+  iat: number
 }
 
 // export interface DecodeSocialTokenResponse {
@@ -37,22 +37,22 @@ export const oneWeek = oneDay * 7
 export const oneYear = oneWeek * 52 + oneDay
 
 export const generateToken = (userId: string): string | null => {
-    if (!secret) {
-        return null
-    }
-    const token = jwt.sign(
-        {
-            userId,
-            iss: 'imnotserious.club',
-            sub: 'jwt authentication token',
-            aud: 'users',
-            exp: Date.now() + oneYear,
-            iat: Date.now(),
-        },
-        secret
-    )
+  if (!secret) {
+    return null
+  }
+  const token = jwt.sign(
+    {
+      userId,
+      iss: 'imnotserious.club',
+      sub: 'jwt authentication token',
+      aud: 'users',
+      exp: Date.now() + oneYear,
+      iat: Date.now(),
+    },
+    secret
+  )
 
-    return token
+  return token
 }
 
 // export const generateTokenWithSocialId = (socialId: string): string | null => {
@@ -72,41 +72,41 @@ export const generateToken = (userId: string): string | null => {
 // }
 
 export const decodeToken = (
-    token: string
+  token: string
 ): DecodeTokenResponse | DecodeTokenError => {
-    if (!secret) {
-        return {
-            error: {
-                name: 'EnvNotPrepared',
-                message: 'invalid env secret',
-            } as EnvNotPreparedError,
-        }
+  if (!secret) {
+    return {
+      error: {
+        name: 'EnvNotPrepared',
+        message: 'invalid env secret',
+      } as EnvNotPreparedError,
     }
-    try {
-        const verified = jwt.verify(token, secret)
-        if (verified) {
-            const decoded = jwt.decode(token)
-            if (!decoded) {
-                return {
-                    error: {
-                        name: 'JsonWebTokenError',
-                        message: 'jwt malformed',
-                    },
-                } as DecodeTokenError
-            }
-            return decoded as DecodeTokenResponse
-        }
+  }
+  try {
+    const verified = jwt.verify(token, secret)
+    if (verified) {
+      const decoded = jwt.decode(token)
+      if (!decoded) {
         return {
-            error: {
-                name: 'JsonWebTokenError',
-                message: 'jwt malformed',
-            },
+          error: {
+            name: 'JsonWebTokenError',
+            message: 'jwt malformed',
+          },
         } as DecodeTokenError
-    } catch (e) {
-        return {
-            error: e as VerifyErrors,
-        } as DecodeTokenError
+      }
+      return decoded as DecodeTokenResponse
     }
+    return {
+      error: {
+        name: 'JsonWebTokenError',
+        message: 'jwt malformed',
+      },
+    } as DecodeTokenError
+  } catch (e) {
+    return {
+      error: e as VerifyErrors,
+    } as DecodeTokenError
+  }
 }
 
 // export const decodeSocialToken = (token: string): DecodeSocialTokenResponse | DecodeTokenError => {

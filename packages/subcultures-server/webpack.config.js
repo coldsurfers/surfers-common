@@ -5,38 +5,38 @@ const nodeExternals = require('webpack-node-externals')
 const entries = {}
 
 Object.keys(slsw.lib.entries).forEach(
-    // eslint-disable-next-line no-return-assign
-    (key) => (entries[key] = [slsw.lib.entries[key]])
+  // eslint-disable-next-line no-return-assign
+  (key) => (entries[key] = [slsw.lib.entries[key]])
 )
 
 module.exports = {
-    mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
-    entry: entries,
-    // devtool: 'source-map',
-    resolve: {
-        modules: ['node_modules'],
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    },
-    output: {
-        libraryTarget: 'commonjs',
-        path: path.join(__dirname, '.webpack'),
-        filename: '[name].js',
-    },
-    target: 'node',
-    module: {
-        rules: [
-            // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                options: {
-                    transpileOnly: true,
-                },
-            },
-        ],
-    },
-    externals: [nodeExternals()],
-    optimization: {
-        minimize: false,
-    },
+  mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
+  entry: entries,
+  // devtool: 'source-map',
+  resolve: {
+    modules: ['node_modules'],
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+  },
+  output: {
+    libraryTarget: 'commonjs',
+    path: path.join(__dirname, '.webpack'),
+    filename: '[name].js',
+  },
+  target: 'node',
+  module: {
+    rules: [
+      // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+        },
+      },
+    ],
+  },
+  externals: [nodeExternals()],
+  optimization: {
+    minimize: false,
+  },
 }

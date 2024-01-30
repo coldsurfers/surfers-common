@@ -1,12 +1,12 @@
 {
-    "functions": {
-        "api/graphql.ts": {
-          "memory": 512,
-          "maxDuration": 5
-        },
-        "api/file-upload.ts": {
-          "memory": 512,
-          "maxDuration": 5
-        }
+  "functions": {
+    "api/graphql.ts": {
+      "memory": 512,
+      "maxDuration": 5
+    },
+    "api/file-upload.ts": {
+      "memory": 512,
+      "maxDuration": 5
     }
+  }
 }

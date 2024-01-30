@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "../../tsconfig.paths.json"
-  ],
+  "extends": ["../../tsconfig.paths.json"],
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -19,13 +17,13 @@
     "incremental": true,
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
     "paths": {
-      "react": [ "./node_modules/@types/react" ]
-    }
+      "react": ["./node_modules/@types/react"],
+    },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

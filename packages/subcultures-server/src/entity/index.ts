@@ -5,11 +5,11 @@ import WantedPostCategory from './WantedPostCategory'
 import WantedPostBookmark from './WantedPostBookmark'
 
 const entities = [
-    User,
-    WantedPost,
-    WantedPostCategory,
-    Contact,
-    WantedPostBookmark,
+  User,
+  WantedPost,
+  WantedPostCategory,
+  Contact,
+  WantedPostBookmark,
 ]
 
 export default entities

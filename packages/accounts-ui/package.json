@@ -18,17 +18,21 @@
   "scripts": {
     "prebuild": "yarn workspace @coldsurfers/surfers-ui build",
     "build": "rm -rf dist && tsc",
-    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint:fix": "yarn lint --fix"
   },
   "peerDependencies": {
     "@coldsurfers/surfers-ui": "1.0.0",
+    "@coldsurfers/hotsurf": ">= 0.2.6",
     "@emotion/styled": "^11.11.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-native": ">= 0.69.0",
+    "react-spinners": "^0.13.8"
   },
   "devDependencies": {
     "@coldsurfers/surfers-ui": "1.0.0",
+    "@coldsurfers/hotsurf": "0.2.6",
     "@emotion/styled": "^11.11.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
@@ -40,9 +44,10 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^2.8.1",
+    "prettier": "^3.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "react-spinners": "^0.13.8"
   }
 }
