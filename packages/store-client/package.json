@@ -37,7 +37,9 @@
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
     "zod": "^3.22.4",
-    "zustand": "^4.4.7"
+    "zustand": "^4.4.7",
+    "react-native-web": "^0.18.12",
+    "react-spinners": "^0.13.7"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.12.1",
@@ -46,6 +48,7 @@
     "@types/react-dom": "^18",
     "ts-node": "^10.9.2",
     "typescript": "^5",
-    "typescript-plugin-css-modules": "^5.0.2"
+    "typescript-plugin-css-modules": "^5.0.2",
+    "react-native": "^0.70.6"
   }
 }

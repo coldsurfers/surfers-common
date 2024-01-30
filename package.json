@@ -9,7 +9,9 @@
       "**/billets-admin-server",
       "**/billets-admin-server/**",
       "**/billets-server",
-      "**/billets-server/**"
+      "**/billets-server/**",
+      "**/react-native",
+      "**/react-native/**"
     ]
   },
   "scripts": {
