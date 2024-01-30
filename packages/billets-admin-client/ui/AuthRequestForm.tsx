@@ -1,10 +1,4 @@
-import {
-  Button,
-  palette,
-  Text,
-  TextInput,
-  Toast,
-} from 'fstvllife-design-system'
+import { Button, palette, Text, TextInput, Toast } from '@coldsurfers/hotsurf'
 import { useRouter } from 'next/navigation'
 import { memo, useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -238,9 +232,7 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
 
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 `
 

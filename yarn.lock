@@ -12757,15 +12757,6 @@ fsevents@^2.1.2, fsevents@~2.3.2:
   resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
-fstvllife-design-system@0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/fstvllife-design-system/-/fstvllife-design-system-0.2.6.tgz#5b7b28d4a1d881cefcfd820479550ea37b9eefc2"
-  integrity sha512-teZ/R5MlCqZlNCiKH1fg1XwMZypMOE8SstmfEgOPuYbtMyg/hQ/x1pqkwhHWgtpSZRpnKWaYnVpU47VxzAdq0g==
-  dependencies:
-    react "18.2.0"
-    style-dictionary "^3.7.1"
-    typescript "^4.8.3"
-
 function-bind@^1.1.1, function-bind@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz"

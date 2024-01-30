@@ -1,4 +1,4 @@
-import { TextInput } from 'fstvllife-design-system'
+import { TextInput } from '@coldsurfers/hotsurf'
 import { useCallback } from 'react'
 
 interface Props {

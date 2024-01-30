@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { format } from 'date-fns'
 import styled from 'styled-components'
-import { palette, TextInput } from 'fstvllife-design-system'
+import { palette, TextInput } from '@coldsurfers/hotsurf'
 import Link from 'next/link'
 import {
   DEFAULT_PAGE,
@@ -274,9 +274,7 @@ const Table = styled.table`
   margin-top: 60px;
   background-color: ${palette.white};
   width: 90vw;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 3px;
 `

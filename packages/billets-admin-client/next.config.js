@@ -20,6 +20,7 @@ const nextConfig = {
 
     return config
   },
+  transpilePackages: ['@coldsurfers/hotsurf'],
 }
 
 module.exports = nextConfig

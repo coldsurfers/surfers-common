@@ -1,14 +1,12 @@
-import { palette } from 'fstvllife-design-system'
+import { palette } from '@coldsurfers/hotsurf'
 import { PulseLoader } from 'react-spinners'
 import styled from 'styled-components'
 
-const Loader = () => {
-  return (
-    <Background>
-      <Pulse color={palette.pink} />
-    </Background>
-  )
-}
+const Loader = () => (
+  <Background>
+    <Pulse color={palette.pink} />
+  </Background>
+)
 
 const Background = styled.div`
   position: fixed;

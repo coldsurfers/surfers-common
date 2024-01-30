@@ -1,16 +1,16 @@
 'use client'
 
 import { format } from 'date-fns'
-import { Button, palette } from 'fstvllife-design-system'
+import { Button, palette } from '@coldsurfers/hotsurf'
 import { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/navigation'
 import useConcertQuery from '../../../hooks/useConcertQuery'
 import useCreateConcertPosterMutation from '../../../hooks/useCreateConcertPosterMutation'
 import useUpdateConcertPosterMutation from '../../../hooks/useUpdateConcertPosterMutation'
 import Loader from '../../../ui/Loader'
 import pickFile from '../../../utils/pickFile'
 import { presign, uploadToPresignedURL } from '../../../utils/fetcher'
-import { useRouter } from 'next/navigation'
 import useRemoveConcertMutation from '../../../hooks/useRemoveConcertMutation'
 
 const ConcertIdPage = ({
@@ -86,9 +86,9 @@ const ConcertIdPage = ({
       const { target } = e
       if (!target) return
       const filename = new Date().toISOString()
-      const files = (target as any).files
+      const { files } = target as any
       const presignedData = await presign({
-        filename: filename,
+        filename,
         filetype: 'image/*',
       })
       await uploadToPresignedURL({
@@ -112,9 +112,9 @@ const ConcertIdPage = ({
       const { target } = e
       if (!target) return
       const filename = new Date().toISOString()
-      const files = (target as any).files
+      const { files } = target as any
       const presignedData = await presign({
-        filename: filename,
+        filename,
         filetype: 'image/*',
       })
       await uploadToPresignedURL({
@@ -212,11 +212,9 @@ const ConcertIdPage = ({
           <Label>카테고리</Label>
           <Content>{concertCategory.title}</Content>
           <Label>아티스트</Label>
-          <Content>{artist ? artist : '등록된 아티스트가 없습니다.'}</Content>
+          <Content>{artist || '등록된 아티스트가 없습니다.'}</Content>
           <Label>공연장소</Label>
-          <Content>
-            {location ? location : '등록된 공연장소가 없습니다.'}
-          </Content>
+          <Content>{location || '등록된 공연장소가 없습니다.'}</Content>
           <Label>공연 날짜</Label>
           <Content>
             {date
@@ -226,30 +224,26 @@ const ConcertIdPage = ({
           <Label>티켓 정보</Label>
           {tickets.length > 0 ? (
             <SectionList>
-              {tickets.map((ticket) => {
-                return (
-                  <SectionCard key={ticket.id}>
-                    <Label>판매처</Label>
-                    <SmallContent>{ticket.seller}</SmallContent>
-                    <Label>티켓 예매 주소</Label>
-                    <SmallContent>{ticket.sellingURL}</SmallContent>
-                    <Label>티켓 가격</Label>
-                    {ticket.ticketPrices.map((price) => {
-                      return (
-                        <div key={price.title}>
-                          <SmallContent>{price.title}</SmallContent>
-                          <SmallContent>{price.price}</SmallContent>
-                        </div>
-                      )
-                    })}
-                    <Label>오픈 날짜</Label>
-                    <SmallContent>
-                      {ticket.openDate &&
-                        format(new Date(ticket.openDate), 'yyyy-MM-dd hh:mm a')}
-                    </SmallContent>
-                  </SectionCard>
-                )
-              })}
+              {tickets.map((ticket) => (
+                <SectionCard key={ticket.id}>
+                  <Label>판매처</Label>
+                  <SmallContent>{ticket.seller}</SmallContent>
+                  <Label>티켓 예매 주소</Label>
+                  <SmallContent>{ticket.sellingURL}</SmallContent>
+                  <Label>티켓 가격</Label>
+                  {ticket.ticketPrices.map((price) => (
+                    <div key={price.title}>
+                      <SmallContent>{price.title}</SmallContent>
+                      <SmallContent>{price.price}</SmallContent>
+                    </div>
+                  ))}
+                  <Label>오픈 날짜</Label>
+                  <SmallContent>
+                    {ticket.openDate &&
+                      format(new Date(ticket.openDate), 'yyyy-MM-dd hh:mm a')}
+                  </SmallContent>
+                </SectionCard>
+              ))}
             </SectionList>
           ) : (
             <Content>등록된 티켓정보가 없습니다.</Content>
@@ -314,9 +308,7 @@ const Thumbnail = styled.img`
   border-radius: 8px;
   margin-top: 12px;
   object-fit: contain;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 `
 
@@ -349,9 +341,7 @@ const SectionList = styled.div`
 const SectionCard = styled.div`
   margin-top: 6px;
   margin-bottom: 12px;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   background-color: ${palette.white};
   padding: 16px;
