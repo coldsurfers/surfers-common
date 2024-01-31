@@ -1,4 +1,4 @@
-import { Button, palette } from 'fstvllife-design-system'
+import { Button, palette } from '@coldsurfers/hotsurf'
 import { useRouter, usePathname } from 'next/navigation'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -61,9 +61,7 @@ const Wrapper = styled.div`
   height: 68.5px;
   background-color: ${palette.white};
 
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 `
 

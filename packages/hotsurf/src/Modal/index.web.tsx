@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { MouseEventHandler, PropsWithChildren, forwardRef } from 'react'
 
 const ModalBackground = styled.div`
@@ -22,7 +21,7 @@ const ModalWrapper = styled.div`
   border-radius: 12px;
 `
 
-const Modal = () => null
+export const Modal = () => null
 
 Modal.Background = forwardRef<
   HTMLDivElement,
@@ -43,5 +42,3 @@ Modal.Background = forwardRef<
 Modal.Container = (props: PropsWithChildren<{ className?: string }>) => (
   <ModalWrapper className={props.className}>{props.children}</ModalWrapper>
 )
-
-export default Modal

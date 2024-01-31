@@ -1,7 +1,7 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { PropsWithChildren } from 'react'
 
-const Wrapper = styled.div<{ withFade: boolean }>`
+const Wrapper = styled.div<{ $fade: boolean }>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -14,20 +14,18 @@ const Wrapper = styled.div<{ withFade: boolean }>`
   display: flex;
   flex-direction: column;
   background: ${(p) =>
-    p.withFade
-      ? 'linear-gradient(0deg, #18181f, hsla(0, 50%, 50%, 0))'
-      : 'none'};
+    p.$fade ? 'linear-gradient(0deg, #18181f, hsla(0, 50%, 50%, 0))' : 'none'};
   z-index: 99;
   padding-bottom: 30px;
   padding-left: 30px;
   padding-right: 30px;
 `
 
-export default function BottomSticky({
+export function BottomSticky({
   children,
   withFade,
 }: PropsWithChildren<{
   withFade?: boolean
 }>) {
-  return <Wrapper withFade={!!withFade}>{children}</Wrapper>
+  return <Wrapper $fade={!!withFade}>{children}</Wrapper>
 }

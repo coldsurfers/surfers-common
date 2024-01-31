@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { TextInput, Text, Button, palette } from 'fstvllife-design-system'
+import { TextInput, Text, Button, palette } from '@coldsurfers/hotsurf'
 import {
   memo,
   PropsWithChildren,
@@ -83,6 +83,7 @@ const InputWithLabel = memo(
     placeholder,
   }: {
     value: string
+    // eslint-disable-next-line no-unused-vars
     onChangeText: (text: string) => void
     label: string
     placeholder?: string
@@ -389,6 +390,7 @@ const UploadForm = () => {
         openDate: parseDate(item.opendate).toISOString(),
         seller: item.name,
         sellingURL: item.website,
+        // eslint-disable-next-line no-shadow
         ticketPrices: item.ticketPrices.map((item) => ({
           ...item,
           price: +item.price,
@@ -433,6 +435,7 @@ const UploadForm = () => {
             openDate: parseDate(item.opendate).toISOString(),
             seller: item.name,
             sellingURL: item.website,
+            // eslint-disable-next-line no-shadow
             ticketPrices: item.ticketPrices.map((item) => ({
               ...item,
               price: +item.price,
@@ -594,7 +597,7 @@ const UploadForm = () => {
                   marginBottom: 20,
                 }}
                 text="세부 가격 추가"
-                onPress={(e) => {
+                onPress={() => {
                   setFormState((prev) => {
                     const next = [...prev.tickets]
                     next[index] = {
@@ -737,9 +740,7 @@ const Wrapper = styled.div`
   width: 900px;
 
   background-color: ${palette.white};
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 `
 
@@ -769,9 +770,7 @@ const PosterThumbnail = styled.img`
   border-radius: 8px;
   margin-top: 10px;
   margin-bottom: 10px;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   object-fit: contain;
 `

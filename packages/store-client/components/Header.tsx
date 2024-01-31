@@ -1,10 +1,10 @@
 'use client'
 
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { useCallback } from 'react'
-import Button from './Button'
+import { Button } from '@coldsurfers/hotsurf'
 import { useLoginModalStore } from '../stores/loginModalStore'
 
 const Container = styled.div`
@@ -17,10 +17,6 @@ const Container = styled.div`
 
 const CompanyLogo = styled.h2`
   font-weight: bold;
-`
-
-const LoginButtonWrapper = styled(Button)`
-  margin-left: auto;
 `
 
 export default function Header() {
@@ -42,9 +38,21 @@ export default function Header() {
         <CompanyLogo>ColdSurf Store</CompanyLogo>
       </Link>
       {isLoggedIn ? (
-        <LoginButtonWrapper onClick={onClickLogout}>Log Out</LoginButtonWrapper>
+        <Button
+          onPress={onClickLogout}
+          text="Log Out"
+          style={{
+            marginLeft: 'auto',
+          }}
+        />
       ) : (
-        <LoginButtonWrapper onClick={open}>Log In</LoginButtonWrapper>
+        <Button
+          onPress={open}
+          text="Log In"
+          style={{
+            marginLeft: 'auto',
+          }}
+        />
       )}
     </Container>
   )

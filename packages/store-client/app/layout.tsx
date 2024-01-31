@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 import GlobalStyle from '@coldsurfers/store-client/components/GlobalStyle'
 import LayoutWrapper from '../components/LayoutWrapper'
 import { auth } from '../libs/auth'
+import StyledComponentsRegistry from './registry/StyledComponentsRegistry'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +26,9 @@ export default async function RootLayout({
         <GlobalStyle />
       </head>
       <body className={inter.className}>
-        <LayoutWrapper session={session}>{children}</LayoutWrapper>
+        <StyledComponentsRegistry>
+          <LayoutWrapper session={session}>{children}</LayoutWrapper>
+        </StyledComponentsRegistry>
       </body>
     </html>
   )

@@ -1,10 +1,4 @@
-import {
-  Button,
-  palette,
-  Text,
-  TextInput,
-  Toast,
-} from 'fstvllife-design-system'
+import { Button, palette, Text, TextInput, Toast } from '@coldsurfers/hotsurf'
 import { useRouter } from 'next/navigation'
 import { memo, useEffect, useState } from 'react'
 import styled from 'styled-components'
