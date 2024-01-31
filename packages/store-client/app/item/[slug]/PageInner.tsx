@@ -4,7 +4,7 @@
 import PaymentModal from '@coldsurfers/store-client/components/PaymentModal'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { BottomSticky, CTAButton } from '@coldsurfers/surfers-ui'
+import { BottomSticky, CTAButton } from '@coldsurfers/hotsurf'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { usePaymentStore } from '@coldsurfers/store-client/stores/paymentStore'
 import { nanoid } from 'nanoid'
@@ -49,7 +49,7 @@ export default function PageInner({
     <PageInnerLayout>
       <PageNotionBlock blocks={blocks} />
       <BottomSticky withFade>
-        <CTAButton onClick={() => setIsOpen(true)}>구매하기</CTAButton>
+        <CTAButton text="구매하기" onPress={() => setIsOpen(true)} />
       </BottomSticky>
       {typeof price === 'number' && (
         <PaymentModal

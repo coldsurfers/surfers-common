@@ -9,9 +9,6 @@
             "@coldsurfers/accounts-schema": [
                 "./packages/accounts-schema/src/index.ts"
             ],
-            "@coldsurfers/accounts-ui": [
-                "./packages/accounts-ui/src/index.ts"
-            ],
             "@coldsurfers/cloudinary-utils": [
                 "./packages/cloudinary-utils/src/index.ts"
             ],
@@ -23,9 +20,6 @@
             ],
             "@coldsurfers/shared-utils": [
                 "./packages/shared-utils/src/index.ts"
-            ],
-            "@coldsurfers/surfers-ui": [
-                "./packages/surfers-ui/src/index.ts"
             ],
             "@coldsurfers/store-client/*": [
                 "./packages/store-client/*"

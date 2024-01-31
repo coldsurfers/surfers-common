@@ -11,7 +11,7 @@ import { Text } from '../Text'
 import { ButtonColorProp } from '../types/button'
 import { buttonBackgroundColorStyles } from '../lib/styles'
 
-interface Props {
+export interface Props {
   text: string
   onPress?: (event: GestureResponderEvent) => void
   color?: ButtonColorProp

@@ -83,6 +83,7 @@ const InputWithLabel = memo(
     placeholder,
   }: {
     value: string
+    // eslint-disable-next-line no-unused-vars
     onChangeText: (text: string) => void
     label: string
     placeholder?: string
@@ -389,6 +390,7 @@ const UploadForm = () => {
         openDate: parseDate(item.opendate).toISOString(),
         seller: item.name,
         sellingURL: item.website,
+        // eslint-disable-next-line no-shadow
         ticketPrices: item.ticketPrices.map((item) => ({
           ...item,
           price: +item.price,
@@ -433,6 +435,7 @@ const UploadForm = () => {
             openDate: parseDate(item.opendate).toISOString(),
             seller: item.name,
             sellingURL: item.website,
+            // eslint-disable-next-line no-shadow
             ticketPrices: item.ticketPrices.map((item) => ({
               ...item,
               price: +item.price,
@@ -594,7 +597,7 @@ const UploadForm = () => {
                   marginBottom: 20,
                 }}
                 text="세부 가격 추가"
-                onPress={(e) => {
+                onPress={() => {
                   setFormState((prev) => {
                     const next = [...prev.tickets]
                     next[index] = {

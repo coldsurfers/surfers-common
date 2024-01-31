@@ -2,11 +2,12 @@ import { palette } from '@coldsurfers/hotsurf'
 import { PulseLoader } from 'react-spinners'
 import styled from 'styled-components'
 
-const Loader = () => (
-  <Background>
-    <Pulse color={palette.pink} />
-  </Background>
-)
+const Loader = () => null
+// (
+//   <Background>
+//     <Pulse color={palette.pink} />
+//   </Background>
+// )
 
 const Background = styled.div`
   position: fixed;

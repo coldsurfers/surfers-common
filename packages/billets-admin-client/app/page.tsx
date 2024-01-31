@@ -258,7 +258,7 @@ export default function Page() {
           }}
         />
       </TableBottom>
-      {loading && <Loader />}
+      {/* {loading && <Loader />} */}
     </Wrapper>
   )
 }
@@ -301,7 +301,6 @@ const Td = styled.td`
   padding-right: 8px;
   background-color: ${palette.white};
   &:hover {
-    /* background-color: ${palette.pink}; */
   }
   & + & {
     border-left: 1px solid ${palette.yellow};

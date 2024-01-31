@@ -1,7 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
-import { CTAButton, Modal, ModalPortal } from '@coldsurfers/surfers-ui'
+import { CTAButton, Modal, ModalPortal } from '@coldsurfers/hotsurf'
 import { nanoid } from 'nanoid'
 import { MouseEventHandler, useCallback, useEffect, useRef } from 'react'
 import { PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk'
@@ -85,7 +85,7 @@ export default function PaymentModal({
             <div id="payment-widget" style={{ width: '100%' }} />
             <div id="agreement" style={{ width: '100%' }} />
             <CTAButton
-              onClick={async () => {
+              onPress={async () => {
                 try {
                   // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
                   // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
@@ -103,9 +103,8 @@ export default function PaymentModal({
                   console.error(error)
                 }
               }}
-            >
-              구매하기
-            </CTAButton>
+              text="구매하기"
+            />
           </CustomModal>
         </Modal.Background>
       </ModalPortal>

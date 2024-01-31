@@ -1,8 +1,10 @@
 'use client'
 
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { MouseEventHandler, useCallback, useRef } from 'react'
-import { Modal, ModalPortal, Button } from '@coldsurfers/surfers-ui'
+import { Button } from '..'
+import { Modal } from '../Modal/index.web'
+import { ModalPortal } from '../ModalPortal/index.web'
 
 const CustomModal = styled(Modal.Container)`
   width: 350px;
@@ -24,7 +26,7 @@ interface Props {
   onClickBackground?: MouseEventHandler<HTMLDivElement>
 }
 
-export default function LoginModal({
+export function LoginModal({
   isOpen = false,
   onClickGoogleLogin,
   onClickBackground,
@@ -37,7 +39,7 @@ export default function LoginModal({
         onClickBackground?.(e)
       }
     },
-    []
+    [onClickBackground]
   )
   return (
     isOpen && (
@@ -48,7 +50,7 @@ export default function LoginModal({
         >
           <CustomModal>
             <ModalTitle>ColdSurf Store</ModalTitle>
-            <Button onClick={onClickGoogleLogin}>Google Login</Button>
+            <Button text="Google Login" onPress={onClickGoogleLogin} />
           </CustomModal>
         </Modal.Background>
       </ModalPortal>
