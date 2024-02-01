@@ -6,7 +6,8 @@
   "source": "src/",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "prisma"
   ],
   "exports": {
     ".": {
