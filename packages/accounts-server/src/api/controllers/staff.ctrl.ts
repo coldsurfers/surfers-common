@@ -1,5 +1,5 @@
 import { FastifyError, RouteHandler } from 'fastify'
-import Staff from '../models/Staff'
+import { StaffModel } from '@coldsurfers/accounts-schema'
 import { JWTDecoded } from '../../types/jwt'
 import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
 
@@ -12,7 +12,7 @@ export const getStaffListCtrl: RouteHandler<{
     const page = parseQuerystringPage(req.query.page)
     const perPage = 10
 
-    const list = await Staff.list({
+    const list = await StaffModel.list({
       skip: (page - 1) * perPage,
       take: perPage,
     })
@@ -28,7 +28,7 @@ export const getStaffDetailCtrl: RouteHandler<{}> = async (req, rep) => {
   try {
     const result = (await req.jwtDecode()) as JWTDecoded
     const { id: accountId } = result
-    const detail = await Staff.findByAccountId(accountId)
+    const detail = await StaffModel.findByAccountId(accountId)
     if (!detail) {
       return rep.status(404).send()
     }
@@ -47,7 +47,7 @@ export const postStaffAuthorizeCtrl: RouteHandler<{
 }> = async (req, rep) => {
   try {
     const { staffId } = req.params
-    const staff = await Staff.authorizeByStaffId(staffId)
+    const staff = await StaffModel.authorizeByStaffId(staffId)
     return rep.status(200).send(staff)
   } catch (e) {
     const error = e as FastifyError

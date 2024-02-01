@@ -1,4 +1,6 @@
 import {
+  AccountModel,
+  AuthTokenModel,
   PostAccountsSignInCtrlBodySchema,
   PostAccountsSignInCtrlBodySchemaType,
   PostAccountsSignInCtrlResponseSchemaType,
@@ -7,10 +9,10 @@ import { FastifyError, RouteHandler } from 'fastify'
 import nconf from 'nconf'
 import { sendEmail } from '@coldsurfers/mailer-utils'
 import OAuth2Client from '../../lib/OAuth2Client'
-import Account from '../models/Account'
+// import Account from '../models/Account'
 import generateAuthTokenFromAccount from '../../lib/generateAuthTokenFromAccount'
 import { JWTDecoded } from '../../types/jwt'
-import AuthToken from '../models/AuthToken'
+// import AuthToken from '../models/AuthToken'
 import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
 
 const mailerSubject = '[New Account] New account has been created'
@@ -25,7 +27,7 @@ export const getAccountsListCtrl: RouteHandler<{
   try {
     const page = parseQuerystringPage(req.query.page)
     const perPage = 10
-    const { list, totalCount } = await Account.list({
+    const { list, totalCount } = await AccountModel.list({
       skip: (page - 1) * perPage,
       take: perPage,
       includeStaff: true,
@@ -56,11 +58,11 @@ export const postAccountsSignInCtrl: RouteHandler<{
     const { email: gmail } = tokenInfo
     if (!gmail) return rep.status(400).send()
 
-    const existingAccount = await Account.findByEmail(gmail)
+    const existingAccount = await AccountModel.findByEmail(gmail)
 
     // sign "up" flow
     if (!existingAccount) {
-      const newAccount = await new Account({
+      const newAccount = await new AccountModel({
         email: gmail,
         provider: 'google',
       }).create()
@@ -109,7 +111,7 @@ export const postAccountsSignInCtrl: RouteHandler<{
 export const getAccountsProfileCtrl: RouteHandler<{}> = async (req, rep) => {
   try {
     const decoded = (await req.jwtDecode()) as JWTDecoded
-    const user = await Account.findByEmail(decoded.email)
+    const user = await AccountModel.findByEmail(decoded.email)
 
     if (!user) {
       return rep.status(403).send({})
@@ -128,9 +130,9 @@ export const postAccountsLogoutCtrl: RouteHandler<{}> = async (req, rep) => {
   try {
     // await req.jwtVerify();
     const decoded = (await req.jwtDecode()) as JWTDecoded
-    const account = await Account.findByEmail(decoded.email)
+    const account = await AccountModel.findByEmail(decoded.email)
     if (!account || !account.id) return rep.status(403).send()
-    await AuthToken.deleteByAccountId(account.id)
+    await AuthTokenModel.deleteByAccountId(account.id)
     return rep.status(204).send()
   } catch (e) {
     const error = e as FastifyError

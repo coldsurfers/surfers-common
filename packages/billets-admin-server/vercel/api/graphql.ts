@@ -10,6 +10,7 @@ import type {
   VercelResponse,
 } from '@vercel/node'
 import Fastify from 'fastify'
+import { AccountModel } from '@coldsurfers/accounts-schema'
 
 import { isAfter, addMinutes } from 'date-fns'
 import { GraphQLError } from 'graphql'
@@ -19,7 +20,7 @@ import Concert from '../../src/models/Concert'
 import ConcertTicket from '../../src/models/ConcertTicket'
 import ConcertPoster from '../../src/models/ConcertPoster'
 import { GraphqlContext } from '../../gql/Context'
-import User from '../../src/models/User'
+// import User from '../models/Account'
 import EmailAuthRequest from '../../src/models/EmailAuthRequest'
 import { sendEmail } from '../../src/utils/mailer'
 import { validateCreateUser } from '../../src/utils/validate'
@@ -29,7 +30,7 @@ import ConcertCategory from '../../src/models/ConcertCategory'
 
 const typeDefs = `#graphql
   type User {
-    id: Int!
+    id: String!
     email: String!
     isAdmin: Boolean
     createdAt: String
@@ -226,7 +227,7 @@ const typeDefs = `#graphql
   type Query {
     me: UserData
     user(
-      id: Int!
+      id: String!
     ): UserData
     concertList(
       page: Int!
@@ -282,8 +283,9 @@ const typeDefs = `#graphql
 const resolvers: Resolvers = {
   Query: {
     me: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      const isStaff = user?.staff?.is_staff
+      if (!user || !user.id || !isStaff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -297,18 +299,16 @@ const resolvers: Resolvers = {
       }
     },
     user: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
           },
         })
       }
-      const searchedUser = await User.findById(args.id, {
-        createdAt: true,
-      })
-      if (!searchedUser) {
+      const searchedUser = await AccountModel.findById(args.id)
+      if (!searchedUser || !searchedUser.id) {
         return {
           __typename: 'HttpError',
           code: 404,
@@ -318,15 +318,15 @@ const resolvers: Resolvers = {
       return {
         id: searchedUser.id,
         email: searchedUser.email,
-        createdAt: searchedUser.createdAt
-          ? searchedUser.createdAt.toISOString()
+        createdAt: searchedUser.created_at
+          ? searchedUser.created_at.toISOString()
           : null,
         __typename: 'User',
       }
     },
     concertCategory: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -348,8 +348,8 @@ const resolvers: Resolvers = {
       }
     },
     concertCategoryList: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -364,8 +364,8 @@ const resolvers: Resolvers = {
     },
     concertList: async (parent, args, ctx) => {
       const { page, limit, orderBy } = args
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -404,8 +404,8 @@ const resolvers: Resolvers = {
       }
     },
     concert: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -467,7 +467,7 @@ const resolvers: Resolvers = {
           }
         }
       }
-      const existing = await User.findByEmail(email, {})
+      const existing = await AccountModel.findByEmail(email)
       if (existing) {
         return {
           __typename: 'HttpError',
@@ -475,14 +475,22 @@ const resolvers: Resolvers = {
           message: '이미 가입이 완료 된 이메일입니다',
         }
       }
-      const user = new User({
+      const user = new AccountModel({
         ...args.input,
-        isAdmin: false,
       })
       const created = await user.create()
+      if (!created.id) {
+        return {
+          __typename: 'HttpError',
+          code: 500,
+          message: 'created.id is not existing',
+        }
+      }
       return {
-        ...created,
         __typename: 'User',
+        id: created.id,
+        email: created.email,
+        createdAt: created.created_at ? created.created_at.toISOString() : null,
       }
     },
     createEmailAuthRequest: async (parent, args) => {
@@ -545,11 +553,7 @@ const resolvers: Resolvers = {
     },
     login: async (parent, args) => {
       const { email, password } = args.input
-      const user = await User.findByEmail(email, {
-        password: true,
-        passwordSalt: true,
-        isAdmin: true,
-      })
+      const user = await AccountModel.findByEmail(email)
       if (!user) {
         return {
           __typename: 'HttpError',
@@ -557,7 +561,7 @@ const resolvers: Resolvers = {
           message: '이메일이나 비밀번호가 일치하지 않습니다.',
         }
       }
-      if (!user.isAdmin) {
+      if (!user.staff?.is_staff || !user.id) {
         return {
           __typename: 'HttpError',
           code: 401,
@@ -579,7 +583,7 @@ const resolvers: Resolvers = {
         user: {
           id: user.id,
           email: user.email,
-          isAdmin: user.isAdmin,
+          isAdmin: user.staff.is_staff,
           __typename: 'User',
         },
         token: generateToken({
@@ -589,8 +593,8 @@ const resolvers: Resolvers = {
       }
     },
     createConcertCategory: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -608,8 +612,8 @@ const resolvers: Resolvers = {
       }
     },
     createConcert: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -652,8 +656,8 @@ const resolvers: Resolvers = {
       }
     },
     updateConcert: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -705,8 +709,8 @@ const resolvers: Resolvers = {
       }
     },
     removeConcert: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -727,8 +731,8 @@ const resolvers: Resolvers = {
       }
     },
     updateConcertTicket: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -748,8 +752,8 @@ const resolvers: Resolvers = {
       }
     },
     createConcertPoster: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
@@ -776,8 +780,8 @@ const resolvers: Resolvers = {
       }
     },
     updateConcertPoster: async (parent, args, ctx) => {
-      const user = await User.findByToken(ctx.token ?? '')
-      if (!user || !user.isAdmin) {
+      const user = await AccountModel.findByAccessToken(ctx.token ?? '')
+      if (!user || !user.staff?.is_staff) {
         throw new GraphQLError('권한이 없습니다', {
           extensions: {
             code: 401,
