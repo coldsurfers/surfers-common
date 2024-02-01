@@ -45,14 +45,15 @@
     "codegen": "graphql-codegen --config ./gql/codegen.yml",
     "prisma:db-push": "yarn prisma db push --schema ./prisma/schema.prisma",
     "prisma:generate": "yarn prisma generate --schema ./prisma/schema.prisma",
-    "vercel:sync-env": "vercel env pull"
+    "vercel:sync-env": "vercel env pull",
+    "unlink:coldsurfers": "unlink node_modules/@coldsurfers/accounts-schema && cp -R ../accounts-schema node_modules/@coldsurfers/accounts-schema"
   },
   "dependencies": {
     "@apollo/server": "^4.3.0",
     "@as-integrations/fastify": "^1.2.0",
     "@aws-sdk/client-s3": "^3.254.0",
     "@aws-sdk/s3-presigned-post": "^3.254.0",
-    "@coldsurfers/accounts-schema": "1.0.1-rc.1",
+    "@coldsurfers/accounts-schema": "1.0.1-rc.4",
     "@prisma/client": "5.8.0",
     "@vercel/node": "^2.8.2",
     "crypto-js": "^4.1.1",
