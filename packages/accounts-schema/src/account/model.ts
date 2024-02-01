@@ -1,38 +1,97 @@
-/* eslint-disable class-methods-use-this */
-import { z } from 'zod'
-import { prisma } from '../database/prisma'
-import Staff, { StaffModelSchema, StaffSerializedSchema } from './Staff'
+import { prisma } from '../libs/prismaClient'
+import { StaffModel } from '../staff/model'
+import { AccountModelSchemaType, AccountSerializedSchemaType } from './schema'
 
-export const AccountModelSchema = z.object({
-  id: z.string().optional(),
-  username: z.string().optional(),
-  email: z.string().email(),
-  password: z.string().optional(),
-  passwordSalt: z.string().optional(),
-  created_at: z.date().optional(),
-  provider: z.string().optional(),
-  staff: StaffModelSchema.optional(),
-})
-
-export type AccountModelSchemaType = z.infer<typeof AccountModelSchema>
-
-export const AccountSerializedSchema = z.object({
-  id: z.string(),
-  email: z.string().email(),
-  username: z.string(),
-  created_at: z.string(),
-  staff: StaffSerializedSchema.optional(),
-})
-
-export type AccountSerializedSchemaType = z.infer<
-  typeof AccountSerializedSchema
->
-
-export default class Account {
+export class AccountModel {
   private props: AccountModelSchemaType
 
   constructor(props: AccountModelSchemaType) {
     this.props = props
+  }
+
+  public get id() {
+    return this.props.id
+  }
+
+  public get email() {
+    return this.props.email
+  }
+
+  public get staff() {
+    return this.props.staff
+  }
+
+  public get created_at() {
+    return this.props.created_at
+  }
+
+  public get password() {
+    return this.props.password
+  }
+
+  public get passwordSalt() {
+    return this.props.passwordSalt
+  }
+
+  public static async findByAccessToken(accessToken: string) {
+    const authToken = await prisma.authToken.findFirst({
+      where: {
+        access_token: accessToken,
+      },
+    })
+    if (!authToken) return null
+
+    // eslint-disable-next-line no-underscore-dangle
+    const _account = await prisma.account.findUnique({
+      where: {
+        id: authToken.account_id,
+      },
+      include: {
+        staff: true,
+      },
+    })
+
+    if (!_account) return null
+
+    const account = new AccountModel({
+      id: _account.id,
+      password: _account.password ?? undefined,
+      passwordSalt: _account.passwordSalt ?? undefined,
+      provider: _account.provider ?? undefined,
+      staff: _account.staff ?? undefined,
+      username: _account.username ?? undefined,
+      email: _account.email,
+      created_at: _account.created_at ?? undefined,
+    })
+
+    return account
+  }
+
+  public static async findById(id: string) {
+    // eslint-disable-next-line no-underscore-dangle
+    const _account = await prisma.account.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        staff: true,
+      },
+    })
+
+    if (!_account) return null
+
+    const account = new AccountModel({
+      id: _account.id,
+      password: _account.password ?? undefined,
+      passwordSalt: _account.passwordSalt ?? undefined,
+      provider: _account.provider ?? undefined,
+      staff: _account.staff ?? undefined,
+      username: _account.username ?? undefined,
+      email: _account.email,
+      created_at: _account.created_at ?? undefined,
+    })
+
+    return account
   }
 
   public static async findByEmail(email: string) {
@@ -45,7 +104,7 @@ export default class Account {
 
     if (!_user) return null
 
-    const user = new Account({
+    const user = new AccountModel({
       ..._user,
       username: _user.username ?? undefined,
       password: _user.password ?? undefined,
@@ -65,7 +124,7 @@ export default class Account {
     take: number
     includeStaff?: boolean
   }): Promise<{
-    list: Account[]
+    list: AccountModel[]
     totalCount: number
   }> {
     const [list, totalCount] = await prisma.$transaction([
@@ -81,7 +140,7 @@ export default class Account {
 
     const accountList = list.map(
       (_user) =>
-        new Account({
+        new AccountModel({
           ..._user,
           username: _user.username ?? undefined,
           password: _user.password ?? undefined,
@@ -97,15 +156,7 @@ export default class Account {
     }
   }
 
-  public get id() {
-    return this.props.id
-  }
-
-  public get email() {
-    return this.props.email
-  }
-
-  public async create(): Promise<Account> {
+  public async create(): Promise<AccountModel> {
     const created = await prisma.account.create({
       data: {
         ...this.props,
@@ -118,7 +169,7 @@ export default class Account {
       },
     })
 
-    return new Account({
+    return new AccountModel({
       ...created,
       email: created.email,
       password: created.password ?? undefined,
@@ -144,7 +195,7 @@ export default class Account {
       },
     })
 
-    const user = new Account({
+    const user = new AccountModel({
       ...updated,
       username: updated.username ?? undefined,
       password: updated.password ?? undefined,
@@ -174,7 +225,7 @@ export default class Account {
       },
     })
 
-    const user = new Account({
+    const user = new AccountModel({
       ...updated,
       username: updated.username ?? undefined,
       password: updated.password ?? undefined,
@@ -187,7 +238,7 @@ export default class Account {
 
   public serialize(): AccountSerializedSchemaType {
     const staff = this.props.staff
-      ? new Staff({
+      ? new StaffModel({
           ...this.props.staff,
         })
       : undefined

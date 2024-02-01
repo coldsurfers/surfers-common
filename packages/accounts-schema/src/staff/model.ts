@@ -1,59 +1,42 @@
-import { z } from 'zod'
-import { prisma } from '../database/prisma'
+import { prisma } from '../libs/prismaClient'
+import { StaffModelSchemaType, StaffSerializedSchemaType } from './schema'
 
-export const StaffModelSchema = z.object({
-  id: z.string().optional(),
-  created_at: z.date().optional(),
-  is_staff: z.boolean().optional(),
-  is_authorized: z.boolean().optional(),
-  account_id: z.string(),
-})
-
-export type StaffModelSchemaType = z.infer<typeof StaffModelSchema>
-
-export const StaffSerializedSchema = z.object({
-  id: z.string(),
-  created_at: z.string(),
-  is_staff: z.boolean(),
-  is_authorized: z.boolean(),
-})
-
-export type StaffSerializedSchemaType = z.infer<typeof StaffSerializedSchema>
-
-export default class Staff {
+export class StaffModel {
   private props: StaffModelSchemaType
 
   public constructor(props: StaffModelSchemaType) {
     this.props = props
   }
 
-  public async create(): Promise<Staff> {
+  public async create(): Promise<StaffModel> {
     const created = await prisma.staff.create({
       data: {
         ...this.props,
       },
     })
 
-    return new Staff({
+    return new StaffModel({
       ...created,
     })
   }
 
-  public static async findByStaffId(staffId: string): Promise<Staff | null> {
+  public static async findByStaffId(
+    staffId: string
+  ): Promise<StaffModel | null> {
     const found = await prisma.staff.findUnique({
       where: {
         id: staffId,
       },
     })
     if (!found) return null
-    return new Staff({
+    return new StaffModel({
       ...found,
     })
   }
 
   public static async findByAccountId(
     accountId: string
-  ): Promise<Staff | null> {
+  ): Promise<StaffModel | null> {
     const staff = await prisma.staff.findUnique({
       where: {
         account_id: accountId,
@@ -62,7 +45,7 @@ export default class Staff {
 
     if (!staff) return null
 
-    return new Staff({
+    return new StaffModel({
       ...staff,
     })
   }
@@ -73,7 +56,7 @@ export default class Staff {
   }: {
     skip: number
     take: number
-  }): Promise<Staff[]> {
+  }): Promise<StaffModel[]> {
     const list = await prisma.staff.findMany({
       skip,
       take,
@@ -81,13 +64,13 @@ export default class Staff {
 
     return list.map(
       (staffEach) =>
-        new Staff({
+        new StaffModel({
           ...staffEach,
         })
     )
   }
 
-  public static async authorizeByStaffId(staffId: string): Promise<Staff> {
+  public static async authorizeByStaffId(staffId: string): Promise<StaffModel> {
     const staff = await prisma.staff.update({
       where: {
         id: staffId,
@@ -96,7 +79,7 @@ export default class Staff {
         is_authorized: true,
       },
     })
-    return new Staff({
+    return new StaffModel({
       ...staff,
     })
   }

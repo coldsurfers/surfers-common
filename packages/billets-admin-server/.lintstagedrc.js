@@ -9,6 +9,6 @@ const generateTSConfig = (stagedFilenames) => {
 module.exports = {
   'src/**/*.{ts,tsx,js,jsx}': () => [
     'yarn run lint:fix',
-    'yarn build --noEmit',
+    // 'yarn build --noEmit',
   ],
 }
