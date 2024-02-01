@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
 import Fastify from 'fastify'
 import { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node'
-import authRoute from '../../src/routes/auth'
-import concertRoute from '../../src/routes/concert'
-import userRoute from '../../src/routes/user'
+import authRoute from '../../src/routes/auth.route'
+import concertRoute from '../../src/routes/concert.route'
+import userRoute from '../../src/routes/user.route'
 
 dotenv.config()
 

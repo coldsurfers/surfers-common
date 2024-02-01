@@ -5,7 +5,7 @@ import {
   concertListHandler,
   concertRecentListHandler,
   concertSearchHandler,
-} from './concertHandlers'
+} from './concert.ctrl'
 
 const concertRoute: FastifyPluginCallback = (fastify, opts, done) => {
   // concert list
