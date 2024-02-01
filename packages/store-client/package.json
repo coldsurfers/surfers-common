@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@coldsurfers/accounts-kit": "1.0.0",
-    "@coldsurfers/accounts-schema": "1.0.0",
+    "@coldsurfers/accounts-schema": "1.0.1-rc.0",
     "@coldsurfers/notion-renderer": "1.0.0",
     "@coldsurfers/notion-utils": "1.0.1-rc.10",
     "@coldsurfers/ocean-road": "1.5.1-rc.4",

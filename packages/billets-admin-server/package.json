@@ -1,5 +1,6 @@
 {
   "name": "@coldsurfers/billets-admin-server",
+  "private": true,
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -51,7 +52,7 @@
     "@as-integrations/fastify": "^1.2.0",
     "@aws-sdk/client-s3": "^3.254.0",
     "@aws-sdk/s3-presigned-post": "^3.254.0",
-    "@coldsurfers/accounts-schema": "1.0.0",
+    "@coldsurfers/accounts-schema": "1.0.1-rc.0",
     "@prisma/client": "5.8.0",
     "@vercel/node": "^2.8.2",
     "crypto-js": "^4.1.1",
