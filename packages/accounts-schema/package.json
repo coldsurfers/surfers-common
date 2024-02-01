@@ -42,7 +42,7 @@
       "after:git:release": "git reset --hard HEAD"
     },
     "npm": {
-      "skipChecks": true
+      "ignoreVersion": true
     }
   },
   "peerDependencies": {
