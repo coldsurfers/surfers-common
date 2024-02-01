@@ -42,8 +42,7 @@
       "after:git:release": "git reset --hard HEAD"
     },
     "npm": {
-      "versionArgs": ["--allow-same-version", "--workspaces-update=false"],
-      "publishArgs": ["--include-workspace-root"]
+      "versionArgs": ["--allow-same-version", "--workspaces-update=false"]
     }
   },
   "peerDependencies": {
