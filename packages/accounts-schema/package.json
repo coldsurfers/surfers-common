@@ -1,6 +1,6 @@
 {
   "name": "@coldsurfers/accounts-schema",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "source": "src/",
@@ -40,6 +40,9 @@
     },
     "hooks": {
       "after:git:release": "git reset --hard HEAD"
+    },
+    "npm": {
+      "skipChecks": true
     }
   },
   "peerDependencies": {
