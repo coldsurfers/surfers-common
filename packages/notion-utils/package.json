@@ -33,7 +33,7 @@
     "prettier": "2.8.1",
     "release-it": "^17.0.1",
     "sha1": "^1.1.1",
-    "typescript": "^5.3.3"
+    "typescript": "5.3.3"
   },
   "peerDependencies": {
     "@notionhq/client": "^2.2.14",
