@@ -4,3 +4,6 @@ src/config/config.json
 .env
 public/
 .eslintcache
+.vercel
+
+src/prisma/schema.prisma

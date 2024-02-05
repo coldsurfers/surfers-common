@@ -258,7 +258,7 @@ export default function Page() {
           }}
         />
       </TableBottom>
-      {/* {loading && <Loader />} */}
+      {loading && <Loader />}
     </Wrapper>
   )
 }
