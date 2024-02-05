@@ -22,10 +22,6 @@ fastify.register(jwt, {
   secret: process.env.jwt ?? '',
 })
 
-// fastify.register(authRoute, { prefix: '/v1/auth' })
-// fastify.register(userRoute, { prefix: '/v1/user' })
-// fastify.register(concertRoute, { prefix: '/v1/concert' })
-
 const handler: VercelApiHandler = async (
   req: VercelRequest,
   res: VercelResponse
