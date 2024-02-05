@@ -1,5 +1,5 @@
 import { FastifyPluginCallback } from 'fastify'
-import { signinHandler, signupHandler } from './auth.ctrl'
+import { signinHandler, signupHandler, emailConfirmHandler } from './auth.ctrl'
 
 const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
   fastify.post(
@@ -20,6 +20,8 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
   )
 
   fastify.post('/signup', signupHandler)
+
+  fastify.post('/email-confirm', emailConfirmHandler)
 
   done()
 }

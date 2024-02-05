@@ -244,7 +244,7 @@ export class AccountModel {
       : undefined
     return {
       id: this.props.id ?? '',
-      email: this.props.email,
+      email: this.props.email ?? '',
       username: this.props.username ?? '',
       created_at: this.props.created_at?.toISOString() ?? '',
       staff: staff?.serialize() ?? undefined,

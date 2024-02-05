@@ -24,12 +24,20 @@ model Account {
   staff        Staff?
 }
 
+model EmailAuthRequest {
+  id            String   @id @default(uuid())
+  email         String
+  authcode      String
+  authenticated Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
 model Staff {
   id            String   @id @default(uuid())
   created_at    DateTime @default(now())
   is_staff      Boolean  @default(false)
   is_authorized Boolean  @default(false)
-  account       Account  @relation(fields: [account_id], references: [id])
+  account       Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id    String   @unique
 }
 
@@ -37,7 +45,7 @@ model AuthToken {
   id            String   @id @default(uuid())
   access_token  String   @db.Text
   refresh_token String   @db.Text
-  account       Account  @relation(fields: [account_id], references: [id])
+  account       Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id    String   @unique
   created_at    DateTime @default(now())
 }
@@ -84,23 +92,6 @@ model Song {
 
 // billets
 
-model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  password     String
-  passwordSalt String
-  isAdmin      Boolean
-  createdAt    DateTime @default(now())
-}
-
-model EmailAuthRequest {
-  id            Int      @id @default(autoincrement())
-  email         String
-  authcode      String
-  authenticated Boolean  @default(false)
-  createdAt     DateTime @default(now())
-}
-
 model ConcertCategory {
   id        Int       @id @default(autoincrement())
   title     String
@@ -109,7 +100,7 @@ model ConcertCategory {
 }
 
 model Concert {
-  id                Int             @id @default(autoincrement())
+  id                String          @id @default(uuid())
   artist            String?
   title             String
   location          String?
@@ -126,8 +117,8 @@ model Concert {
 }
 
 model ConcertPoster {
-  id        Int      @id @default(autoincrement())
-  concertId Int
+  id        String   @id @default(uuid())
+  concertId String
   concert   Concert  @relation(fields: [concertId], references: [id])
   imageURL  String
   createdAt DateTime @default(now())
@@ -136,8 +127,8 @@ model ConcertPoster {
 }
 
 model ConcertTicket {
-  id           Int                  @id @default(autoincrement())
-  concertId    Int
+  id           String               @id @default(uuid())
+  concertId    String
   concert      Concert              @relation(fields: [concertId], references: [id])
   openDate     DateTime
   seller       String
@@ -149,8 +140,8 @@ model ConcertTicket {
 }
 
 model ConcertTicketPrice {
-  id              Int           @id @default(autoincrement())
-  concertTicketId Int
+  id              String        @id @default(uuid())
+  concertTicketId String
   concertTicket   ConcertTicket @relation(fields: [concertTicketId], references: [id])
   title           String
   price           Float

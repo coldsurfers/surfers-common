@@ -11,9 +11,9 @@ const fastify = Fastify({
   logger: process.env.NODE_ENV === 'development',
 })
 
-fastify.register(authRoute, { prefix: '/api/auth' })
-fastify.register(userRoute, { prefix: 'api/user' })
-fastify.register(concertRoute, { prefix: '/api/concert' })
+fastify.register(authRoute, { prefix: '/v1/auth' })
+fastify.register(userRoute, { prefix: '/v1/user' })
+fastify.register(concertRoute, { prefix: '/v1/concert' })
 
 const handler: VercelApiHandler = async (
   req: VercelRequest,
