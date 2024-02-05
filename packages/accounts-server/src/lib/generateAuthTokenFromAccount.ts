@@ -1,14 +1,15 @@
-import Account from '../api/models/Account'
-import AuthToken from '../api/models/AuthToken'
+import { AccountModel, AuthTokenModel } from '@coldsurfers/accounts-schema'
 import { fastify } from '../server'
 
-export default async function generateAuthTokenFromAccount(account: Account) {
+export default async function generateAuthTokenFromAccount(
+  account: AccountModel
+) {
   const { id: accountId } = account
   if (!accountId) {
     throw Error('accountId should not be undefined')
   }
 
-  const authToken = new AuthToken({
+  const authToken = new AuthTokenModel({
     access_token: await fastify.jwt.sign(
       {
         email: account.email,

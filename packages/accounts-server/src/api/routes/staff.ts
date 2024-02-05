@@ -6,7 +6,6 @@ import {
   postStaffAuthorizeCtrl,
 } from '../controllers/staff.ctrl'
 import { JWTDecoded } from '../../types/jwt'
-// import Staff from '../models/Staff'
 
 const staffRoute: FastifyPluginCallback = (fastify, opts, done) => {
   // eslint-disable-next-line consistent-return

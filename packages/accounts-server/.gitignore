@@ -4,3 +4,4 @@ src/config/config.json
 .env
 public/
 .eslintcache
+.vercel

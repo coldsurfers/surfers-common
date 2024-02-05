@@ -4,11 +4,11 @@ import {
   // patchAccountsProfileCtrl,
   postAccountsLogoutCtrl,
   postAccountsSignInCtrl,
-  getAccountsListCtrl,
+  // getAccountsListCtrl,
 } from '../controllers/accounts.ctrl'
 
 const accountsRoute: FastifyPluginCallback = (fastify, opts, done) => {
-  fastify.get('/accounts', getAccountsListCtrl)
+  // fastify.get('/accounts', getAccountsListCtrl)
   fastify.get('/accounts/:accountId', getAccountsProfileCtrl)
   fastify.post('/accounts/signin', postAccountsSignInCtrl)
   fastify.post('/accounts/logout', postAccountsLogoutCtrl)
