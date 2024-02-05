@@ -12695,10 +12695,10 @@ fsevents@^2.1.2, fsevents@~2.3.2:
   resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
-fstvllife-design-system@0.2.7-rc.0:
-  version "0.2.7-rc.0"
-  resolved "https://registry.yarnpkg.com/fstvllife-design-system/-/fstvllife-design-system-0.2.7-rc.0.tgz#8904497c79276168d6d9f06fbf8e278bd5547850"
-  integrity sha512-4y2nsKnFPH7S70a8HKr0O1S9GWd8fPnmYx13dcRGtpSU2Kf/FWeP0eSCAD6qisZ8+G2hObmfmBXUC7E1eZKmNg==
+fstvllife-design-system@0.2.7-rc.1:
+  version "0.2.7-rc.1"
+  resolved "https://registry.yarnpkg.com/fstvllife-design-system/-/fstvllife-design-system-0.2.7-rc.1.tgz#275c0e3c785a506108fd23558fdd1848a43637a7"
+  integrity sha512-Tui05B7TXk/vrimoBMp+cUnc0Av/w/+InwC20Y11kI93QP1pqOxqObSk79XD1n7qFhEi34mwuiFZ70Qhpwixxw==
   dependencies:
     react "18.2.0"
     style-dictionary "^3.7.1"

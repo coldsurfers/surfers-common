@@ -24,7 +24,7 @@ const Wrapper = styled.section`
 export default function Home() {
   return (
     <Wrapper>
-      <LoginForm onPressLoginButton={() => {}} />
+      <LoginForm formTitle="ColdSurf Accounts" onPressLoginButton={() => {}} />
     </Wrapper>
   )
 }

@@ -21,7 +21,7 @@
     "@coldsurfers/hotsurf": "0.2.6",
     "styled-components": "6.1.8",
     "react-native": "^0.70.6",
-    "fstvllife-design-system": "0.2.7-rc.0"
+    "fstvllife-design-system": "0.2.7-rc.1"
   },
   "devDependencies": {
     "@types/node": "^20",
