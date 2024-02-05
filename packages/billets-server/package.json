@@ -1,8 +1,14 @@
 {
   "name": "@coldsurfers/billets-server",
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "license": "MIT",
+  "workspaces": {
+    "nohoist": [
+      "**"
+    ]
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
@@ -30,6 +36,7 @@
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "@coldsurfers/accounts-schema": "1.0.1-rc.4",
+    "@coldsurfers/mailer-utils": "1.0.0",
     "zod": "^3.22.4"
   },
   "scripts": {
@@ -42,7 +49,8 @@
     "build": "tsc",
     "vercel:sync-env": "vercel env pull",
     "prisma:db-push": "yarn prisma db push --schema ./src/prisma/schema.prisma",
-    "prisma:generate": "yarn prisma generate --schema ./src/prisma/schema.prisma"
+    "prisma:generate": "yarn prisma generate --schema ./src/prisma/schema.prisma",
+    "unlink:coldsurfers": "unlink node_modules/@coldsurfers/accounts-schema && cp -R ../accounts-schema node_modules/@coldsurfers/accounts-schema && unlink node_modules/@coldsurfers/mailer-utils && cp -R ../mailer-utils node_modules/@coldsurfers/mailer-utils"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
