@@ -1,7 +1,12 @@
 import { RouteHandler } from 'fastify'
-import { AccountModel } from '@coldsurfers/accounts-schema'
+import {
+  AccountModel,
+  EmailAuthRequestModel,
+} from '@coldsurfers/accounts-schema'
+import { sendEmail } from '@coldsurfers/mailer-utils'
 import encryptPassword from '../lib/encryptPassword'
 import { generateToken } from '../lib/jwt'
+import { generateEmailValidationCode } from '../lib/utils'
 
 export const signinHandler: RouteHandler<{
   Body: {
@@ -56,10 +61,29 @@ export const emailConfirmHandler: RouteHandler<{
   Body: {
     email: string
   }
+  Reply: {}
 }> = async (req, rep) => {
   try {
-    // const { email } = req.body
-    // const existing = await
+    const { email: reqBodyEmail } = req.body
+    const generatedAuthCode = `${generateEmailValidationCode()}`
+    const emailAuthRequest = await new EmailAuthRequestModel({
+      email: reqBodyEmail,
+      authcode: generatedAuthCode,
+      authenticated: false,
+    }).create()
+    const { email, authcode } = emailAuthRequest
+    await sendEmail({
+      to: email,
+      from: process.env.MAILER_EMAIL_ADDRESS,
+      subject: `[billets] auth code verification`,
+      text: `billets authcode is ${authcode}`,
+      smtpOptions: {
+        auth: {
+          user: process.env.MAILER_EMAIL_ADDRESS,
+          pass: process.env.MAILER_EMAIL_APP_PASSWORD,
+        },
+      },
+    })
     return rep.status(200).send({})
   } catch (e) {
     console.error(e)
