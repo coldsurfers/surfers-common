@@ -1,6 +1,6 @@
 import { RouteHandler } from 'fastify'
+import { AccountModel } from '@coldsurfers/accounts-schema'
 import { decodeToken } from '../lib/jwt'
-import { prisma } from '../prisma/connect'
 
 // eslint-disable-next-line import/prefer-default-export
 export const userHandler: RouteHandler = async (req, rep) => {
@@ -10,20 +10,11 @@ export const userHandler: RouteHandler = async (req, rep) => {
       return rep.status(401).send({})
     }
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: decoded.id,
-      },
-      select: {
-        email: true,
-        id: true,
-        createdAt: true,
-      },
-    })
+    const user = await AccountModel.findById(decoded.id)
     if (!user) {
       return rep.status(404).send({})
     }
-    return user
+    return user.serialize()
   } catch (e) {
     return rep.status(500).send({})
   }
