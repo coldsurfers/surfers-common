@@ -5,3 +5,5 @@ src/config/config.json
 public/
 .eslintcache
 .vercel
+
+src/prisma/schema.prisma

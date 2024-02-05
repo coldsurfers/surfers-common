@@ -1,5 +1,5 @@
 import Fastify from 'fastify'
-import nconf from 'nconf'
+// import nconf from 'nconf'
 import path from 'path'
 import AutoLoad from '@fastify/autoload'
 import cors from '@fastify/cors'
@@ -12,22 +12,22 @@ export const fastify = Fastify({
   },
 })
 
-async function loadSettings() {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      nconf.file({
-        file: path.resolve(__dirname, './config/config.json'),
-      })
-      resolve()
-    } catch (e) {
-      reject(e)
-    }
-  })
-}
+// async function loadSettings() {
+//   return new Promise<void>((resolve, reject) => {
+//     try {
+//       nconf.file({
+//         file: path.resolve(__dirname, './config/config.json'),
+//       })
+//       resolve()
+//     } catch (e) {
+//       reject(e)
+//     }
+//   })
+// }
 
 async function main() {
   try {
-    await loadSettings()
+    // await loadSettings()
     await fastify.register(cors, {
       origin:
         process.env.NODE_ENV === 'development'
@@ -50,10 +50,10 @@ async function main() {
     })
 
     await fastify.register(jwt, {
-      secret: nconf.get('secrets').jwt,
+      secret: process.env.jwt ?? '',
     })
 
-    await fastify.listen({ port: nconf.get('port'), host: '0.0.0.0' })
+    await fastify.listen({ port: 8008, host: '0.0.0.0' })
     fastify.log.info('server started', process.env.NODE_ENV)
   } catch (e) {
     fastify.log.error(e)

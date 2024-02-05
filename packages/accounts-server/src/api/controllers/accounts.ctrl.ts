@@ -6,7 +6,6 @@ import {
   PostAccountsSignInCtrlResponseSchemaType,
 } from '@coldsurfers/accounts-schema'
 import { FastifyError, RouteHandler } from 'fastify'
-import nconf from 'nconf'
 import { sendEmail } from '@coldsurfers/mailer-utils'
 import OAuth2Client from '../../lib/OAuth2Client'
 import generateAuthTokenFromAccount from '../../lib/generateAuthTokenFromAccount'
@@ -70,14 +69,14 @@ export const postAccountsSignInCtrl: RouteHandler<{
       ).create()
       sendEmail({
         to: gmail,
-        from: nconf.get('MAILER_EMAIL_ADDRESS'),
+        from: process.env.MAILER_EMAIL_ADDRESS,
         subject: mailerSubject,
         text: mailerText(gmail),
         smtpOptions: {
-          service: nconf.get('MAILER_SERVICE'),
+          service: process.env.MAILER_SERVICE,
           auth: {
-            user: nconf.get('MAILER_EMAIL_ADDRESS'),
-            pass: nconf.get('secrets').MAILER_EMAIL_APP_PASSWORD,
+            user: process.env.MAILER_EMAIL_ADDRESS,
+            pass: process.env.MAILER_EMAIL_APP_PASSWORD,
           },
         },
       })

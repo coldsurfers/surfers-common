@@ -12,14 +12,15 @@
     "debug": "vercel dev --listen 3001",
     "prebuild": "yarn workspace @coldsurfers/mailer-utils build && yarn workspace @coldsurfers/shared-utils build && yarn workspace @coldsurfers/accounts-schema build",
     "build": "rm -rf dist && tsc --project ./tsconfig.build.json && cp -R ./src/config ./dist/config",
-    "db:generate": "yarn prisma format --schema ../../prisma/schema.prisma && yarn prisma generate --schema ../../prisma/schema.prisma",
-    "db:push": "yarn prisma db push --schema ../../prisma/schema.prisma",
     "deploy": "yarn pm2 start ./src/config/ecosystem.config.js",
     "dev": "NODE_ENV=development ts-node ./src/server.ts",
-    "postinstall": "yarn db:generate",
+    "prisma:copy": "cp -r ../../prisma/schema.prisma ./src/prisma/schema.prisma",
+    "prisma:generate": "yarn prisma generate --schema ./src/prisma/schema.prisma",
+    "postinstall": "yarn prisma:copy && yarn prisma:generate",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
-    "start": "NODE_ENV=production node ./dist/server.js"
+    "start": "NODE_ENV=production node ./dist/server.js",
+    "unlink:coldsurfers": "unlink node_modules/@coldsurfers/accounts-schema && cp -R ../accounts-schema node_modules/@coldsurfers/accounts-schema && unlink node_modules/@coldsurfers/mailer-utils && cp -R ../mailer-utils node_modules/@coldsurfers/mailer-utils && unlink node_modules/@coldsurfers/shared-utils && cp -R ../mailer-utils node_modules/@coldsurfers/shared-utils"
   },
   "dependencies": {
     "@coldsurfers/accounts-schema": "1.0.1-rc.4",
@@ -34,14 +35,12 @@
     "dotenv": "^16.0.3",
     "fastify": "^4.25.2",
     "google-auth-library": "^9.4.1",
-    "nconf": "^0.12.1",
     "nodemailer": "^6.9.8",
     "nodemailer-smtp-transport": "^2.7.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.1",
-    "@types/nconf": "^0.10.6",
     "@types/node": "^20.10.6",
     "@types/nodemailer": "^6.4.14",
     "@types/nodemailer-smtp-transport": "^2.7.8",
