@@ -1,6 +1,8 @@
+import '@coldsurfers/hotsurf/global.css'
 import type { Metadata } from 'next'
 import StyledComponentsRegistry from '../registry/StyledComponentsRegistry'
 import StyleSheetRegistry from '../registry/StyleSheetRegistry'
+import RegistryProvider from '../registry/RegistryProvider'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <StyleSheetRegistry>{children}</StyleSheetRegistry>
-        </StyledComponentsRegistry>
+        <RegistryProvider
+          registries={[StyledComponentsRegistry, StyleSheetRegistry]}
+        >
+          {children}
+        </RegistryProvider>
       </body>
     </html>
   )

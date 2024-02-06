@@ -3,13 +3,10 @@
 'use client'
 
 import { useServerInsertedHTML } from 'next/navigation'
+import { PropsWithChildren } from 'react'
 import { StyleSheet } from 'react-native'
 
-export default function StyleSheetRegistry({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function StyleSheetRegistry({ children }: PropsWithChildren) {
   useServerInsertedHTML(() => {
     const sheet = StyleSheet.getSheet()
     return (

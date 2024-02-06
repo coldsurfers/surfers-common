@@ -20,7 +20,7 @@
     "react-native-web": "^0.18.12",
     "styled-components": "6.1.8",
     "react-native": "^0.70.6",
-    "@coldsurfers/hotsurf": "0.2.8-rc.5"
+    "@coldsurfers/hotsurf": "0.2.9-rc.0"
   },
   "devDependencies": {
     "@types/node": "^20",
