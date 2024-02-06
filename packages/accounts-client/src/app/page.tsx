@@ -1,10 +1,7 @@
 'use client'
 
-import { Button, LoginForm } from '@coldsurfers/hotsurf'
-import { useState } from 'react'
+import { LoginForm } from '@coldsurfers/hotsurf'
 import styled from 'styled-components'
-import { View } from 'react-native'
-import { Modal } from '../components/Modal'
 
 const Wrapper = styled.section`
   position: absolute;
@@ -26,18 +23,9 @@ const Wrapper = styled.section`
 `
 
 export default function Home() {
-  const [visible, setVisible] = useState(false)
   return (
     <Wrapper>
-      <LoginForm
-        formTitle="ColdSurf Accounts"
-        onPressLoginButton={() => setVisible(true)}
-      />
-      <Modal visible={visible}>
-        <View style={{ width: 300, height: 250 }}>
-          <Button text="Modal Btn" onPress={() => setVisible(false)} />
-        </View>
-      </Modal>
+      <LoginForm formTitle="ColdSurf Accounts" onPressLoginButton={() => {}} />
     </Wrapper>
   )
 }
