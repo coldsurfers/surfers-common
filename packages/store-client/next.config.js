@@ -21,7 +21,6 @@ const nextConfig = {
 
     return config
   },
-  transpilePackages: ['@coldsurfers/hotsurf'],
   compiler: {
     styledComponents: true,
   },

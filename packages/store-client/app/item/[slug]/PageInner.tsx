@@ -1,10 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 'use client'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PaymentModal from '@coldsurfers/store-client/components/PaymentModal'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { BottomSticky, CTAButton } from '@coldsurfers/hotsurf'
+import { BottomSticky } from '@coldsurfers/store-client/components/BottomSticky'
+import { CTAButton } from '@coldsurfers/store-client/components/CTAButton'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { usePaymentStore } from '@coldsurfers/store-client/stores/paymentStore'
 import { nanoid } from 'nanoid'

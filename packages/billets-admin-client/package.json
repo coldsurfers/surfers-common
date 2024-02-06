@@ -22,7 +22,7 @@
     "@types/react-dom": "18.0.10",
     "date-fns": "^2.29.3",
     "eslint-config-next": "13.1.1",
-    "@coldsurfers/hotsurf": "0.2.6",
+    "@coldsurfers/hotsurf": "0.2.8-rc.5",
     "graphql": "^16.6.0",
     "next": "13.1.1",
     "react": "18.2.0",

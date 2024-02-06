@@ -27,9 +27,6 @@
             "@coldsurfers/notion-renderer": [
                 "./packages/notion-renderer/src/index.ts"
             ],
-            "@coldsurfers/hotsurf": [
-                "./packages/hotsurf/src/index.ts"
-            ],
         }
     }
 }

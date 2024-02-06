@@ -1,9 +1,15 @@
 // @ts-nocheck
+
 'use client'
+
 import { useServerInsertedHTML } from 'next/navigation'
 import { StyleSheet } from 'react-native'
 
-export default function StyleSheetRegistry({ children }: { children: React.ReactNode }) {
+export default function StyleSheetRegistry({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   useServerInsertedHTML(() => {
     const sheet = StyleSheet.getSheet()
     return (

@@ -4,8 +4,8 @@ import { PropsWithChildren } from 'react'
 import styled from '@emotion/styled'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider, signIn } from 'next-auth/react'
-import { LoginModal, ModalPortal } from '@coldsurfers/hotsurf'
 import { Session } from 'next-auth'
+import { LoginModal } from './LoginModal'
 import Header from './Header'
 import Footer from './Footer'
 import { useLoginModalStore } from '../stores/loginModalStore'
@@ -49,7 +49,7 @@ export default function LayoutWrapper({
           </Container>
         </QueryClientProvider>
       </SessionProvider>
-      <ModalPortal.Pillar />
+      {/* <ModalPortal.Pillar /> */}
     </>
   )
 }

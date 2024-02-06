@@ -1,10 +1,13 @@
 'use client'
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { GestureResponderEvent } from 'react-native'
 import styled from '@emotion/styled'
-import { CTAButton, Modal, ModalPortal } from '@coldsurfers/hotsurf'
+import { Modal } from '@coldsurfers/hotsurf'
 import { nanoid } from 'nanoid'
-import { MouseEventHandler, useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk'
+import { CTAButton } from './CTAButton'
 import usePaymentWidgetQuery from '../queries/usePaymentWidgetQuery'
 import { usePaymentStore } from '../stores/paymentStore'
 
@@ -14,17 +17,19 @@ import { usePaymentStore } from '../stores/paymentStore'
 const clientKey = 'test_ck_AQ92ymxN34P2jB1qzPAp3ajRKXvd'
 const customerKey = nanoid()
 
-const CustomModal = styled(Modal.Container)`
+const CustomModal = styled.div`
   width: 750px;
   display: flex;
   flex-direction: column;
   background-color: #fff;
   position: relative;
+  padding: 12px;
 `
 
 interface Props {
   isOpen?: boolean
-  onClickBackground?: MouseEventHandler<HTMLDivElement>
+  // eslint-disable-next-line no-unused-vars
+  onClickBackground?: (event: GestureResponderEvent) => void
   price: number
 }
 
@@ -40,17 +45,6 @@ export default function PaymentModal({
     customerMobilePhone,
     customerName,
   } = usePaymentStore()
-  const modalBackgroundRef = useRef<HTMLDivElement>(null)
-  // eslint-disable-next-line no-underscore-dangle
-  const _onClickBackground = useCallback<MouseEventHandler<HTMLDivElement>>(
-    (e) => {
-      if (modalBackgroundRef.current?.isEqualNode(e.target as Node)) {
-        onClickBackground?.(e)
-      }
-    },
-    []
-  )
-
   const { data: paymentWidget } = usePaymentWidgetQuery(clientKey, customerKey)
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance['renderPaymentMethods']
@@ -75,39 +69,32 @@ export default function PaymentModal({
   }, [paymentWidget, isOpen])
 
   return (
-    isOpen && (
-      <ModalPortal>
-        <Modal.Background
-          ref={modalBackgroundRef}
-          onClickBackground={_onClickBackground}
-        >
-          <CustomModal>
-            <div id="payment-widget" style={{ width: '100%' }} />
-            <div id="agreement" style={{ width: '100%' }} />
-            <CTAButton
-              onPress={async () => {
-                try {
-                  // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
-                  // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-                  await paymentWidget?.requestPayment({
-                    orderId,
-                    orderName,
-                    customerEmail,
-                    customerMobilePhone,
-                    customerName,
-                    successUrl: `${window.location.origin}/payments/success`,
-                    failUrl: `${window.location.origin}/payments/fail`,
-                  })
-                } catch (error) {
-                  // 에러 처리하기
-                  console.error(error)
-                }
-              }}
-              text="구매하기"
-            />
-          </CustomModal>
-        </Modal.Background>
-      </ModalPortal>
-    )
+    <Modal visible={isOpen} onPressBackground={onClickBackground}>
+      <CustomModal>
+        <div id="payment-widget" style={{ width: '100%' }} />
+        <div id="agreement" style={{ width: '100%' }} />
+        <CTAButton
+          onPress={async () => {
+            try {
+              // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
+              // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
+              await paymentWidget?.requestPayment({
+                orderId,
+                orderName,
+                customerEmail,
+                customerMobilePhone,
+                customerName,
+                successUrl: `${window.location.origin}/payments/success`,
+                failUrl: `${window.location.origin}/payments/fail`,
+              })
+            } catch (error) {
+              // 에러 처리하기
+              console.error(error)
+            }
+          }}
+          text="구매하기"
+        />
+      </CustomModal>
+    </Modal>
   )
 }
