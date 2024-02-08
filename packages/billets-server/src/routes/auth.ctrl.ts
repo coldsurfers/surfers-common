@@ -78,6 +78,7 @@ export const emailConfirmHandler: RouteHandler<{
       subject: `[billets] auth code verification`,
       text: `billets authcode is ${authcode}`,
       smtpOptions: {
+        service: process.env.MAILER_SERVICE,
         auth: {
           user: process.env.MAILER_EMAIL_ADDRESS,
           pass: process.env.MAILER_EMAIL_APP_PASSWORD,

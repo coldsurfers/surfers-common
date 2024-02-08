@@ -1,43 +1,48 @@
 import {
   AccountModel,
-  AuthTokenModel,
+  // AuthTokenModel,
+  EmailAuthRequestModel,
+  PatchAccountsAuthcodeCtrlBodySchema,
+  PatchAccountsAuthcodeCtrlBodySchemaType,
+  PatchAccountsAuthcodeCtrlResponseSchemaType,
+  PostAccountsAuthcodeCtrlBodySchema,
+  PostAccountsAuthcodeCtrlBodySchemaType,
+  PostAccountsAuthcodeCtrlResponseSchemaType,
   PostAccountsSignInCtrlBodySchema,
   PostAccountsSignInCtrlBodySchemaType,
   PostAccountsSignInCtrlResponseSchemaType,
 } from '@coldsurfers/accounts-schema'
 import { FastifyError, RouteHandler } from 'fastify'
 import { sendEmail } from '@coldsurfers/mailer-utils'
-import OAuth2Client from '../../lib/OAuth2Client'
+import encryptPassword from '../../lib/encryptPassword'
+// import OAuth2Client from '../../lib/OAuth2Client'
 import generateAuthTokenFromAccount from '../../lib/generateAuthTokenFromAccount'
-import { JWTDecoded } from '../../types/jwt'
-import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
+// import { JWTDecoded } from '../../types/jwt'
+// import { parseQuerystringPage } from '../../lib/parseQuerystringPage'
+import { generateEmailValidationCode } from '../../lib/generateEmailValidationCode'
 
-const mailerSubject = '[New Account] New account has been created'
-const mailerText = (gmail: string) =>
-  `Hello, coldsurf administrator. You've got new account.\nNew account email: ${gmail}`
-
-export const getAccountsListCtrl: RouteHandler<{
-  Querystring: {
-    page?: string
-  }
-}> = async (req, rep) => {
-  try {
-    const page = parseQuerystringPage(req.query.page)
-    const perPage = 10
-    const { list, totalCount } = await AccountModel.list({
-      skip: (page - 1) * perPage,
-      take: perPage,
-      includeStaff: true,
-    })
-    return rep.status(200).send({
-      data: list.map((each) => each.serialize()),
-      totalCount,
-    })
-  } catch (e) {
-    const error = e as FastifyError
-    return rep.status(error.statusCode ?? 500).send(error)
-  }
-}
+// export const getAccountsListCtrl: RouteHandler<{
+//   Querystring: {
+//     page?: string
+//   }
+// }> = async (req, rep) => {
+//   try {
+//     const page = parseQuerystringPage(req.query.page)
+//     const perPage = 10
+//     const { list, totalCount } = await AccountModel.list({
+//       skip: (page - 1) * perPage,
+//       take: perPage,
+//       includeStaff: true,
+//     })
+//     return rep.status(200).send({
+//       data: list.map((each) => each.serialize()),
+//       totalCount,
+//     })
+//   } catch (e) {
+//     const error = e as FastifyError
+//     return rep.status(error.statusCode ?? 500).send(error)
+//   }
+// }
 
 export const postAccountsSignInCtrl: RouteHandler<{
   Reply: PostAccountsSignInCtrlResponseSchemaType
@@ -49,29 +54,176 @@ export const postAccountsSignInCtrl: RouteHandler<{
       return rep.status(400).send()
     }
     const { data: postBody } = validation
-    const { provider, access_token } = postBody
-    if (provider !== 'google') return rep.status(501).send()
-    const tokenInfo = await OAuth2Client.getTokenInfo(access_token)
-    const { email: gmail } = tokenInfo
-    if (!gmail) return rep.status(400).send()
-
-    const existingAccount = await AccountModel.findByEmail(gmail)
-
-    // sign "up" flow
-    if (!existingAccount) {
-      const newAccount = await new AccountModel({
-        email: gmail,
-        provider: 'google',
-      }).create()
-      if (!newAccount) return rep.status(500).send()
+    // eslint-disable-next-line no-unused-vars
+    const { provider, provider_token, password, email } = postBody
+    if (provider === 'coldsurf') {
+      // "email" login or signup
+      // check already signed in email
+      const existing = await AccountModel.findByEmail(email)
+      if (existing) {
+        const encrypted = encryptPassword({
+          plain: password,
+          originalSalt: existing.passwordSalt,
+        })
+        if (existing.password !== encrypted.encrypted) {
+          return rep.status(404).send()
+        }
+        // already signed up user, wants to login
+        const accountAuthToken = await (
+          await generateAuthTokenFromAccount(existing)
+        ).create()
+        return rep.status(201).send({
+          account: existing.serialize(),
+          auth_token: accountAuthToken.serialize(),
+        })
+      }
+      // check email request has been authenticated
+      const emailRequest = await EmailAuthRequestModel.findLatestByEmail(email)
+      if (!emailRequest || !emailRequest.authenticated) {
+        return rep.status(403).send()
+      }
+      const encrypted = encryptPassword({
+        plain: password,
+      })
+      const account = new AccountModel({
+        email,
+        password: encrypted.encrypted,
+        passwordSalt: encrypted.salt,
+        provider,
+      })
+      const createdAccount = await account.create()
+      // create auth token
       const accountAuthToken = await (
-        await generateAuthTokenFromAccount(newAccount)
+        await generateAuthTokenFromAccount(createdAccount)
       ).create()
-      sendEmail({
-        to: gmail,
+      return rep.status(201).send({
+        account: createdAccount.serialize(),
+        auth_token: accountAuthToken.serialize(),
+      })
+    }
+    return rep.status(501).send()
+    // sns or other platform login or signup
+    // if (provider !== 'google') return rep.status(501).send()
+
+    // const tokenInfo = await OAuth2Client.getTokenInfo(access_token)
+    // const { email: gmail } = tokenInfo
+    // if (!gmail) return rep.status(400).send()
+
+    // const existingAccount = await AccountModel.findByEmail(gmail)
+
+    // // sign "up" flow
+    // if (!existingAccount) {
+    //   const newAccount = await new AccountModel({
+    //     email: gmail,
+    //     provider: 'google',
+    //   }).create()
+    //   if (!newAccount) return rep.status(500).send()
+    //   const accountAuthToken = await (
+    //     await generateAuthTokenFromAccount(newAccount)
+    //   ).create()
+    //   sendEmail({
+    //     to: gmail,
+    //     from: process.env.MAILER_EMAIL_ADDRESS,
+    //     subject: mailerSubject,
+    //     text: mailerText(gmail),
+    //     smtpOptions: {
+    //       service: process.env.MAILER_SERVICE,
+    //       auth: {
+    //         user: process.env.MAILER_EMAIL_ADDRESS,
+    //         pass: process.env.MAILER_EMAIL_APP_PASSWORD,
+    //       },
+    //     },
+    //   })
+    //   return rep.status(201).send({
+    //     account: newAccount.serialize(),
+    //     auth_token: accountAuthToken.serialize(),
+    //   })
+    // }
+
+    // // sign "in" flow
+    // const { id: existingAccountId } = existingAccount
+
+    // if (!existingAccountId) return rep.status(404).send()
+
+    // const accountAuthToken = await (
+    //   await generateAuthTokenFromAccount(existingAccount)
+    // ).create()
+
+    // return rep.status(200).send({
+    //   auth_token: accountAuthToken.serialize(),
+    //   account: existingAccount.serialize(),
+    // })
+  } catch (e) {
+    const error = e as FastifyError
+    return rep.status(error.statusCode ?? 500).send()
+  }
+}
+
+// export const getAccountsProfileCtrl: RouteHandler<{}> = async (req, rep) => {
+//   try {
+//     const decoded = (await req.jwtDecode()) as JWTDecoded
+//     const user = await AccountModel.findByEmail(decoded.email)
+
+//     if (!user) {
+//       return rep.status(403).send({})
+//     }
+
+//     return rep.status(200).send({
+//       ...user.serialize(),
+//     })
+//   } catch (e) {
+//     const error = e as FastifyError
+//     return rep.status(error.statusCode ?? 500).send(error)
+//   }
+// }
+
+// export const postAccountsLogoutCtrl: RouteHandler<{}> = async (req, rep) => {
+//   try {
+//     // await req.jwtVerify();
+//     const decoded = (await req.jwtDecode()) as JWTDecoded
+//     const account = await AccountModel.findByEmail(decoded.email)
+//     if (!account || !account.id) return rep.status(403).send()
+//     await AuthTokenModel.deleteByAccountId(account.id)
+//     return rep.status(204).send()
+//   } catch (e) {
+//     const error = e as FastifyError
+//     return rep.status(error.statusCode ?? 500).send(error)
+//   }
+// }
+
+export const postAccountsAuthcodeCtrl: RouteHandler<{
+  Body: PostAccountsAuthcodeCtrlBodySchemaType
+  Reply: PostAccountsAuthcodeCtrlResponseSchemaType
+}> = async (req, rep) => {
+  try {
+    const bodyValidation = PostAccountsAuthcodeCtrlBodySchema.safeParse(
+      req.body
+    )
+    if (!bodyValidation.success) {
+      return rep.status(400).send()
+    }
+    const { email: reqBodyEmail } = req.body
+    // check already have account
+    const account = await AccountModel.findByEmail(reqBodyEmail)
+    if (account) {
+      return rep.status(409).send({})
+    }
+    // check already authenticated before
+    const existing = await EmailAuthRequestModel.findLatestByEmail(reqBodyEmail)
+    if (existing) {
+      const isAuthenticated: boolean = !!existing.authenticated
+      if (isAuthenticated) {
+        return rep.status(409).send({})
+      }
+      // todo: update
+      const generatedAuthCode = `${generateEmailValidationCode()}`
+      const updated = await existing.updateAuthcode(generatedAuthCode)
+      const { email, authcode } = updated
+      await sendEmail({
+        to: email,
         from: process.env.MAILER_EMAIL_ADDRESS,
-        subject: mailerSubject,
-        text: mailerText(gmail),
+        subject: `[ColdSurf Accounts] auth code verification`,
+        text: `coldsurf accounts authcode is ${authcode}`,
         smtpOptions: {
           service: process.env.MAILER_SERVICE,
           auth: {
@@ -80,60 +232,60 @@ export const postAccountsSignInCtrl: RouteHandler<{
           },
         },
       })
-      return rep.status(201).send({
-        account: newAccount.serialize(),
-        auth_token: accountAuthToken.serialize(),
+    } else {
+      const generatedAuthCode = `${generateEmailValidationCode()}`
+      const createdEmailAuthRequest = new EmailAuthRequestModel({
+        email: reqBodyEmail,
+        authcode: generatedAuthCode,
+        authenticated: false,
+      })
+      const emailAuthRequest = await createdEmailAuthRequest.create()
+      const { email, authcode } = emailAuthRequest
+      await sendEmail({
+        to: email,
+        from: process.env.MAILER_EMAIL_ADDRESS,
+        subject: `[ColdSurf Accounts] auth code verification`,
+        text: `coldsurf accounts authcode is ${authcode}`,
+        smtpOptions: {
+          service: process.env.MAILER_SERVICE,
+          auth: {
+            user: process.env.MAILER_EMAIL_ADDRESS,
+            pass: process.env.MAILER_EMAIL_APP_PASSWORD,
+          },
+        },
       })
     }
 
-    // sign "in" flow
-    const { id: existingAccountId } = existingAccount
-
-    if (!existingAccountId) return rep.status(404).send()
-
-    const accountAuthToken = await (
-      await generateAuthTokenFromAccount(existingAccount)
-    ).create()
-
-    return rep.status(200).send({
-      auth_token: accountAuthToken.serialize(),
-      account: existingAccount.serialize(),
-    })
+    return rep.status(201).send({})
   } catch (e) {
-    const error = e as FastifyError
-    return rep.status(error.statusCode ?? 500).send()
+    console.error(e)
+    return rep.status(500).send({})
   }
 }
 
-export const getAccountsProfileCtrl: RouteHandler<{}> = async (req, rep) => {
+export const patchAccountsAuthcodeCtrl: RouteHandler<{
+  Body: PatchAccountsAuthcodeCtrlBodySchemaType
+  Reply: PatchAccountsAuthcodeCtrlResponseSchemaType
+}> = async (req, rep) => {
   try {
-    const decoded = (await req.jwtDecode()) as JWTDecoded
-    const user = await AccountModel.findByEmail(decoded.email)
-
-    if (!user) {
-      return rep.status(403).send({})
+    const bodyValidation = PatchAccountsAuthcodeCtrlBodySchema.safeParse(
+      req.body
+    )
+    if (!bodyValidation.success) {
+      return rep.status(400).send()
     }
-
-    return rep.status(200).send({
-      ...user.serialize(),
-    })
+    const { authcode, email } = req.body
+    const emailAuthRequest = await EmailAuthRequestModel.findLatestByEmail(
+      email
+    )
+    if (emailAuthRequest?.authcode === authcode) {
+      await emailAuthRequest.authenticate()
+      return rep.status(200).send({})
+    }
+    return rep.status(401).send({})
   } catch (e) {
-    const error = e as FastifyError
-    return rep.status(error.statusCode ?? 500).send(error)
-  }
-}
-
-export const postAccountsLogoutCtrl: RouteHandler<{}> = async (req, rep) => {
-  try {
-    // await req.jwtVerify();
-    const decoded = (await req.jwtDecode()) as JWTDecoded
-    const account = await AccountModel.findByEmail(decoded.email)
-    if (!account || !account.id) return rep.status(403).send()
-    await AuthTokenModel.deleteByAccountId(account.id)
-    return rep.status(204).send()
-  } catch (e) {
-    const error = e as FastifyError
-    return rep.status(error.statusCode ?? 500).send(error)
+    console.error(e)
+    return rep.status(500).send({})
   }
 }
 

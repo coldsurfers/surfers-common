@@ -18,6 +18,24 @@ class AccountsKit {
     })
     return (await res.json()) as PostAccountsSignInCtrlResponseSchemaType
   }
+
+  async fetchSendAccountEmail(body: { email: string }) {
+    const res = await new HttpRequest().request('/accounts/authcode', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    return (await res.json()) as {}
+  }
+
+  async fetchConfirmAuthcode(body: { authcode: string; email: string }) {
+    const res = await new HttpRequest().request('/accounts/authcode', {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    })
+
+    return (await res.json()) as {}
+  }
 }
 
 export default AccountsKit

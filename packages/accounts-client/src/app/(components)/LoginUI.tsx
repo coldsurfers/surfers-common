@@ -1,31 +1,47 @@
 'use client'
 
-import { LoginForm } from '@coldsurfers/hotsurf'
-import styled from 'styled-components'
+import { LoginForm, LoginFormRefHandle } from '@coldsurfers/hotsurf'
+import { useRouter } from 'next/navigation'
+import { useCallback, useRef } from 'react'
+import { FormLayout } from './FormLayout'
+import accountsKit from '../../lib/accountsKit'
 
-const Wrapper = styled.section`
-  position: absolute;
-  top: 50%; /* position the top  edge of the element at the middle of the parent */
-  left: 50%; /* position the left edge of the element at the middle of the parent */
+export function LoginUI({ redirectURI }: { redirectURI: string }) {
+  const formRef = useRef<LoginFormRefHandle>(null)
+  const { push } = useRouter()
+  const onPressLoginButton = useCallback(async () => {
+    try {
+      const inputValue = formRef.current?.currentInputValue()
+      if (!inputValue) {
+        throw Error('!!!')
+      }
+      const result = await accountsKit.fetchSignIn({
+        provider: 'coldsurf',
+        provider_token: '',
+        email: inputValue.email,
+        password: inputValue.password,
+      })
+      const { auth_token: authToken } = result
+      window.location.assign(
+        `${redirectURI}?access_token=${authToken.access_token}&refresh_token=${authToken.refresh_token}`
+      )
+    } catch (e) {
+      console.error(e)
+    }
+  }, [redirectURI])
 
-  transform: translate(-50%, -50%);
+  const onPressCreateAccountButtonUI = useCallback(() => {
+    push(`/signin/email?after=${redirectURI}`)
+  }, [push, redirectURI])
 
-  padding: 1rem;
-  border-radius: 3px;
-
-  display: flex;
-  flex-direction: column;
-
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-`
-
-export function LoginUI({ afterHttpAddress }: { afterHttpAddress: string }) {
   return (
-    <Wrapper>
-      <LoginForm formTitle="ColdSurf Accounts" onPressLoginButton={() => {}} />
-    </Wrapper>
+    <FormLayout>
+      <LoginForm
+        ref={formRef}
+        formTitle="ColdSurf Accounts"
+        onPressLoginButton={onPressLoginButton}
+        onPressCreateAccountButtonUI={onPressCreateAccountButtonUI}
+      />
+    </FormLayout>
   )
 }

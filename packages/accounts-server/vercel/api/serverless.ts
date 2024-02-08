@@ -7,7 +7,7 @@ import jwt from '@fastify/jwt'
 
 dotenv.config()
 
-const fastify = Fastify({
+export const fastify = Fastify({
   logger: process.env.NODE_ENV === 'development',
 })
 

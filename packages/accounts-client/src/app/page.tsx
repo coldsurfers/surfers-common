@@ -1,24 +1,28 @@
-/* eslint-disable no-unused-vars */
-import { headers } from 'next/headers'
-import { NextPage } from 'next/types'
+'use client'
+
+import { useEffect } from 'react'
 import { LoginUI } from './(components)/LoginUI'
+import { useAccountsAppStore } from './(stores)/accountsAppStore'
+import { HomePageWithSearchParams } from './(types)/CommonAccountNextPage'
+import { CommonAccountErrorCode } from './(types)/CommonAccountErrorCode'
 
-const Home: NextPage<{
-  searchParams: {
-    after?: string
-    clientId?: string
-  }
-}> = ({ searchParams }) => {
-  const headersList = headers()
-  const referer = headersList.get('referer')
+const Home: HomePageWithSearchParams = ({ searchParams }) => {
+  const { setRedirectURI, setClientId } = useAccountsAppStore()
+  const { redirect_uri, client_id } = searchParams
 
-  const { after, clientId } = searchParams
-
-  if (!after) {
-    throw Error('!!!')
+  // todo: invalid_client, client id validation
+  if (!redirect_uri) {
+    throw Error(CommonAccountErrorCode.REDIRECT_URI_NOT_EXISTING)
   }
 
-  return <LoginUI afterHttpAddress={after} />
+  useEffect(() => {
+    setRedirectURI(redirect_uri)
+    if (client_id) {
+      setClientId(client_id)
+    }
+  }, [client_id, redirect_uri, setClientId, setRedirectURI])
+
+  return <LoginUI redirectURI={redirect_uri} />
 }
 
 export default Home
