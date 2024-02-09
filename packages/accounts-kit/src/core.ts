@@ -1,5 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import {
+  PatchAccountsAuthcodeCtrlBodySchemaType,
+  PostAccountsAuthcodeCtrlBodySchemaType,
   PostAccountsSignInCtrlBodySchemaType,
   PostAccountsSignInCtrlResponseSchemaType,
 } from '@coldsurfers/accounts-schema'
@@ -19,7 +21,7 @@ class AccountsKit {
     return (await res.json()) as PostAccountsSignInCtrlResponseSchemaType
   }
 
-  async fetchSendAccountEmail(body: { email: string }) {
+  async fetchSendAccountEmail(body: PostAccountsAuthcodeCtrlBodySchemaType) {
     const res = await new HttpRequest().request('/accounts/authcode', {
       method: 'POST',
       body: JSON.stringify(body),
@@ -28,7 +30,7 @@ class AccountsKit {
     return (await res.json()) as {}
   }
 
-  async fetchConfirmAuthcode(body: { authcode: string; email: string }) {
+  async fetchConfirmAuthcode(body: PatchAccountsAuthcodeCtrlBodySchemaType) {
     const res = await new HttpRequest().request('/accounts/authcode', {
       method: 'PATCH',
       body: JSON.stringify(body),

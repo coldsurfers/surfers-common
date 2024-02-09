@@ -7,27 +7,27 @@ import {
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef } from 'react'
 import { FormLayout } from './FormLayout'
-import accountsKit from '../../lib/accountsKit'
 import { useSignInStore } from '../(stores)/signInStore'
+import { useFetchConfirmAuthcode } from '../(react-query)/accounts/useFetchConfirmAuthCode'
 
 export const AuthcodeUI = () => {
   const { email } = useSignInStore()
   const { push } = useRouter()
+  const { mutate: mutateFetchConfirmAuthcode } = useFetchConfirmAuthcode({
+    onSuccess: () => {
+      push(`/signin/password`)
+    },
+  })
   const formRef = useRef<EmailAuthCodeFormRefHandle>(null)
   const onPressAuthCodeButton = useCallback(async () => {
     const inputValue = formRef.current?.currentInputValue()
     if (inputValue && !!email) {
-      try {
-        await accountsKit.fetchConfirmAuthcode({
-          authcode: inputValue.authcode,
-          email,
-        })
-        push(`/signin/password`)
-      } catch (e) {
-        console.error(e)
-      }
+      mutateFetchConfirmAuthcode({
+        authcode: inputValue.authcode,
+        email,
+      })
     }
-  }, [email, push])
+  }, [email, mutateFetchConfirmAuthcode])
 
   return (
     <FormLayout>

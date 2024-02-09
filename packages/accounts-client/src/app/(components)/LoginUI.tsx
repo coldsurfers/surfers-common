@@ -4,31 +4,30 @@ import { LoginForm, LoginFormRefHandle } from '@coldsurfers/hotsurf'
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef } from 'react'
 import { FormLayout } from './FormLayout'
-import accountsKit from '../../lib/accountsKit'
+import { useFetchSignIn } from '../(react-query)/accounts/useFetchSignIn'
 
 export function LoginUI({ redirectURI }: { redirectURI: string }) {
   const formRef = useRef<LoginFormRefHandle>(null)
-  const { push } = useRouter()
-  const onPressLoginButton = useCallback(async () => {
-    try {
-      const inputValue = formRef.current?.currentInputValue()
-      if (!inputValue) {
-        throw Error('!!!')
-      }
-      const result = await accountsKit.fetchSignIn({
-        provider: 'coldsurf',
-        provider_token: '',
-        email: inputValue.email,
-        password: inputValue.password,
-      })
-      const { auth_token: authToken } = result
+  const { mutate: mutateFetchSignIn } = useFetchSignIn({
+    onSuccess: ({ auth_token: authToken }) => {
       window.location.assign(
         `${redirectURI}?access_token=${authToken.access_token}&refresh_token=${authToken.refresh_token}`
       )
-    } catch (e) {
-      console.error(e)
+    },
+  })
+  const { push } = useRouter()
+  const onPressLoginButton = useCallback(async () => {
+    const inputValue = formRef.current?.currentInputValue()
+    if (!inputValue) {
+      throw Error('!!!')
     }
-  }, [redirectURI])
+    mutateFetchSignIn({
+      provider: 'coldsurf',
+      provider_token: '',
+      email: inputValue.email,
+      password: inputValue.password,
+    })
+  }, [mutateFetchSignIn])
 
   const onPressCreateAccountButtonUI = useCallback(() => {
     push(`/signin/email?after=${redirectURI}`)

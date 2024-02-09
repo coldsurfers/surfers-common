@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import StyledComponentsRegistry from '../registry/StyledComponentsRegistry'
 import StyleSheetRegistry from '../registry/StyleSheetRegistry'
 import RegistryProvider from '../registry/RegistryProvider'
+import { QueryClientProvider } from '../registry/QueryClientProvider'
 
 export const metadata: Metadata = {
   title: 'ColdSurf Accounts',
@@ -18,7 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <RegistryProvider
-          registries={[StyledComponentsRegistry, StyleSheetRegistry]}
+          registries={[
+            StyledComponentsRegistry,
+            StyleSheetRegistry,
+            QueryClientProvider,
+          ]}
         >
           {children}
         </RegistryProvider>
