@@ -2204,10 +2204,10 @@
   dependencies:
     open-color "^1.9.1"
 
-"@coldsurfers/hotsurf@0.2.10-rc.5":
-  version "0.2.10-rc.5"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.10-rc.5/1bf66ed4b3c969b383f903867e6e1bd541f32b7f#1bf66ed4b3c969b383f903867e6e1bd541f32b7f"
-  integrity sha512-PAm7AmG9ENlXvT8cBTQD6uwTftgNnj15UyzHqx+YlZJkDNWwmNjUwzJo4IcRKErA1t8kEcRQYgr0LC0N2c61IA==
+"@coldsurfers/hotsurf@0.2.11-rc.0":
+  version "0.2.11-rc.0"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.11-rc.0/e06f28b3f5a9c5db2e84fd52ed7868aaf5cbe932#e06f28b3f5a9c5db2e84fd52ed7868aaf5cbe932"
+  integrity sha512-CzVbg69Jjn73YEfaZCagoTff9BZY+L7bZyCucHZen4CZz/Fm79Nyy+F/vABi3FQzzYYwhQ8EZtgXy82U9ih1ag==
   dependencies:
     react "18.2.0"
     style-dictionary "^3.7.1"
