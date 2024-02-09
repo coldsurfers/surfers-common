@@ -31,10 +31,7 @@ const handler: VercelApiHandler = async (
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
   } else {
     // todo: add white list url of cors
-    // res.setHeader(
-    //   'Access-Control-Allow-Origin',
-    //   'https://fstvllife-admin-web-yungblud.vercel.app'
-    // )
+    res.setHeader('Access-Control-Allow-Origin', 'https://accounts.coldsurf.io')
     // res.setHeader(
     //   'Access-Control-Allow-Origin',
     //   'https://fstvllife-admin-web.vercel.app'
