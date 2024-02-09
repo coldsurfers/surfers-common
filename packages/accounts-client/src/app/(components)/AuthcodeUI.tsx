@@ -3,6 +3,7 @@
 import {
   EmailAuthCodeForm,
   EmailAuthCodeFormRefHandle,
+  Spinner,
 } from '@coldsurfers/hotsurf'
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef } from 'react'
@@ -13,7 +14,10 @@ import { useFetchConfirmAuthcode } from '../(react-query)/accounts/useFetchConfi
 export const AuthcodeUI = () => {
   const { email } = useSignInStore()
   const { push } = useRouter()
-  const { mutate: mutateFetchConfirmAuthcode } = useFetchConfirmAuthcode({
+  const {
+    mutate: mutateFetchConfirmAuthcode,
+    isPending: isPendingFetchConfirmAuthcode,
+  } = useFetchConfirmAuthcode({
     onSuccess: () => {
       push(`/signin/password`)
     },
@@ -36,6 +40,7 @@ export const AuthcodeUI = () => {
         formTitle="인증번호"
         onPressAuthCodeButton={onPressAuthCodeButton}
       />
+      {isPendingFetchConfirmAuthcode && <Spinner />}
     </FormLayout>
   )
 }

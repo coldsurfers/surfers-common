@@ -1,6 +1,10 @@
 'use client'
 
-import { SendEmailForm, SendEmailFormRefHandle } from '@coldsurfers/hotsurf'
+import {
+  SendEmailForm,
+  SendEmailFormRefHandle,
+  Spinner,
+} from '@coldsurfers/hotsurf'
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef } from 'react'
 import { FormLayout } from './FormLayout'
@@ -10,7 +14,10 @@ import { useFetchSendAccountEmail } from '../(react-query)/accounts/useFetchSend
 export const SendEmailUI = () => {
   const { setEmail } = useSignInStore()
   const { push } = useRouter()
-  const { mutate: mutateFetchSendAccountEmail } = useFetchSendAccountEmail({
+  const {
+    mutate: mutateFetchSendAccountEmail,
+    isPending: isPendingMutateFetchSendAccountEmail,
+  } = useFetchSendAccountEmail({
     onSuccess: () => {
       push(`/signin/authcode`)
     },
@@ -33,6 +40,7 @@ export const SendEmailUI = () => {
         formTitle="이메일 인증하기"
         onPressSendEmailButton={onPressSendEmailButton}
       />
+      {isPendingMutateFetchSendAccountEmail && <Spinner />}
     </FormLayout>
   )
 }
