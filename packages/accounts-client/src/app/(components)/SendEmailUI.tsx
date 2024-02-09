@@ -4,22 +4,39 @@ import {
   SendEmailForm,
   SendEmailFormRefHandle,
   Spinner,
+  Toast,
 } from '@coldsurfers/hotsurf'
 import { useRouter } from 'next/navigation'
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
+import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
 import { useSignInStore } from '../(stores)/signInStore'
 import { useFetchSendAccountEmail } from '../(react-query)/accounts/useFetchSendAccountEmail'
 
 export const SendEmailUI = () => {
+  const [errorMessage, setErrorMessage] = useState('')
   const { setEmail } = useSignInStore()
   const { push } = useRouter()
   const {
     mutate: mutateFetchSendAccountEmail,
     isPending: isPendingMutateFetchSendAccountEmail,
   } = useFetchSendAccountEmail({
-    onSuccess: () => {
-      push(`/signin/authcode`)
+    onSuccess: (response) => {
+      if (response.success) {
+        push(`/signin/authcode`)
+      } else {
+        const { status } = response.error
+        switch (status) {
+          case 400:
+            setErrorMessage('정확한 이메일을 입력해 주세요')
+            break
+          case 409:
+            setErrorMessage('이미 인증된 이메일입니다')
+            break
+          default:
+            break
+        }
+      }
     },
   })
   const formRef = useRef<SendEmailFormRefHandle>(null)
@@ -34,13 +51,24 @@ export const SendEmailUI = () => {
   }, [mutateFetchSendAccountEmail, setEmail])
 
   return (
-    <FormLayout>
-      <SendEmailForm
-        ref={formRef}
-        formTitle="이메일 인증하기"
-        onPressSendEmailButton={onPressSendEmailButton}
-      />
-      {isPendingMutateFetchSendAccountEmail && <Spinner />}
-    </FormLayout>
+    <>
+      <FormLayout>
+        <SendEmailForm
+          ref={formRef}
+          formTitle="이메일 인증하기"
+          onPressSendEmailButton={onPressSendEmailButton}
+        />
+        {isPendingMutateFetchSendAccountEmail && <Spinner />}
+      </FormLayout>
+      {errorMessage && (
+        <View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
+          <Toast
+            type="error"
+            message={errorMessage}
+            onPress={() => setErrorMessage('')}
+          />
+        </View>
+      )}
+    </>
   )
 }

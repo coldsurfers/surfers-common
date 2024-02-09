@@ -200,7 +200,7 @@ export const postAccountsAuthcodeCtrl: RouteHandler<{
       req.body
     )
     if (!bodyValidation.success) {
-      return rep.status(400).send()
+      return rep.status(400).send({})
     }
     const { email: reqBodyEmail } = req.body
     // check already have account
@@ -272,7 +272,7 @@ export const patchAccountsAuthcodeCtrl: RouteHandler<{
       req.body
     )
     if (!bodyValidation.success) {
-      return rep.status(400).send()
+      return rep.status(400).send({})
     }
     const { authcode, email } = req.body
     const emailAuthRequest = await EmailAuthRequestModel.findLatestByEmail(

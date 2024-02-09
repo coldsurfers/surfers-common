@@ -13,7 +13,9 @@ export const PostAccountsSignInCtrlBodySchema = z.object({
   provider: z.union([z.literal('coldsurf'), z.literal('google')]),
   provider_token: z.string(),
   email: z.string().email(),
-  password: z.string().min(8).max(255),
+  // https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+  // min 8, max 32,  at least one letter and one number
+  password: z.string().regex(/^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,32}$/),
 })
 
 export type PostAccountsSignInCtrlBodySchemaType = z.infer<
