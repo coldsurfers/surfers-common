@@ -10,12 +10,12 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
-import { useSignInStore } from '../(stores)/signInStore'
 import { useFetchConfirmAuthcode } from '../(react-query)/accounts/useFetchConfirmAuthCode'
+import { useSignInStore } from '../(stores)/signInStore'
 
 export const AuthcodeUI = () => {
+  const email = useSignInStore((state) => state.email)
   const [errorMessage, setErrorMessage] = useState('')
-  const { email } = useSignInStore()
   const { push } = useRouter()
   const {
     mutate: mutateFetchConfirmAuthcode,
@@ -40,7 +40,7 @@ export const AuthcodeUI = () => {
     },
   })
   const formRef = useRef<EmailAuthCodeFormRefHandle>(null)
-  const onPressAuthCodeButton = useCallback(async () => {
+  const onPressAuthCodeButton = useCallback(() => {
     const inputValue = formRef.current?.currentInputValue()
     if (inputValue && !!email) {
       mutateFetchConfirmAuthcode({

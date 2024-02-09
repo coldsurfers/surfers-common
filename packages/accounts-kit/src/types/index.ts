@@ -8,7 +8,7 @@ export type CommonFetchError = {
   status: number
 }
 
-export type FetchSignInReturnType = Promise<
+export type FetchSignInReturnType =
   | {
       success: false
       error: CommonFetchError
@@ -17,9 +17,8 @@ export type FetchSignInReturnType = Promise<
       success: true
       data: PostAccountsSignInCtrlResponseSchemaType
     }
->
 
-export type FetchSendAccountEmailReturnType = Promise<
+export type FetchSendAccountEmailReturnType =
   | {
       success: false
       error: CommonFetchError
@@ -28,9 +27,8 @@ export type FetchSendAccountEmailReturnType = Promise<
       success: true
       data: PostAccountsAuthcodeCtrlResponseSchemaType
     }
->
 
-export type FetchConfirmAuthcodeReturnType = Promise<
+export type FetchConfirmAuthcodeReturnType =
   | {
       success: false
       error: CommonFetchError
@@ -39,4 +37,3 @@ export type FetchConfirmAuthcodeReturnType = Promise<
       success: true
       data: PatchAccountsAuthcodeCtrlResponseSchemaType
     }
->

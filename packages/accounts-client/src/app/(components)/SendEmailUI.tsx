@@ -10,13 +10,15 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
-import { useSignInStore } from '../(stores)/signInStore'
 import { useFetchSendAccountEmail } from '../(react-query)/accounts/useFetchSendAccountEmail'
+import { useSignInStore } from '../(stores)/signInStore'
 
 export const SendEmailUI = () => {
-  const [errorMessage, setErrorMessage] = useState('')
   const { setEmail } = useSignInStore()
+  const [errorMessage, setErrorMessage] = useState('')
   const { push } = useRouter()
+  const formRef = useRef<SendEmailFormRefHandle>(null)
+
   const {
     mutate: mutateFetchSendAccountEmail,
     isPending: isPendingMutateFetchSendAccountEmail,
@@ -39,8 +41,8 @@ export const SendEmailUI = () => {
       }
     },
   })
-  const formRef = useRef<SendEmailFormRefHandle>(null)
-  const onPressSendEmailButton = useCallback(async () => {
+
+  const onPressSendEmailButton = useCallback(() => {
     const inputValue = formRef.current?.currentInputValue()
     if (inputValue) {
       mutateFetchSendAccountEmail({

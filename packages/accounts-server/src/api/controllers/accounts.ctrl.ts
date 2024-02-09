@@ -211,7 +211,7 @@ export const postAccountsAuthcodeCtrl: RouteHandler<{
     // check already authenticated before
     const existing = await EmailAuthRequestModel.findLatestByEmail(reqBodyEmail)
     if (existing) {
-      const isAuthenticated: boolean = !!existing.authenticated
+      const isAuthenticated: boolean = !!existing.authenticated && !!account
       if (isAuthenticated) {
         return rep.status(409).send({})
       }

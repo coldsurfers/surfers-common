@@ -17,7 +17,7 @@ import {
 class AccountsKit {
   async fetchSignIn(
     body: PostAccountsSignInCtrlBodySchemaType
-  ): FetchSignInReturnType {
+  ): Promise<FetchSignInReturnType> {
     const res = await new HttpRequest().request('/accounts/signin', {
       body: JSON.stringify(body),
       method: 'POST',
@@ -38,7 +38,7 @@ class AccountsKit {
 
   async fetchSendAccountEmail(
     body: PostAccountsAuthcodeCtrlBodySchemaType
-  ): FetchSendAccountEmailReturnType {
+  ): Promise<FetchSendAccountEmailReturnType> {
     const res = await new HttpRequest().request('/accounts/authcode', {
       method: 'POST',
       body: JSON.stringify(body),
@@ -61,7 +61,7 @@ class AccountsKit {
 
   async fetchConfirmAuthcode(
     body: PatchAccountsAuthcodeCtrlBodySchemaType
-  ): FetchConfirmAuthcodeReturnType {
+  ): Promise<FetchConfirmAuthcodeReturnType> {
     const res = await new HttpRequest().request('/accounts/authcode', {
       method: 'PATCH',
       body: JSON.stringify(body),

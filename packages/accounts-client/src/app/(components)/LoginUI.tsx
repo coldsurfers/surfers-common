@@ -54,8 +54,8 @@ export function LoginUI({ redirectURI }: { redirectURI: string }) {
   }, [mutateFetchSignIn])
 
   const onPressCreateAccountButtonUI = useCallback(() => {
-    push(`/signin/email?after=${redirectURI}`)
-  }, [push, redirectURI])
+    push(`/signin/email`)
+  }, [push])
 
   return (
     <>

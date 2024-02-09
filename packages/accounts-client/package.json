@@ -27,7 +27,7 @@
     "react-native": "^0.70.6",
     "react-native-web": "^0.18.12",
     "styled-components": "6.1.8",
-    "zustand": "^4.5.0"
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/node": "^20",

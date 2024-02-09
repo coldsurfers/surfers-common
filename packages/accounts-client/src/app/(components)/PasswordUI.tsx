@@ -11,8 +11,11 @@ import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
 import { useSignInStore } from '../(stores)/signInStore'
 import { useFetchSignIn } from '../(react-query)/accounts/useFetchSignIn'
+import { useAccountsAppStore } from '../(stores)/accountsAppStore'
+import { CommonAccountErrorCode } from '../(types)/CommonAccountErrorCode'
 
-export const PasswordUI = ({ redirectURI }: { redirectURI: string }) => {
+export const PasswordUI = () => {
+  const redirectURI = useAccountsAppStore((state) => state.redirectURI)
   const [errorMessage, setErrorMessage] = useState('')
   const formRef = useRef<SetPasswordFormRefHandle>(null)
   const { email } = useSignInStore()
@@ -21,6 +24,9 @@ export const PasswordUI = ({ redirectURI }: { redirectURI: string }) => {
       onSuccess: (response) => {
         if (response.success) {
           const { auth_token: authToken } = response.data
+          if (!redirectURI) {
+            throw Error(CommonAccountErrorCode.REDIRECT_URI_NOT_EXISTING)
+          }
           window.location.assign(
             `${redirectURI}?access_token=${authToken.access_token}&refresh_token=${authToken.refresh_token}`
           )

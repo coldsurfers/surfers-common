@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { storageName } from '../../lib/constants'
 
 interface AccountsAppStore {
   redirectURI: string | null
@@ -9,15 +11,23 @@ interface AccountsAppStore {
   setClientId: (clientId: string) => void
 }
 
-export const useAccountsAppStore = create<AccountsAppStore>((set) => ({
-  redirectURI: null,
-  clientId: null,
-  setRedirectURI: (redirectURI) =>
-    set(() => ({
-      redirectURI,
-    })),
-  setClientId: (clientId) =>
-    set(() => ({
-      clientId,
-    })),
-}))
+export const useAccountsAppStore = create<AccountsAppStore>()(
+  persist(
+    (set) => ({
+      redirectURI: null,
+      clientId: null,
+      setRedirectURI: (redirectURI) =>
+        set(() => ({
+          redirectURI,
+        })),
+      setClientId: (clientId) =>
+        set(() => ({
+          clientId,
+        })),
+    }),
+    {
+      name: storageName,
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+)

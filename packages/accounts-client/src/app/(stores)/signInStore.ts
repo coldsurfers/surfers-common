@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { storageName } from '../../lib/constants'
 
 interface SignInStore {
   email: string | null
@@ -6,10 +8,15 @@ interface SignInStore {
   setEmail: (email: string) => void
 }
 
-export const useSignInStore = create<SignInStore>((set) => ({
-  email: null,
-  setEmail: (email) =>
-    set(() => ({
-      email,
-    })),
-}))
+export const useSignInStore = create<SignInStore>()(
+  persist(
+    (set) => ({
+      email: null,
+      setEmail: (email) => set(() => ({ email })),
+    }),
+    {
+      name: storageName,
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+)
