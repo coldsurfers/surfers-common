@@ -15,6 +15,10 @@
     }
   },
   "license": "MIT",
+  "scripts": {
+    "prebuild": "yarn workspace @coldsurfers/accounts-schema build",
+    "build": "tsc --project ./tsconfig.build.json"
+  },
   "peerDependencies": {
     "@coldsurfers/accounts-schema": "1.0.1-rc.4"
   },

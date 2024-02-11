@@ -53,7 +53,7 @@ async function main() {
       secret: process.env.jwt ?? '',
     })
 
-    await fastify.listen({ port: 8008, host: '0.0.0.0' })
+    await fastify.listen({ port: 3001, host: '127.0.0.1' })
     fastify.log.info('server started', process.env.NODE_ENV)
   } catch (e) {
     fastify.log.error(e)

@@ -1,5 +1,5 @@
 {
-  // "extends": ["../../tsconfig.paths.json"],
+  "extends": ["../../tsconfig.paths.json"],
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -18,13 +18,6 @@
         "name": "next"
       }
     ],
-    "paths": {
-      "react": ["./node_modules/@types/react"],
-      "@app/*": ["./packages/accounts-client/app/*"],
-      "@hooks/*": ["./packages/accounts-client/hooks/*"],
-      "@utils/*": ["./packages/accounts-client/utils/*"],
-      "@ui/*": ["./packages/accounts-client/ui/*"],
-    },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

@@ -8,19 +8,26 @@
     ]
   },
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint --fix",
     "start": "next start",
-    "lint": "next lint --fix"
+    "unlink:coldsurfers": "unlink node_modules/@coldsurfers/accounts-kit && cp -R ../accounts-kit node_modules/@coldsurfers/accounts-kit",
+    "vercel:build:prod": "yarn unlink:coldsurfers && npx vercel pull --environment=production && npx vercel build --prod",
+    "vercel:deploy:prebuild": "npx vercel deploy --prod --prebuilt"
   },
   "dependencies": {
+    "@coldsurfers/accounts-schema": "1.0.1-rc.4",
+    "@coldsurfers/accounts-kit": "1.0.0",
+    "@coldsurfers/hotsurf": "0.2.11-rc.0",
+    "@tanstack/react-query": "5.18.1",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-native": "^0.70.6",
     "react-native-web": "^0.18.12",
     "styled-components": "6.1.8",
-    "react-native": "^0.70.6",
-    "@coldsurfers/hotsurf": "0.2.8-rc.5"
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/node": "^20",

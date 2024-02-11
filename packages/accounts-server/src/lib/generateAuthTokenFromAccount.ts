@@ -1,5 +1,5 @@
 import { AccountModel, AuthTokenModel } from '@coldsurfers/accounts-schema'
-import { fastify } from '../server'
+import { fastify } from '../../vercel/api/serverless'
 
 export default async function generateAuthTokenFromAccount(
   account: AccountModel

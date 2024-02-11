@@ -1,31 +1,29 @@
 'use client'
 
-import { LoginForm } from '@coldsurfers/hotsurf'
-import styled from 'styled-components'
+import { useEffect } from 'react'
+import { LoginUI } from './(components)/LoginUI'
+import { useAccountsAppStore } from './(stores)/accountsAppStore'
+import { HomePageWithSearchParams } from './(types)/CommonAccountNextPage'
+import { CommonAccountErrorCode } from './(types)/CommonAccountErrorCode'
 
-const Wrapper = styled.section`
-  position: absolute;
-  top: 50%; /* position the top  edge of the element at the middle of the parent */
-  left: 50%; /* position the left edge of the element at the middle of the parent */
+const Home: HomePageWithSearchParams = ({ searchParams }) => {
+  const { setRedirectURI, setClientId } = useAccountsAppStore()
+  const { redirect_uri, client_id } = searchParams
 
-  transform: translate(-50%, -50%);
+  useEffect(() => {
+    // todo: invalid_client, client id validation
+    if (!redirect_uri) {
+      throw Error(CommonAccountErrorCode.REDIRECT_URI_NOT_EXISTING)
+    }
+    setRedirectURI(redirect_uri)
+    if (client_id) {
+      setClientId(client_id)
+    }
+  }, [client_id, redirect_uri, setClientId, setRedirectURI])
 
-  padding: 1rem;
-  border-radius: 3px;
+  if (!redirect_uri) return null
 
-  display: flex;
-  flex-direction: column;
-
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-`
-
-export default function Home() {
-  return (
-    <Wrapper>
-      <LoginForm formTitle="ColdSurf Accounts" onPressLoginButton={() => {}} />
-    </Wrapper>
-  )
+  return <LoginUI redirectURI={redirect_uri} />
 }
+
+export default Home
