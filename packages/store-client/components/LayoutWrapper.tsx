@@ -30,6 +30,8 @@ export default function LayoutWrapper({
   session,
 }: PropsWithChildren<{
   session: Session | null
+  accessToken?: string
+  refreshToken?: string
 }>) {
   const { isOpen, close } = useLoginModalStore()
   return (
@@ -49,7 +51,6 @@ export default function LayoutWrapper({
           </Container>
         </QueryClientProvider>
       </SessionProvider>
-      {/* <ModalPortal.Pillar /> */}
     </>
   )
 }

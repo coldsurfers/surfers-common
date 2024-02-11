@@ -2,10 +2,9 @@
 
 import styled from 'styled-components'
 import Link from 'next/link'
-import { signOut, useSession } from 'next-auth/react'
 import { useCallback } from 'react'
 import { Button } from '@coldsurfers/hotsurf'
-import { useLoginModalStore } from '../stores/loginModalStore'
+import { useAuthStore } from '../registry/AuthStoreRegistry/useAuthStore'
 
 const Container = styled.div`
   width: 100%;
@@ -19,12 +18,24 @@ const CompanyLogo = styled.h2`
   font-weight: bold;
 `
 
+const LOGIN_REDIRECT_URI =
+  process.env.NODE_ENV === 'development'
+    ? 'https://accounts.coldsurf.io?redirect_uri=http://localhost:3000/login/redirect'
+    : 'https://accounts.coldsurf.io?redirect_uri=https://store.coldsurf.io/login/redirect'
+
 export default function Header() {
-  const { open } = useLoginModalStore()
-  const { data: session } = useSession()
-  const isLoggedIn = !!session
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+  const logout = useAuthStore((state) => state.logout)
   const onClickLogout = useCallback(async () => {
-    await signOut()
+    const res = await fetch('/api/coldsurfers', {
+      method: 'DELETE',
+    })
+    if (res.ok) {
+      logout()
+    }
+  }, [])
+  const onPressHeaderLoginButton = useCallback(() => {
+    window.location.assign(LOGIN_REDIRECT_URI)
   }, [])
   return (
     <Container>
@@ -47,7 +58,7 @@ export default function Header() {
         />
       ) : (
         <Button
-          onPress={open}
+          onPress={onPressHeaderLoginButton}
           text="Log In"
           style={{
             marginLeft: 'auto',
