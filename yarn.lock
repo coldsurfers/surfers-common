@@ -2190,19 +2190,21 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@coldsurfers/cloudinary-utils@1.0.0":
-  version "1.0.0"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/cloudinary-utils/1.0.0/579dcd1da95edb66eb4b07696ecb0428f949b459"
-  integrity sha512-MsjUqWSeRUQ/eNNPQ2HZiqVLspf50SvOJtA3rblpNOnS5pALp4ruQvCQZDYDTnGD+RSF6SzBrngDX/xpKJsqFg==
-  dependencies:
-    "@coldsurfers/shared-utils" "1.0.0"
-
 "@coldsurfers/design-tokens@1.10.0":
   version "1.10.0"
   resolved "https://npm.pkg.github.com/download/@coldsurfers/design-tokens/1.10.0/5de0ababed32a75c695afe2c506266568a9431fe"
   integrity sha512-sMSCk9ONXaNCYxsD5vdn7nal1KZWqwi2RdjXghusfK7RMmTW//Bxpcl/xseuuozMakGPHKD3nji65rl1180Wvg==
   dependencies:
     open-color "^1.9.1"
+
+"@coldsurfers/hotsurf@0.2.11":
+  version "0.2.11"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.11/83caafb57295cdf95613462bfb66aa94fc61cc58#83caafb57295cdf95613462bfb66aa94fc61cc58"
+  integrity sha512-0PdTAHkjjrPtcTgywk3vvAgG+E3koySmsaAyS1UGMLDvI6vSUF7eGJIImS14EdjSjmBF9SRgd/8LgcQSy9jv3g==
+  dependencies:
+    react "18.2.0"
+    style-dictionary "^3.7.1"
+    typescript "^4.8.3"
 
 "@coldsurfers/hotsurf@0.2.11-rc.0":
   version "0.2.11-rc.0"
@@ -2242,11 +2244,6 @@
   integrity sha512-MggZMEAaGGQ5VAnjPW93oMp1AC39q+dksexZGa9q1naJtra0Exdt1kMBGIpRNNKS1v1sBqS84RqUiSvLQC1Kjg==
   dependencies:
     "@coldsurfers/design-tokens" "1.10.0"
-
-"@coldsurfers/shared-utils@1.0.0":
-  version "1.0.0"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/shared-utils/1.0.0/45a4e1f48ef1ab29c228aee99f266976cc2094ac"
-  integrity sha512-IGcQP3ILFaRBqFxUUlGfPOew6ScnHJjG5yNgfzm5CPcSYR/ggk/KMVJhrI3kUxy6DVnwqlufjD78OrdPyycoaQ==
 
 "@commitlint/cli@^17.3.0", "@commitlint/cli@^17.4.2":
   version "17.8.1"
