@@ -2,6 +2,11 @@
   "name": "@coldsurfers/surflog",
   "version": "0.1.1",
   "private": true,
+  "workspaces": {
+    "nohoist": [
+      "**"
+    ]
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -18,7 +23,7 @@
     "Adam Beleko <bossbele@larven.io> (https://github.com/BossBele)"
   ],
   "dependencies": {
-    "@coldsurfers/cloudinary-utils": "1.0.0",
+    "@coldsurfers/cloudinary-utils": "1.0.1-rc.0",
     "@coldsurfers/notion-utils": "^1.0.1-rc.10",
     "@coldsurfers/ocean-road": "1.11.1-rc.0",
     "@coldsurfers/shared-utils": "1.1.0",
