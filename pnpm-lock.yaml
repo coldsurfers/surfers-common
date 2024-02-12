@@ -1100,6 +1100,9 @@ importers:
       styled-components:
         specifier: 6.1.8
         version: 6.1.8(react-dom@18.2.0)(react@18.2.0)
+      styled-jsx:
+        specifier: ^5.1.2
+        version: 5.1.2(@babel/core@7.23.9)(react@18.2.0)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -21635,6 +21638,24 @@ packages:
       client-only: 0.0.1
       react: 18.2.0
 
+  /styled-jsx@5.1.2(@babel/core@7.23.9)(react@18.2.0):
+    resolution: {integrity: sha512-FI5r0a5ED2/+DSdG2ZRz3a4FtNQnKPLadauU5v76a9QsscwZrWggQKOmyxGGP5EWKbyY3bsuWAJYzyKaDAVAcw==}
+    engines: {node: '>= 12.0.0'}
+    peerDependencies:
+      '@babel/core': '*'
+      babel-plugin-macros: '*'
+      react: '>= 16.8.0 || 17.x.x || ^18.0.0-0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      babel-plugin-macros:
+        optional: true
+    dependencies:
+      '@babel/core': 7.23.9
+      client-only: 0.0.1
+      react: 18.2.0
+    dev: false
+
   /styleq@0.1.3:
     resolution: {integrity: sha512-3ZUifmCDCQanjeej1f6kyl/BeP/Vae5EYkQ9iJfUm/QwZvlgnZzyflqAsAWYURdtea8Vkvswu2GrC57h3qffcA==}
     dev: false
@@ -22026,7 +22047,7 @@ packages:
     engines: {node: '>=8'}
     requiresBuild: true
     dependencies:
-      tslib: 2.2.0
+      tslib: 2.6.2
     dev: false
 
   /ts-loader@6.2.1(typescript@5.3.3):
