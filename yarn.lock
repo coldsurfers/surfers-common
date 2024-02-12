@@ -2204,6 +2204,15 @@
   dependencies:
     open-color "^1.9.1"
 
+"@coldsurfers/hotsurf@0.2.11":
+  version "0.2.11"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.11/83caafb57295cdf95613462bfb66aa94fc61cc58#83caafb57295cdf95613462bfb66aa94fc61cc58"
+  integrity sha512-0PdTAHkjjrPtcTgywk3vvAgG+E3koySmsaAyS1UGMLDvI6vSUF7eGJIImS14EdjSjmBF9SRgd/8LgcQSy9jv3g==
+  dependencies:
+    react "18.2.0"
+    style-dictionary "^3.7.1"
+    typescript "^4.8.3"
+
 "@coldsurfers/hotsurf@0.2.11-rc.0":
   version "0.2.11-rc.0"
   resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.11-rc.0/e06f28b3f5a9c5db2e84fd52ed7868aaf5cbe932#e06f28b3f5a9c5db2e84fd52ed7868aaf5cbe932"
