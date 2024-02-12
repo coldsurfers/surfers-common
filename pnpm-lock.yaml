@@ -1038,8 +1038,8 @@ importers:
         specifier: 1.0.1-rc.4
         version: link:../accounts-schema
       '@coldsurfers/hotsurf':
-        specifier: 0.2.8-rc.5
-        version: 0.2.8-rc.5(react-native@0.70.15)(react@18.2.0)
+        specifier: 0.2.11
+        version: 0.2.11(react-native@0.70.15)(react@18.2.0)
       '@coldsurfers/notion-renderer':
         specifier: 1.0.0
         version: link:../notion-renderer
@@ -4064,6 +4064,18 @@ packages:
     resolution: {integrity: sha512-sMSCk9ONXaNCYxsD5vdn7nal1KZWqwi2RdjXghusfK7RMmTW//Bxpcl/xseuuozMakGPHKD3nji65rl1180Wvg==, tarball: https://npm.pkg.github.com/download/@coldsurfers/design-tokens/1.10.0/5de0ababed32a75c695afe2c506266568a9431fe}
     dependencies:
       open-color: 1.9.1
+    dev: false
+
+  /@coldsurfers/hotsurf@0.2.11(react-native@0.70.15)(react@18.2.0):
+    resolution: {integrity: sha512-0PdTAHkjjrPtcTgywk3vvAgG+E3koySmsaAyS1UGMLDvI6vSUF7eGJIImS14EdjSjmBF9SRgd/8LgcQSy9jv3g==, tarball: https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.11/83caafb57295cdf95613462bfb66aa94fc61cc58}
+    peerDependencies:
+      react: '>= 18.2.0'
+      react-native: '>= 0.69.0'
+    dependencies:
+      react: 18.2.0
+      react-native: 0.70.15(@babel/core@7.23.9)(@babel/preset-env@7.23.9)(react@18.2.0)
+      style-dictionary: 3.9.2
+      typescript: 4.9.5
     dev: false
 
   /@coldsurfers/hotsurf@0.2.11-rc.0(react-native@0.70.15)(react@18.2.0):
