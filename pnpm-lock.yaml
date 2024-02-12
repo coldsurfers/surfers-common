@@ -1023,8 +1023,8 @@ importers:
         specifier: 1.0.1-rc.4
         version: link:../accounts-schema
       '@coldsurfers/hotsurf':
-        specifier: 0.2.11
-        version: 0.2.11(react-native@0.70.15)(react@18.2.0)
+        specifier: 0.2.8-rc.5
+        version: 0.2.8-rc.5(react-native@0.70.15)(react@18.2.0)
       '@coldsurfers/notion-renderer':
         specifier: 1.0.0
         version: link:../notion-renderer
@@ -1302,8 +1302,8 @@ importers:
   packages/surflog:
     dependencies:
       '@coldsurfers/cloudinary-utils':
-        specifier: 1.0.0
-        version: 1.0.0(axios@1.6.7)(form-data@4.0.0)(fs@0.0.1-security)(sha1@1.1.1)(stream@0.0.2)(util@0.12.5)
+        specifier: 1.0.1-rc.0
+        version: link:../cloudinary-utils
       '@coldsurfers/notion-utils':
         specifier: ^1.0.1-rc.10
         version: link:../notion-utils
@@ -4045,41 +4045,10 @@ packages:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  /@coldsurfers/cloudinary-utils@1.0.0(axios@1.6.7)(form-data@4.0.0)(fs@0.0.1-security)(sha1@1.1.1)(stream@0.0.2)(util@0.12.5):
-    resolution: {integrity: sha512-MsjUqWSeRUQ/eNNPQ2HZiqVLspf50SvOJtA3rblpNOnS5pALp4ruQvCQZDYDTnGD+RSF6SzBrngDX/xpKJsqFg==, tarball: https://npm.pkg.github.com/download/@coldsurfers/cloudinary-utils/1.0.0/579dcd1da95edb66eb4b07696ecb0428f949b459}
-    peerDependencies:
-      axios: ^1.6.3
-      form-data: ^4.0.0
-      fs: ^0.0.1-security
-      sha1: ^1.1.1
-      stream: ^0.0.2
-      util: ^0.12.5
-    dependencies:
-      '@coldsurfers/shared-utils': 1.0.0
-      axios: 1.6.7
-      form-data: 4.0.0
-      fs: 0.0.1-security
-      sha1: 1.1.1
-      stream: 0.0.2
-      util: 0.12.5
-    dev: false
-
   /@coldsurfers/design-tokens@1.10.0:
     resolution: {integrity: sha512-sMSCk9ONXaNCYxsD5vdn7nal1KZWqwi2RdjXghusfK7RMmTW//Bxpcl/xseuuozMakGPHKD3nji65rl1180Wvg==, tarball: https://npm.pkg.github.com/download/@coldsurfers/design-tokens/1.10.0/5de0ababed32a75c695afe2c506266568a9431fe}
     dependencies:
       open-color: 1.9.1
-    dev: false
-
-  /@coldsurfers/hotsurf@0.2.11(react-native@0.70.15)(react@18.2.0):
-    resolution: {integrity: sha512-0PdTAHkjjrPtcTgywk3vvAgG+E3koySmsaAyS1UGMLDvI6vSUF7eGJIImS14EdjSjmBF9SRgd/8LgcQSy9jv3g==, tarball: https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.11/83caafb57295cdf95613462bfb66aa94fc61cc58}
-    peerDependencies:
-      react: '>= 18.2.0'
-      react-native: '>= 0.69.0'
-    dependencies:
-      react: 18.2.0
-      react-native: 0.70.15(@babel/core@7.23.9)(@babel/preset-env@7.23.9)(react@18.2.0)
-      style-dictionary: 3.9.2
-      typescript: 4.9.5
     dev: false
 
   /@coldsurfers/hotsurf@0.2.11-rc.0(react-native@0.70.15)(react@18.2.0):
@@ -4155,10 +4124,6 @@ packages:
       '@emotion/styled': 11.11.0(@emotion/react@11.11.3)(@types/react@18.2.47)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /@coldsurfers/shared-utils@1.0.0:
-    resolution: {integrity: sha512-IGcQP3ILFaRBqFxUUlGfPOew6ScnHJjG5yNgfzm5CPcSYR/ggk/KMVJhrI3kUxy6DVnwqlufjD78OrdPyycoaQ==, tarball: https://npm.pkg.github.com/download/@coldsurfers/shared-utils/1.0.0/45a4e1f48ef1ab29c228aee99f266976cc2094ac}
     dev: false
 
   /@commitlint/cli@17.8.1:
@@ -5439,7 +5404,7 @@ packages:
       '@ardatan/relay-compiler': 12.0.0(graphql@16.8.1)
       '@graphql-tools/utils': 9.2.1(graphql@16.8.1)
       graphql: 16.8.1
-      tslib: 2.4.1
+      tslib: 2.6.2
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -12242,6 +12207,7 @@ packages:
 
   /emitter-component@1.1.2:
     resolution: {integrity: sha512-QdXO3nXOzZB4pAjM0n6ZE+R9/+kPpECA/XSELIcc54NeYVnBqIk+4DFiBgK+8QbV3mdvTG6nedl7dTYgO+5wDw==}
+    dev: true
 
   /emitter-listener@1.1.2:
     resolution: {integrity: sha512-Bt1sBAGFHY9DKY+4/2cV6izcKJUf5T7/gkdmkxzX/qv9CcGH8xSwVRW5mtX03SWJtRTWSOpzCuWN9rBFYZepZQ==}
@@ -14745,6 +14711,7 @@ packages:
 
   /fs@0.0.1-security:
     resolution: {integrity: sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w==}
+    dev: true
 
   /fsevents@1.2.13:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
@@ -21401,6 +21368,7 @@ packages:
     resolution: {integrity: sha512-gCq3NDI2P35B2n6t76YJuOp7d6cN/C7Rt0577l91wllh0sY9ZBuw9KaSGqH/b0hzn3CWWJbpbW0W0WvQ1H/Q7g==}
     dependencies:
       emitter-component: 1.1.2
+    dev: true
 
   /streamsearch@0.1.2:
     resolution: {integrity: sha512-jos8u++JKm0ARcSUTAZXOVC0mSox7Bhn6sBgty73P1f3JGf7yG2clTbBNHUdde/kdvP2FESam+vM6l8jBrNxHA==}
