@@ -626,6 +626,9 @@ importers:
         specifier: 1.1.0
         version: link:../shared-utils
     devDependencies:
+      '@types/sha1':
+        specifier: ^1.1.5
+        version: 1.1.5
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.62.0
         version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@5.3.3)
@@ -865,6 +868,9 @@ importers:
 
   packages/notion-renderer:
     devDependencies:
+      '@types/react':
+        specifier: 18.2.47
+        version: 18.2.47
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.62.0
         version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@5.3.3)

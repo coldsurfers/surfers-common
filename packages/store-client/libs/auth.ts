@@ -159,10 +159,10 @@ export const config = {
         return false
       }
 
-      await accountsKit.fetchSignIn({
-        provider,
-        access_token: accessToken,
-      })
+      // await accountsKit.fetchSignIn({
+      //   provider,
+      //   access_token: accessToken,
+      // })
       return true
     },
   },
