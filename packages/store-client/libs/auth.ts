@@ -1,4 +1,3 @@
-import AccountsKit from '@coldsurfers/accounts-kit'
 import NextAuth from 'next-auth'
 
 // import Apple from "next-auth/providers/apple"
@@ -65,8 +64,6 @@ import Google from 'next-auth/providers/google'
 // import Zoom from "next-auth/providers/zoom"
 
 import type { NextAuthConfig } from 'next-auth'
-
-const accountsKit = new AccountsKit()
 
 export const config = {
   theme: {
@@ -159,11 +156,13 @@ export const config = {
         return false
       }
 
+      return true
+
       // await accountsKit.fetchSignIn({
       //   provider,
       //   access_token: accessToken,
       // })
-      return true
+      // return true
     },
   },
 } satisfies NextAuthConfig
