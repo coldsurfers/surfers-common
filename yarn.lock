@@ -2206,19 +2206,19 @@
     style-dictionary "^3.7.1"
     typescript "^4.8.3"
 
-"@coldsurfers/hotsurf@0.2.11-rc.0":
-  version "0.2.11-rc.0"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.11-rc.0/e06f28b3f5a9c5db2e84fd52ed7868aaf5cbe932#e06f28b3f5a9c5db2e84fd52ed7868aaf5cbe932"
-  integrity sha512-CzVbg69Jjn73YEfaZCagoTff9BZY+L7bZyCucHZen4CZz/Fm79Nyy+F/vABi3FQzzYYwhQ8EZtgXy82U9ih1ag==
+"@coldsurfers/hotsurf@0.2.8-rc.5":
+  version "0.2.8-rc.5"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.8-rc.5/acf5dca58f69ed945e57202483903e0f0c92476d#acf5dca58f69ed945e57202483903e0f0c92476d"
+  integrity sha512-vnlidiFWPsUCI3e0/5EHE1CkQnrXil/TUqVAhesRoIOHehtBVzXKYaPGpqGtDGEm5+27HHcxStSVf1GpHduW8g==
   dependencies:
     react "18.2.0"
     style-dictionary "^3.7.1"
     typescript "^4.8.3"
 
-"@coldsurfers/hotsurf@0.2.8-rc.5":
-  version "0.2.8-rc.5"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.2.8-rc.5/acf5dca58f69ed945e57202483903e0f0c92476d#acf5dca58f69ed945e57202483903e0f0c92476d"
-  integrity sha512-vnlidiFWPsUCI3e0/5EHE1CkQnrXil/TUqVAhesRoIOHehtBVzXKYaPGpqGtDGEm5+27HHcxStSVf1GpHduW8g==
+"@coldsurfers/hotsurf@0.3.0":
+  version "0.3.0"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.3.0/7fed26b89ddfb989a5691ed575338d31176b1704#7fed26b89ddfb989a5691ed575338d31176b1704"
+  integrity sha512-va9cY4cK4DYN6V94/yG+exxBRsQQneovnALmAS791kFFeJL0mdw3YrK8dMzpXxlfeXFVzj7v73MW63lRxHFQSg==
   dependencies:
     react "18.2.0"
     style-dictionary "^3.7.1"

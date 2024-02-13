@@ -1,4 +1,4 @@
-import '@coldsurfers/hotsurf/global.css'
+import '@coldsurfers/hotsurf/global-light-only.css'
 import type { Metadata } from 'next'
 import StyledComponentsRegistry from '../registry/StyledComponentsRegistry'
 import StyleSheetRegistry from '../registry/StyleSheetRegistry'
