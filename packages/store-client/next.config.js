@@ -3,10 +3,10 @@
 const path = require('path')
 
 const nextConfig = {
-  output: 'standalone',
+  // output: 'standalone',
   experimental: {
     externalDir: true,
-    outputFileTracingRoot: path.join(__dirname, '../../'),
+    // outputFileTracingRoot: path.join(__dirname, '../../'),
   },
   webpack: (config) => {
     config.resolve.alias = {

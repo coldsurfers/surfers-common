@@ -20,14 +20,14 @@ const CompanyLogo = styled.h2`
 
 const LOGIN_REDIRECT_URI =
   process.env.NODE_ENV === 'development'
-    ? 'https://accounts.coldsurf.io?redirect_uri=http://localhost:3000/login/redirect'
-    : 'https://accounts.coldsurf.io?redirect_uri=https://store.coldsurf.io/login/redirect'
+    ? 'https://accounts.coldsurf.io?redirect_uri=http://localhost:3000/login-handler'
+    : 'https://accounts.coldsurf.io?redirect_uri=https://store.coldsurf.io/login-handler'
 
 export default function Header() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
   const logout = useAuthStore((state) => state.logout)
   const onClickLogout = useCallback(async () => {
-    const res = await fetch('/api/coldsurfers', {
+    const res = await fetch('/login-handler', {
       method: 'DELETE',
     })
     if (res.ok) {
