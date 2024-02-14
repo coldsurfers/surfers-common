@@ -3,7 +3,9 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "utils/*",
+      "clients/*",
+      "servers/*"
     ],
     "nohoist": [
       "**/react-native",
@@ -12,15 +14,16 @@
   },
   "scripts": {
     "super-install": "yarn install --immutable --force || yarn install --immutable --force",
-    "super-remove": "rm -rf ./packages/*/node_modules && rm -rf ./node_modules",
-    "prettier": "prettier \"packages/**/*.{ts,tsx,js,json}\"",
+    "super-remove": "rm -rf ./**/*/node_modules && rm -rf ./node_modules",
+    "prettier": "prettier \"./**/*.{ts,tsx,js,json}\"",
     "format:check": "yarn prettier --check",
     "format:write": "yarn prettier --write",
     "lint": "yarn nx run-many --target=lint",
     "tsc": "yarn nx run-many --target=tsc",
     "prepare": "husky install",
     "prevalidate": "yarn format:write",
-    "validate": "run-p lint tsc format:check"
+    "validate": "run-p lint tsc format:check",
+    "turbo:build:all": "turbo run build"
   },
   "devDependencies": {
     "husky": "^8.0.0",
