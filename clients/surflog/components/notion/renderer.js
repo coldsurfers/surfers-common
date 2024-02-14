@@ -1,4 +1,6 @@
 import { Fragment } from 'react'
+
+import { highlight, languages } from 'prismjs'
 import Link from 'next/link'
 
 import Text from '../text'
@@ -113,10 +115,18 @@ export function renderBlock(block) {
       )
     case 'code':
       return (
-        <pre className={styles.pre}>
-          <code className={styles.code_block} key={id}>
-            {value.rich_text[0].plain_text}
-          </code>
+        <pre className={[styles.pre, `language-${value.language}`]}>
+          <code
+            className={[styles.code_block, `language-${value.language}`]}
+            key={id}
+            dangerouslySetInnerHTML={{
+              __html: highlight(
+                value.rich_text[0].plain_text,
+                languages[value.language] || languages.javascript,
+                value.language
+              ),
+            }}
+          />
         </pre>
       )
     case 'file': {

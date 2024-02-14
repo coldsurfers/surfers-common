@@ -7,6 +7,9 @@ import Text from '../../../components/text'
 import { renderBlock } from '../../../components/notion/renderer'
 import styles from '../../../styles/post.module.css'
 import { getInternalPosts } from '../../../lib/utils'
+// prismjs
+import 'prismjs/themes/prism-tomorrow.css'
+import 'prismjs/components/prism-jsx'
 
 // Return a list of `params` to populate the [slug] dynamic segment
 export async function generateStaticParams() {
