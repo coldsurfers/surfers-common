@@ -2,11 +2,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { NextRequest } from 'next/server'
-
-const COOKIES = {
-  ACCESS_TOKEN: '@coldsurfers/store.access_token',
-  REFRESH_TOKEN: '@coldsurfers/store.refresh_token',
-}
+import { COOKIES } from '../../libs/constants'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl

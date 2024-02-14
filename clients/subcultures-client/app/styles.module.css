@@ -25,7 +25,7 @@
 .sectionItem {
     width: calc(33% - 12px);
     height: auto;
-    background-color: #212121;
+    background-color: #f1f1f1;
     border-radius: 12px;
     margin-top: 12px;
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { PropsWithChildren } from 'react'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider, signIn } from 'next-auth/react'
 import { Session } from 'next-auth'

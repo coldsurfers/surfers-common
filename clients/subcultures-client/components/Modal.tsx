@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { MouseEventHandler, PropsWithChildren, forwardRef } from 'react'
 
 const ModalBackground = styled.div`

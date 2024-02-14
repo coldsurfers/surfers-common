@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GestureResponderEvent } from 'react-native'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { Modal } from '@coldsurfers/hotsurf'
 import { nanoid } from 'nanoid'
 import { useEffect, useRef } from 'react'

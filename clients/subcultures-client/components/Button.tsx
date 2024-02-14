@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react'
 
 export interface ButonProps

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useCallback } from 'react'
 import { Button } from '@coldsurfers/hotsurf'
 import { useAuthStore } from '../registry/AuthStoreRegistry/useAuthStore'
+import { URLS } from '../libs/constants'
 
 const Container = styled.div`
   width: 100%;
@@ -18,11 +19,6 @@ const CompanyLogo = styled.h2`
   font-weight: bold;
 `
 
-const LOGIN_REDIRECT_URI =
-  process.env.NODE_ENV === 'development'
-    ? 'https://accounts.coldsurf.io?redirect_uri=http://localhost:3000/login-handler'
-    : 'https://accounts.coldsurf.io?redirect_uri=https://store.coldsurf.io/login-handler'
-
 export default function Header() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
   const logout = useAuthStore((state) => state.logout)
@@ -35,7 +31,7 @@ export default function Header() {
     }
   }, [])
   const onPressHeaderLoginButton = useCallback(() => {
-    window.location.assign(LOGIN_REDIRECT_URI)
+    window.location.assign(URLS.LOGIN_REDIRECT_URI)
   }, [])
   return (
     <Container>
@@ -46,7 +42,7 @@ export default function Header() {
           color: 'inherit',
         }}
       >
-        <CompanyLogo>ColdSurf Store</CompanyLogo>
+        <CompanyLogo>Subcultures</CompanyLogo>
       </Link>
       {isLoggedIn ? (
         <Button
