@@ -26,7 +26,8 @@
     "turbo:build:all": "turbo run build",
     "turbo:build:clients": "turbo run build --filter=@coldsurfers/*-client",
     "turbo:build:servers": "turbo run build --filter=@coldsurfers/*-server",
-    "turbo:build:utils": "turbo run build --filter=@coldsurfers/*-utils --filter=@coldsurfers/accounts-kit --filter=@coldsurfers/acounts-schema --filter=@coldsurfers/notion-renderer"
+    "turbo:build:utils": "turbo run build --filter=@coldsurfers/*-utils --filter=@coldsurfers/accounts-kit --filter=@coldsurfers/acounts-schema --filter=@coldsurfers/notion-renderer",
+    "turbo:lint:all": "turbo run lint"
   },
   "devDependencies": {
     "husky": "^8.0.0",

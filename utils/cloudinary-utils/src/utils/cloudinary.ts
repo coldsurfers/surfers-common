@@ -31,9 +31,8 @@ export const uploadCloudinary = async (url: string) => {
   }
   const filepath = `temps/${generateUUID()}`
   await pipeline(request.data, fs.createWriteStream(filepath))
-  const { signature, public_id, timestamp } = generateCloudinaryUploadSignature(
-    generateUUID()
-  )
+  const { signature, public_id, timestamp } =
+    generateCloudinaryUploadSignature(generateUUID())
 
   const cloudinarySignedUploadAPI =
     'https://api.cloudinary.com/v1_1/druidbphk/image/upload'
