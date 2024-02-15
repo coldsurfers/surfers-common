@@ -40,7 +40,10 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.4.16",
-    "@types/react": "18.2.14",
+    "@types/prismjs": "~1.26.3",
+    "@types/react": "18.2.55",
+    "@types/react-dom": "18.2.19",
+    "@types/sha1": "~1.1.5",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "encoding": "^0.1.13",
