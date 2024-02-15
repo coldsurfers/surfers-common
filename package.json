@@ -25,7 +25,7 @@
     "validate": "run-p lint tsc format:check",
     "turbo:build:all": "turbo run build",
     "turbo:build:clients": "turbo run build --filter=@coldsurfers/*-client",
-    "turbo:build:servers": "turbo run build --filter=@coldsurfers/*-servers",
+    "turbo:build:servers": "turbo run build --filter=@coldsurfers/*-server",
     "turbo:build:utils": "turbo run build --filter=@coldsurfers/*-util"
   },
   "devDependencies": {
