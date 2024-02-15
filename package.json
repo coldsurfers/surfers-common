@@ -23,7 +23,10 @@
     "prepare": "husky install",
     "prevalidate": "yarn format:write",
     "validate": "run-p lint tsc format:check",
-    "turbo:build:all": "turbo run build"
+    "turbo:build:all": "turbo run build",
+    "turbo:build:clients": "turbo run build --filter=@coldsurfers/*-client",
+    "turbo:build:servers": "turbo run build --filter=@coldsurfers/*-servers",
+    "turbo:build:utils": "turbo run build --filter=@coldsurfers/*-util"
   },
   "devDependencies": {
     "husky": "^8.0.0",
