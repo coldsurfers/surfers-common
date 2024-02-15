@@ -2,6 +2,7 @@
 
 import { createGlobalStyle } from 'styled-components'
 import { usePathname } from 'next/navigation'
+import { Suspense } from 'react'
 import GlobalStylesRegistry from './registry/GlobalStylesRegistry'
 import '../styles/global.css'
 import ApolloProviderRegistry from './registry/ApolloProviderRegistry'
@@ -27,7 +28,7 @@ export default function RootLayout({
           <GlobalStylesRegistry>
             <>
               {pathname?.includes('/auth') ? null : <Header />}
-              {children}
+              <Suspense>{children}</Suspense>
               <GlobalStyle />
             </>
           </GlobalStylesRegistry>

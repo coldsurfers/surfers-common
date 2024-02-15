@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
 
-const ItemSlugPage: NextPage<{}> = async () => <></>
+const ItemSlugPage: NextPage<{}> = () => <></>
 
 export default ItemSlugPage

@@ -2,6 +2,6 @@
   "extends": ["../../tsconfig.paths.json", "../../tsconfig.ui.json"],
   "compilerOptions": {
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
-    "jsx": "preserve",
+    "jsx": "react-jsx"
   },
 }
