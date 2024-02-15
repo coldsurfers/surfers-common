@@ -275,9 +275,8 @@ export const patchAccountsAuthcodeCtrl: RouteHandler<{
       return rep.status(400).send({})
     }
     const { authcode, email } = req.body
-    const emailAuthRequest = await EmailAuthRequestModel.findLatestByEmail(
-      email
-    )
+    const emailAuthRequest =
+      await EmailAuthRequestModel.findLatestByEmail(email)
     if (emailAuthRequest?.authcode === authcode) {
       await emailAuthRequest.authenticate()
       return rep.status(200).send({})
