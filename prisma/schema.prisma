@@ -150,3 +150,12 @@ model ConcertTicketPrice {
 
   @@index([concertTicketId])
 }
+
+// new wave
+// model NewWave_Feed {}
+
+// model NewWave_FeedLike {}
+
+// model NewWave_FeedReply {}
+
+// model NewWave_Profile {}

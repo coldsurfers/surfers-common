@@ -8,6 +8,10 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
   const access_token = searchParams.get('access_token')
   const refresh_token = searchParams.get('refresh_token')
+  const redirect_type = searchParams.get('redirect_type') as
+    | 'signup'
+    | 'signin'
+    | null
 
   if (access_token && refresh_token) {
     const cookieStore = cookies()
@@ -21,7 +25,15 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  redirect('/')
+  switch (redirect_type) {
+    case 'signup':
+      redirect('/signup')
+      break
+    case 'signin':
+    default:
+      redirect('/')
+      break
+  }
 }
 
 export async function DELETE() {
