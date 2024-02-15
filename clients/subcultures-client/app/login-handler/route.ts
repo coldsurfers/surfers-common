@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 
   switch (redirect_type) {
     case 'signup':
-      redirect('/signup')
+      redirect('/profile/setup')
       break
     case 'signin':
     default:
