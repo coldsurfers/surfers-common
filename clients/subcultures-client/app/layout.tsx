@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import '../styles/globals.css'
 import '@coldsurfers/hotsurf/global-light-only.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
