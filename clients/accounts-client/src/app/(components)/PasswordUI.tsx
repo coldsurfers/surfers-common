@@ -13,6 +13,8 @@ import { useSignInStore } from '../(stores)/signInStore'
 import { useFetchSignIn } from '../(react-query)/accounts/useFetchSignIn'
 import { useAccountsAppStore } from '../(stores)/accountsAppStore'
 import { CommonAccountErrorCode } from '../(types)/CommonAccountErrorCode'
+import { REDIRECT_TYPE } from '../../lib/constants'
+import { createRedirectURI } from '../../lib/utils'
 
 export const PasswordUI = () => {
   const redirectURI = useAccountsAppStore((state) => state.redirectURI)
@@ -28,7 +30,12 @@ export const PasswordUI = () => {
             throw Error(CommonAccountErrorCode.REDIRECT_URI_NOT_EXISTING)
           }
           window.location.assign(
-            `${redirectURI}?access_token=${authToken.access_token}&refresh_token=${authToken.refresh_token}`
+            createRedirectURI({
+              redirectURI,
+              accessToken: authToken.access_token,
+              refreshToken: authToken.refresh_token,
+              redirectType: REDIRECT_TYPE.SIGN_UP,
+            })
           )
         } else {
           const { status } = response.error

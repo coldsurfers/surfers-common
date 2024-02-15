@@ -11,6 +11,8 @@ import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
 import { useFetchSignIn } from '../(react-query)/accounts/useFetchSignIn'
+import { REDIRECT_TYPE } from '../../lib/constants'
+import { createRedirectURI } from '../../lib/utils'
 
 export function LoginUI({ redirectURI }: { redirectURI: string }) {
   const [errorMessage, setErrorMessage] = useState('')
@@ -21,7 +23,12 @@ export function LoginUI({ redirectURI }: { redirectURI: string }) {
         if (data.success) {
           const { auth_token: authToken } = data.data
           window.location.assign(
-            `${redirectURI}?access_token=${authToken.access_token}&refresh_token=${authToken.refresh_token}`
+            createRedirectURI({
+              redirectURI,
+              accessToken: authToken.access_token,
+              refreshToken: authToken.refresh_token,
+              redirectType: REDIRECT_TYPE.SIGN_IN,
+            })
           )
         } else {
           const { status } = data.error

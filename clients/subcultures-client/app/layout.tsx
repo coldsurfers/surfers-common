@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import '../styles/globals.css'
 import '@coldsurfers/hotsurf/global-light-only.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -15,7 +16,7 @@ import { COOKIES } from '../libs/constants'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Subcultures | ColdSurf',
+  title: 'New Wave',
 }
 
 export default async function RootLayout({
@@ -30,7 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className={inter.className}>
+      <body className={[inter.className, 'bg-gray-50'].join(' ')}>
         <RegistryProvider
           registries={[StyledComponentsRegistry, StyleSheetRegistry]}
         >

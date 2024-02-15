@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider, signIn } from 'next-auth/react'
 import { Session } from 'next-auth'
 import { LoginModal } from './LoginModal'
-import Header from './Header'
+import { Header } from './Header/Header'
 import Footer from './Footer'
 import { useLoginModalStore } from '../stores/loginModalStore'
 
