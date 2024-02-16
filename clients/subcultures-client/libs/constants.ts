@@ -9,3 +9,8 @@ export const URLS = {
       ? 'https://accounts.coldsurf.io?redirect_uri=http://localhost:3000/login-handler'
       : 'https://accounts.coldsurf.io?redirect_uri=https://subcultures.coldsurf.io/login-handler',
 }
+
+export const API_HOST =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://subcultures.coldsurf.io'
