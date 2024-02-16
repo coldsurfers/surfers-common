@@ -145,6 +145,16 @@ CREATE TABLE "ConcertTicketPrice" (
     CONSTRAINT "ConcertTicketPrice_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "GB_Profile" (
+    "id" TEXT NOT NULL,
+    "account_id" TEXT NOT NULL,
+    "username" VARCHAR(255) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "GB_Profile_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_username_key" ON "Account"("username");
 
@@ -190,6 +200,12 @@ CREATE INDEX "ConcertTicket_concertId_idx" ON "ConcertTicket"("concertId");
 -- CreateIndex
 CREATE INDEX "ConcertTicketPrice_concertTicketId_idx" ON "ConcertTicketPrice"("concertTicketId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "GB_Profile_account_id_key" ON "GB_Profile"("account_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "GB_Profile_username_key" ON "GB_Profile"("username");
+
 -- AddForeignKey
 ALTER TABLE "Staff" ADD CONSTRAINT "Staff_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "Account"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -219,3 +235,6 @@ ALTER TABLE "ConcertTicket" ADD CONSTRAINT "ConcertTicket_concertId_fkey" FOREIG
 
 -- AddForeignKey
 ALTER TABLE "ConcertTicketPrice" ADD CONSTRAINT "ConcertTicketPrice_concertTicketId_fkey" FOREIGN KEY ("concertTicketId") REFERENCES "ConcertTicket"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GB_Profile" ADD CONSTRAINT "GB_Profile_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "Account"("id") ON DELETE CASCADE ON UPDATE CASCADE;

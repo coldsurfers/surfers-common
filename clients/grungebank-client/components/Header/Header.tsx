@@ -31,7 +31,9 @@ export function Header() {
               src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               alt=""
             />
-            <h1 className="mx-2 text-xl font-bold text-slate-900">New Wave</h1>
+            <h1 className="mx-2 text-xl font-bold text-slate-900">
+              Grunge Bank
+            </h1>
           </Link>
         </div>
         {isLoggedIn ? (

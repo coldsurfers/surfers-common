@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       status: 403,
     })
 
-  const profile = await prismaClient.newWave_Profile.findUnique({
+  const profile = await prismaClient.gB_Profile.findUnique({
     where: {
       account_id: authToken.account_id,
     },
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
       status: 409,
     })
 
-  const profile = await prismaClient.newWave_Profile.create({
+  const profile = await prismaClient.gB_Profile.create({
     data: {
       account_id: authToken.account_id,
       username,
