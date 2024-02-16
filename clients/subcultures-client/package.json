@@ -11,7 +11,9 @@
     "build": "next build",
     "create:env:ci": "yarn ts-node ./libs/createDotEnv.ts",
     "dev": "next dev",
+    "postinstall": "yarn prisma:copy && yarn prisma generate",
     "lint": "next lint --fix",
+    "prisma:copy": "mkdir -p ./prisma && cp ../../prisma/schema.prisma ./prisma/schema.prisma",
     "start": "next start"
   },
   "dependencies": {
@@ -19,6 +21,7 @@
     "@coldsurfers/accounts-schema": "1.0.1-rc.4",
     "@coldsurfers/hotsurf": "0.3.0",
     "@coldsurfers/ocean-road": "1.5.1-rc.4",
+    "@prisma/client": "5.8.0",
     "@react-oauth/google": "^0.12.1",
     "@tanstack/react-query": "^5.12.2",
     "@tosspayments/payment-widget-sdk": "^0.10.2",
@@ -55,6 +58,7 @@
     "postcss": "^8.4.35",
     "prettier": "^3.2.4",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "prisma": "^5.7.1",
     "react-native": "^0.70.6",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",

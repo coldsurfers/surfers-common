@@ -2,7 +2,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { NextRequest } from 'next/server'
-import { COOKIES } from '../../libs/constants'
+import { API_HOST, COOKIES } from '../../libs/constants'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
@@ -13,22 +13,31 @@ export async function GET(request: NextRequest) {
     | 'signin'
     | null
 
-  if (access_token && refresh_token) {
-    const cookieStore = cookies()
-    cookieStore.set(COOKIES.ACCESS_TOKEN, access_token, {
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7,
+  if (!access_token || !refresh_token)
+    return new Response(JSON.stringify({ success: false }), {
+      status: 400,
     })
-    cookieStore.set(COOKIES.REFRESH_TOKEN, refresh_token, {
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 14,
+
+  if (redirect_type === 'signup') {
+    // create "new wave" profile
+    await fetch(`${API_HOST}/api/profile`, {
+      method: 'POST',
+      headers: { Authorization: access_token },
     })
   }
 
+  const cookieStore = cookies()
+  cookieStore.set(COOKIES.ACCESS_TOKEN, access_token, {
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 7,
+  })
+  cookieStore.set(COOKIES.REFRESH_TOKEN, refresh_token, {
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 14,
+  })
+
   switch (redirect_type) {
     case 'signup':
-      redirect('/signup')
-      break
     case 'signin':
     default:
       redirect('/')

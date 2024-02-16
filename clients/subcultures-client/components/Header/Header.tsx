@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useCallback } from 'react'
 import { useAuthStore } from '../../registry/AuthStoreRegistry/useAuthStore'
 import { URLS } from '../../libs/constants'
+import { HeaderCircleProfile } from '.'
 
 export function Header() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
@@ -34,14 +35,17 @@ export function Header() {
           </Link>
         </div>
         {isLoggedIn ? (
-          <button
-            className="rounded-full border-2 border-slate-400 bg-white px-4 py-2"
-            onClick={onClickLogout}
-          >
-            <p>
-              Log out <span aria-hidden="true">&rarr;</span>
-            </p>
-          </button>
+          <>
+            <HeaderCircleProfile />
+            <button
+              className="rounded-full border-2 border-slate-400 bg-white px-4 py-2"
+              onClick={onClickLogout}
+            >
+              <p>
+                Log out <span aria-hidden="true">&rarr;</span>
+              </p>
+            </button>
+          </>
         ) : (
           <Link
             href={URLS.LOGIN_REDIRECT_URI}
