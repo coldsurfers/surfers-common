@@ -35,7 +35,7 @@
   },
   "scripts": {
     "debug": "vercel dev --listen 3001",
-    "prisma:copy": "mkdir -p ./prisma && cp ../../prisma/schema.prisma ./prisma/schema.prisma",
+    "prisma:copy": "mkdir -p ./prisma && cp ../../database/prisma/schema.prisma ./prisma/schema.prisma",
     "deploy": "vercel",
     "build": "tsc",
     "start": "node --experimental-specifier-resolution=node ./dist/index.js",

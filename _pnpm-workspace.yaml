@@ -2,3 +2,4 @@ packages:
   - 'utils/*'
   - 'clients/*'
   - 'servers/*'
+  - 'database/*'
