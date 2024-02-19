@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { LoginUI } from './(components)/LoginUI'
-import { useAccountsAppStore } from './(stores)/accountsAppStore'
+import { useAccountsAppStore } from './(services)/accountsApp'
 import { HomePageWithSearchParams } from './(types)/CommonAccountNextPage'
 import { CommonAccountErrorCode } from './(types)/CommonAccountErrorCode'
 

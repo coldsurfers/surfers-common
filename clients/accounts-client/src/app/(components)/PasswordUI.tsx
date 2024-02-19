@@ -9,9 +9,9 @@ import {
 import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
-import { useSignInStore } from '../(stores)/signInStore'
+import { useSendEmailStore } from '../(services)/sendEmail'
 import { useFetchSignIn } from '../(react-query)/accounts/useFetchSignIn'
-import { useAccountsAppStore } from '../(stores)/accountsAppStore'
+import { useAccountsAppStore } from '../(services)/accountsApp'
 import { CommonAccountErrorCode } from '../(types)/CommonAccountErrorCode'
 import { REDIRECT_TYPE } from '../../lib/constants'
 import { createRedirectURI } from '../../lib/utils'
@@ -20,7 +20,7 @@ export const PasswordUI = () => {
   const redirectURI = useAccountsAppStore((state) => state.redirectURI)
   const [errorMessage, setErrorMessage] = useState('')
   const formRef = useRef<SetPasswordFormRefHandle>(null)
-  const { email } = useSignInStore()
+  const email = useSendEmailStore((state) => state.email)
   const { mutate: mutateFetchSignIn, isPending: isPendingMutateFetchSignIn } =
     useFetchSignIn({
       onSuccess: (response) => {

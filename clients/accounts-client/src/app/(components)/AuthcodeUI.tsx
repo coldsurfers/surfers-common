@@ -11,10 +11,10 @@ import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
 import { useFetchConfirmAuthcode } from '../(react-query)/accounts/useFetchConfirmAuthCode'
-import { useSignInStore } from '../(stores)/signInStore'
+import { useSendEmailStore } from '../(services)/sendEmail'
 
 export const AuthcodeUI = () => {
-  const email = useSignInStore((state) => state.email)
+  const email = useSendEmailStore((state) => state.email)
   const [errorMessage, setErrorMessage] = useState('')
   const { push } = useRouter()
   const {

@@ -11,10 +11,10 @@ import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
 import { useFetchSendAccountEmail } from '../(react-query)/accounts/useFetchSendAccountEmail'
-import { useSignInStore } from '../(stores)/signInStore'
+import { useSendEmailStore } from '../(services)/sendEmail'
 
 export const SendEmailUI = () => {
-  const { setEmail } = useSignInStore()
+  const { setEmail } = useSendEmailStore()
   const [errorMessage, setErrorMessage] = useState('')
   const { push } = useRouter()
   const formRef = useRef<SendEmailFormRefHandle>(null)
