@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "yarn prisma format && yarn prisma generate"
+  },
   "devDependencies": {
     "prisma": "^5.7.1",
     "@prisma/client": "5.8.0"
