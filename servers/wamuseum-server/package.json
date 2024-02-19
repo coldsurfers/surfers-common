@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc && cp -R ./src/config ./dist/config",
-    "db:generate": "yarn prisma format --schema ../../prisma/schema.prisma && yarn prisma generate --schema ../../prisma/schema.prisma",
-    "db:push": "yarn prisma db push --schema ../../prisma/schema.prisma",
+    "db:generate": "yarn prisma format --schema ../../database/prisma/schema.prisma && yarn prisma generate --schema ../../database/prisma/schema.prisma",
+    "db:push": "yarn prisma db push --schema ../../database/prisma/schema.prisma",
     "deploy": "yarn pm2 start ./src/config/ecosystem.config.js",
     "dev": "NODE_ENV=development ts-node ./src/server.ts",
     "postinstall": "yarn db:generate",

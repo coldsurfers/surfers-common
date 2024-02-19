@@ -5,7 +5,8 @@
     "packages": [
       "utils/*",
       "clients/*",
-      "servers/*"
+      "servers/*",
+      "database/*"
     ],
     "nohoist": [
       "**/react-native",

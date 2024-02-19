@@ -42,7 +42,7 @@
   "scripts": {
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\" \"vercel/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
-    "prisma:copy": "cp -r ../../prisma/schema.prisma ./src/prisma/schema.prisma",
+    "prisma:copy": "cp -r ../../database/prisma/schema.prisma ./src/prisma/schema.prisma",
     "postinstall": "yarn prisma:copy && yarn prisma:generate",
     "debug": "vercel dev --listen 3001",
     "deploy": "vercel",

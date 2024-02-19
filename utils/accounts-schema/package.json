@@ -24,7 +24,7 @@
     "release:rc": "release-it --ci --preRelease=rc",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint:fix": "yarn lint --fix",
-    "prisma:copy": "mkdir -p ./prisma && cp ../../prisma/schema.prisma ./prisma/schema.prisma",
+    "prisma:copy": "mkdir -p ./prisma && cp ../../database/prisma/schema.prisma ./prisma/schema.prisma",
     "prisma:generate": "yarn prisma generate --schema ./prisma/schema.prisma",
     "postinstall": "yarn prisma:copy && yarn prisma:generate"
   },

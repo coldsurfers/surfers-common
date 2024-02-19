@@ -13,7 +13,7 @@
     "dev": "next dev",
     "postinstall": "yarn prisma:copy && yarn prisma generate",
     "lint": "next lint --fix",
-    "prisma:copy": "mkdir -p ./prisma && cp ../../prisma/schema.prisma ./prisma/schema.prisma",
+    "prisma:copy": "mkdir -p ./prisma && cp ../../database/prisma/schema.prisma ./prisma/schema.prisma",
     "start": "next start"
   },
   "dependencies": {

@@ -1,0 +1,10 @@
+{
+  "name": "@coldsurfers/prisma-schema",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "prisma": "^5.7.1",
+    "@prisma/client": "5.8.0"
+  }
+}

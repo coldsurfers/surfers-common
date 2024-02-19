@@ -15,7 +15,7 @@
     "build": "rm -rf dist && tsc --project ./tsconfig.build.json && cp -R ./src/config ./dist/config",
     "deploy": "yarn pm2 start ./src/config/ecosystem.config.js",
     "dev": "NODE_ENV=development ts-node ./src/server.ts",
-    "prisma:copy": "cp -r ../../prisma/schema.prisma ./src/prisma/schema.prisma",
+    "prisma:copy": "cp -r ../../database/prisma/schema.prisma ./src/prisma/schema.prisma",
     "prisma:generate": "yarn prisma generate --schema ./src/prisma/schema.prisma",
     "postinstall": "yarn prisma:copy && yarn prisma:generate",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
