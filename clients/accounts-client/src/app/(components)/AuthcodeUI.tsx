@@ -11,7 +11,7 @@ import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
 import { useFetchConfirmAuthcode } from '../(react-query)/accounts/useFetchConfirmAuthCode'
-import { useSendEmailStore } from '../(services)/sendEmail'
+import { useSendEmailStore } from '../(services)/send-email'
 
 export const AuthcodeUI = () => {
   const email = useSendEmailStore((state) => state.email)

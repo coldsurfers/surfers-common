@@ -11,7 +11,7 @@ import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
 import { useFetchSendAccountEmail } from '../(react-query)/accounts/useFetchSendAccountEmail'
-import { useSendEmailStore } from '../(services)/sendEmail'
+import { useSendEmailStore } from '../(services)/send-email'
 
 export const SendEmailUI = () => {
   const { setEmail } = useSendEmailStore()
