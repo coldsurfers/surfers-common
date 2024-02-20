@@ -2229,6 +2229,15 @@
     style-dictionary "^3.7.1"
     typescript "^4.8.3"
 
+"@coldsurfers/hotsurf@0.3.3":
+  version "0.3.3"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/hotsurf/0.3.3/1af6ce563a23d403ce606f5d07f38468e7def44c#1af6ce563a23d403ce606f5d07f38468e7def44c"
+  integrity sha512-0K67ifaqU2Rn+hk5hWCcLZ3/gUT249pFwGnygjt5HQjFckZUV65RRQa7ng12E58SQDjimRVJv+nCbPcndJfj+w==
+  dependencies:
+    react "18.2.0"
+    style-dictionary "^3.7.1"
+    typescript "^4.8.3"
+
 "@coldsurfers/ocean-road@1.11.1-rc.0":
   version "1.11.1-rc.0"
   resolved "https://npm.pkg.github.com/download/@coldsurfers/ocean-road/1.11.1-rc.0/2d54f636159c2018c5bec26bbbc8919483d668a1"

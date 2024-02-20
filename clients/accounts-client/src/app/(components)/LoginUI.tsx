@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
-import { useFetchSignIn } from '../(api)/accounts/sign-in/query'
+import { useFetchSignIn } from '../(api)/accounts/sign-in/mutation'
 import { REDIRECT_TYPE } from '../../lib/constants'
 import { createRedirectURI } from '../../lib/utils'
 

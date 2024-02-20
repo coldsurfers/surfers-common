@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
-import { useFetchSendAccountEmail } from '../(api)/accounts/send-email/query'
+import { useFetchSendAccountEmail } from '../(api)/accounts/send-email/mutation'
 import { useSendEmailStore } from '../(services)/send-email'
 
 export const SendEmailUI = () => {
