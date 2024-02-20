@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { FormLayout } from './FormLayout'
-import { useFetchConfirmAuthcode } from '../(api)/accounts/confirm-auth-code/query'
+import { useFetchConfirmAuthcode } from '../(api)/accounts/confirm-auth-code/mutation'
 import { useSendEmailStore } from '../(services)/send-email'
 
 export const AuthcodeUI = () => {
