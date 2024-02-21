@@ -114,9 +114,9 @@
     "@apollo/utils.keyvaluecache" "^2.1.0"
     "@apollo/utils.logger" "^2.0.0"
 
-"@apollo/server@^4.3.0":
+"@apollo/server@^4.10.0":
   version "4.10.0"
-  resolved "https://registry.npmjs.org/@apollo/server/-/server-4.10.0.tgz"
+  resolved "https://registry.npmjs.org/@apollo/server/-/server-4.10.0.tgz#fd3c003149b0774903c15a0cfef38e20d05aa096"
   integrity sha512-pLx//lZ/pvUfWL9G8Np8+y3ujc0pYc8U7dwD6ztt9FAw8NmCPzPaDzlXLBAjGU6WnkqVBOnz8b3dOwRNjLYSUA==
   dependencies:
     "@apollo/cache-control-types" "^1.0.3"
@@ -289,10 +289,10 @@
   dependencies:
     node-fetch "^2.6.1"
 
-"@as-integrations/fastify@^1.2.0":
-  version "1.3.2"
-  resolved "https://registry.npmjs.org/@as-integrations/fastify/-/fastify-1.3.2.tgz"
-  integrity sha512-I8HOERaWlvE2IGpCI9AxGmgAk4l9AN2xOG9oMx7FeyKcTQBO3ZftAtgb1OjjdfEysEfVGmd5XPytFb8vomzgKA==
+"@as-integrations/fastify@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/@as-integrations/fastify/-/fastify-2.1.1.tgz#7662d7b39732fb3d1fc58bbe4ca599676ce1acb9"
+  integrity sha512-iupYSQyRrlBAdsDcCYzuKjJlJAKiQpRDLd33A6yAF3Ip/rGrSDDDrxfJWp6FqyVlivSL+MQkGIphmUI/ckfZkg==
   dependencies:
     fastify-plugin "^4.4.0"
 
@@ -2680,12 +2680,20 @@
     fastify-plugin "^4.0.0"
     mnemonist "0.39.6"
 
+"@fastify/cors@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.npmjs.org/@fastify/cors/-/cors-9.0.1.tgz#9ddb61b4a61e02749c5c54ca29f1c646794145be"
+  integrity sha512-YY9Ho3ovI+QHIL2hW+9X4XqQjXLjJqsU+sMV/xFsxZkE8p3GNnYVFpoOxF7SsP5ZL76gwvbo3V9L+FIekBGU4Q==
+  dependencies:
+    fastify-plugin "^4.0.0"
+    mnemonist "0.39.6"
+
 "@fastify/deepmerge@^1.0.0":
   version "1.3.0"
   resolved "https://registry.npmjs.org/@fastify/deepmerge/-/deepmerge-1.3.0.tgz"
   integrity sha512-J8TOSBq3SoZbDhM9+R/u77hP93gz/rajSA+K2kGyijPpORPWUXHUpTaleoj+92As0S9uPRP7Oi8IqMf0u+ro6A==
 
-"@fastify/error@^3.0.0", "@fastify/error@^3.4.0":
+"@fastify/error@^3.0.0", "@fastify/error@^3.3.0", "@fastify/error@^3.4.0":
   version "3.4.1"
   resolved "https://registry.npmjs.org/@fastify/error/-/error-3.4.1.tgz"
   integrity sha512-wWSvph+29GR783IhmvdwWnN4bUxTD01Vm5Xad4i7i1VuAOItLvbPAb69sb0IQ2N57yprvhNIwAP5B6xfKTmjmQ==
@@ -7672,6 +7680,16 @@ avvio@^8.2.1:
     debug "^4.0.0"
     fastq "^1.6.1"
 
+avvio@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/avvio/-/avvio-8.3.0.tgz#1e019433d935730b814978a583eefac41a65082f"
+  integrity sha512-VBVH0jubFr9LdFASy/vNtm5giTrnbVquWBhT0fyizuNK2rQ7e7ONU2plZQWUNqtE1EmxFEb+kbSkFRkstiaS9Q==
+  dependencies:
+    "@fastify/error" "^3.3.0"
+    archy "^1.0.0"
+    debug "^4.0.0"
+    fastq "^1.17.1"
+
 aws-lambda@^1.0.6:
   version "1.0.7"
   resolved "https://registry.npmjs.org/aws-lambda/-/aws-lambda-1.0.7.tgz"
@@ -11056,7 +11074,7 @@ fastify-plugin@^4.0.0, fastify-plugin@^4.4.0:
   resolved "https://registry.npmjs.org/fastify-plugin/-/fastify-plugin-4.5.1.tgz"
   integrity sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==
 
-fastify@^4.10.2, fastify@^4.24.3, fastify@^4.25.2:
+fastify@^4.24.3, fastify@^4.25.2:
   version "4.25.2"
   resolved "https://registry.npmjs.org/fastify/-/fastify-4.25.2.tgz"
   integrity sha512-SywRouGleDHvRh054onj+lEZnbC1sBCLkR0UY3oyJwjD4BdZJUrxBqfkfCaqn74pVCwBaRHGuL3nEWeHbHzAfw==
@@ -11078,6 +11096,28 @@ fastify@^4.10.2, fastify@^4.24.3, fastify@^4.25.2:
     semver "^7.5.4"
     toad-cache "^3.3.0"
 
+fastify@^4.26.1:
+  version "4.26.1"
+  resolved "https://registry.npmjs.org/fastify/-/fastify-4.26.1.tgz#91b11565d2533b7e83d267ad8998c39d263e0279"
+  integrity sha512-tznA/G55dsxzM5XChBfcvVSloG2ejeeotfPPJSFaWmHyCDVGMpvf3nRNbsCb/JTBF9RmQFBfuujWt3Nphjesng==
+  dependencies:
+    "@fastify/ajv-compiler" "^3.5.0"
+    "@fastify/error" "^3.4.0"
+    "@fastify/fast-json-stringify-compiler" "^4.3.0"
+    abstract-logging "^2.0.1"
+    avvio "^8.3.0"
+    fast-content-type-parse "^1.1.0"
+    fast-json-stringify "^5.8.0"
+    find-my-way "^8.0.0"
+    light-my-request "^5.11.0"
+    pino "^8.17.0"
+    process-warning "^3.0.0"
+    proxy-addr "^2.0.7"
+    rfdc "^1.3.0"
+    secure-json-parse "^2.7.0"
+    semver "^7.5.4"
+    toad-cache "^3.3.0"
+
 fastparallel@^2.2.0:
   version "2.4.1"
   resolved "https://registry.npmjs.org/fastparallel/-/fastparallel-2.4.1.tgz"
@@ -11085,6 +11125,13 @@ fastparallel@^2.2.0:
   dependencies:
     reusify "^1.0.4"
     xtend "^4.0.2"
+
+fastq@^1.17.1:
+  version "1.17.1"
+  resolved "https://registry.npmjs.org/fastq/-/fastq-1.17.1.tgz#2a523f07a4e7b1e81a42b91b8bf2254107753b47"
+  integrity sha512-sRVD3lWVIXWg6By68ZN7vho9a1pQcN/WBFaAAsDDFzlJjvoGx0P8z7V1t72grFJfJhu3YPZBuu25f7Kaw2jN1w==
+  dependencies:
+    reusify "^1.0.4"
 
 fastq@^1.3.0, fastq@^1.6.0, fastq@^1.6.1:
   version "1.16.0"
@@ -11227,6 +11274,15 @@ find-my-way@^7.7.0:
   version "7.7.0"
   resolved "https://registry.npmjs.org/find-my-way/-/find-my-way-7.7.0.tgz"
   integrity sha512-+SrHpvQ52Q6W9f3wJoJBbAQULJuNEEQwBvlvYwACDhBTLOTMiQ0HYWh4+vC3OivGP2ENcTI1oKlFA2OepJNjhQ==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    fast-querystring "^1.0.0"
+    safe-regex2 "^2.0.0"
+
+find-my-way@^8.0.0:
+  version "8.1.0"
+  resolved "https://registry.npmjs.org/find-my-way/-/find-my-way-8.1.0.tgz#cc05e8e4b145322299d0de0a839b5be528c2083e"
+  integrity sha512-41QwjCGcVTODUmLLqTMeoHeiozbMXYMAE1CKFiDyi9zVZ2Vjh0yz3MF0WQZoIb+cmzP/XlbFjlF2NtJmvZHznA==
   dependencies:
     fast-deep-equal "^3.1.3"
     fast-querystring "^1.0.0"
@@ -11987,7 +12043,7 @@ graphql@^15.5.0:
   resolved "https://registry.npmjs.org/graphql/-/graphql-15.8.0.tgz"
   integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==
 
-graphql@^16.6.0:
+graphql@^16.6.0, graphql@^16.8.1:
   version "16.8.1"
   resolved "https://registry.npmjs.org/graphql/-/graphql-16.8.1.tgz"
   integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
