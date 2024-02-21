@@ -13,6 +13,26 @@ import storage from 'clients/billets-admin-client/utils/storage/storage'
 import Loader from 'clients/billets-admin-client/ui/Loader'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { View } from 'react-native'
+import styled from 'styled-components'
+
+const FormLayout = styled.section`
+  position: absolute;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+
+  transform: translate(-50%, -50%);
+
+  padding: 1rem;
+  border-radius: 3px;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+`
 
 const SigninPage = () => {
   const router = useRouter()
@@ -67,14 +87,16 @@ const SigninPage = () => {
 
   return (
     <>
-      <LoginFormUI
-        ref={formRef}
-        onPressLoginButton={login}
-        withRequestButtonUI
-        onPressRequestButtonUI={useCallback(() => {
-          router.push('/auth/request')
-        }, [router])}
-      />
+      <FormLayout>
+        <LoginFormUI
+          ref={formRef}
+          onPressLoginButton={login}
+          withRequestButtonUI
+          onPressRequestButtonUI={useCallback(() => {
+            router.push('/auth/request')
+          }, [router])}
+        />
+      </FormLayout>
       {loading && <Loader />}
       {errorMessage && (
         <View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
