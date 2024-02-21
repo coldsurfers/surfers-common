@@ -31,10 +31,11 @@
     "lint-staged": "^13.1.0",
     "prettier": "^3.2.4",
     "prisma": "^5.7.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "5.3.3"
   },
   "scripts": {
-    "dev": "npx ts-node-dev --respawn --transpile-only ./src/dev-server/gql-server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only ./src/dev-server/gql-server.ts",
     "debug": "vercel dev --listen 3001",
     "build:vercel": "vercel build --prod",
     "prebuild:vercel": "yarn workspace @coldsurfers/accounts-schema build && rm -rf node_modules && yarn && yarn unlink:coldsurfers",
