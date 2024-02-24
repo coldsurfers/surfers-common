@@ -36,6 +36,7 @@
   },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./src/dev-server/gql-server.ts",
+    "dev:file-upload": "ts-node-dev --respawn --transpile-only ./src/dev-server/file-upload-server.ts",
     "debug": "vercel dev --listen 3001",
     "build:vercel": "vercel build --prod",
     "prebuild:vercel": "yarn workspace @coldsurfers/accounts-schema build && rm -rf node_modules && yarn && yarn unlink:coldsurfers",
