@@ -1,14 +1,13 @@
 'use client'
 
-import { createGlobalStyle } from 'styled-components'
 import { usePathname } from 'next/navigation'
 import { Suspense } from 'react'
-import GlobalStylesRegistry from './registry/GlobalStylesRegistry'
-import '../styles/global.css'
+import '@coldsurfers/hotsurf/global-light-only.css'
 import ApolloProviderRegistry from './registry/ApolloProviderRegistry'
 import Header from '../ui/Header'
-
-const GlobalStyle = createGlobalStyle``
+import RegistryProvider from './registry/RegistryProvider'
+import StyledComponentsRegistry from './registry/StyledComponentsRegistry'
+import StyleSheetRegistry from './registry/StyleSheetRegistry'
 
 export default function RootLayout({
   children,
@@ -24,15 +23,16 @@ export default function RootLayout({
       */}
       <head />
       <body>
-        <ApolloProviderRegistry>
-          <GlobalStylesRegistry>
-            <>
-              {pathname?.includes('/auth') ? null : <Header />}
-              <Suspense>{children}</Suspense>
-              <GlobalStyle />
-            </>
-          </GlobalStylesRegistry>
-        </ApolloProviderRegistry>
+        <RegistryProvider
+          registries={[
+            ApolloProviderRegistry,
+            StyledComponentsRegistry,
+            StyleSheetRegistry,
+          ]}
+        >
+          {pathname?.includes('/auth') ? null : <Header />}
+          <Suspense>{children}</Suspense>
+        </RegistryProvider>
       </body>
     </html>
   )
