@@ -1,0 +1,13 @@
+.aboutBoxWrapper {
+    display: flex;
+    padding-top: 80px;
+}
+
+.aboutBox {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.aboutBoxText {}
