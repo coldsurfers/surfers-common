@@ -1,17 +1,18 @@
-import { HomeFeedList } from '../components/Feed'
-import { FeedCategoryBadge } from '../components/FeedCategory'
-import { HomeTopInput } from '../components/Input/HomeTopInput'
-import styles from './styles.module.css'
+'use client'
 
-export default async function Home() {
+import { Text } from '@coldsurfers/hotsurf'
+import { View } from 'react-native'
+
+export default function Home() {
   return (
-    <section className={styles.wrapper}>
-      <HomeTopInput />
-      <div className="flex">
-        <FeedCategoryBadge>구인구직</FeedCategoryBadge>
-        <FeedCategoryBadge>악기장터</FeedCategoryBadge>
-      </div>
-      <HomeFeedList />
-    </section>
+    <View>
+      <Text>Welcome to ColdSurfers home page!</Text>
+      <Text>We are making giggle</Text>
+      <Text>Giggle is another gig platform based on artists and venues.</Text>
+      <Text>
+        We want to make an online platform that helps people finding out gigs
+        more easily. And also for promoters too.
+      </Text>
+    </View>
   )
 }

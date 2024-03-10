@@ -16,7 +16,7 @@ import { COOKIES } from '../libs/constants'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'GrungeBank | ColdSurf',
+  title: 'ColdSurfers | HomePage',
 }
 
 export default async function RootLayout({
