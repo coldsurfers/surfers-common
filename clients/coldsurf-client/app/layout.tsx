@@ -1,8 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import '../styles/globals.css'
 import '@coldsurfers/hotsurf/global-light-only.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Noto_Sans as notoSans } from 'next/font/google'
 import { ReactNode } from 'react'
 import { cookies } from 'next/headers'
 import LayoutWrapper from '../components/LayoutWrapper'
@@ -13,7 +12,7 @@ import { AuthStoreProvider } from '../registry/AuthStoreRegistry/AuthStoreRegist
 import RegistryProvider from '../registry/RegistryProvider'
 import { COOKIES } from '../libs/constants'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = notoSans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'ColdSurfers | HomePage',

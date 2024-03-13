@@ -1,15 +1,14 @@
 'use client'
 
 import { View } from 'react-native'
-import { Text } from '@coldsurfers/hotsurf'
+
+const TEXT = 'ColdSurfers | Home'
 
 export function Header() {
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ paddingTop: 20, paddingBottom: 20 }}>
       <View>
-        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
-          ColdSurfers | Home
-        </Text>
+        <div style={{ fontWeight: 'bold', fontSize: 32 }}>{TEXT}</div>
       </View>
     </View>
   )
