@@ -1,24 +1,40 @@
+'use client'
+
 import { memo } from 'react'
-import styles from './aboutBox.module.css'
 import Link from 'next/link'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  display: flex;
+  padding-top: 80px;
+`
+
+const Inner = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+`
+
+const AboutLinkText = styled.span`
+  color: blueviolet;
+`
 
 const AboutBox = () => {
   return (
-    <div className={styles.aboutBoxWrapper}>
-      <div className={styles.aboutBox}>
-        <div className={styles.aboutBoxText}>Hello! Welcome to Giggle.</div>
-        <div className={styles.aboutBoxText}>
-          Giggle is another gig platform based on artists and venues.
-        </div>
-        <div className={styles.aboutBoxText}>
+    <Wrapper>
+      <Inner>
+        <div>Hello! Welcome to Giggle.</div>
+        <div>Giggle is another gig platform based on artists and venues.</div>
+        <div>
           Giggle is in making progress with{' '}
           <Link href={'https://coldsurf.io'}>
-            <span className={styles.aboutLink}>coldsurfers</span>
+            <AboutLinkText>coldsurfers</AboutLinkText>
           </Link>
           !
         </div>
-      </div>
-    </div>
+      </Inner>
+    </Wrapper>
   )
 }
 
