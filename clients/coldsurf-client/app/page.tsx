@@ -1,8 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import { PropsWithChildren, ReactNode, useMemo } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components'
+import { z } from 'zod'
 
 const Text1 = styled.h3`
   font-size: 24px;
@@ -19,7 +21,7 @@ const MakingListItemUI = styled.div`
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 8px;
 
-  padding: 12px;
+  padding-bottom: 12px;
 
   &:hover {
     box-shadow:
@@ -30,25 +32,41 @@ const MakingListItemUI = styled.div`
   width: calc(100% / 3 - 12px);
 `
 
+const MakingListImage = styled.img`
+  width: 100%;
+  height: 250px;
+`
+
 const MakingListItemTitle = styled.p`
   font-weight: 600;
   font-size: 18px;
+  padding-left: 12px;
+  padding-right: 12px;
 `
 
 const MakingListItemDescription = styled.p`
   font-weight: 400;
   font-size: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
 `
 
-interface Product {
-  title: string
-  description: string
-}
+const productSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  url: z.string().url().optional(),
+  imgUrl: z.string().url().optional(),
+})
+
+type Product = z.infer<typeof productSchema>
 
 const productData: Product[] = [
   {
     title: 'giggle',
     description: `Giggle is another gig platform based on artists and venues!`,
+    url: 'https://giggle.coldsurf.io',
+    imgUrl:
+      'https://images.unsplash.com/photo-1622817245531-a07976979cf5?q=80&w=2041&auto=format&fit=crop&ixlib=rb-4.0.3',
   },
 ]
 
@@ -70,6 +88,9 @@ MakingList.ItemTitle = ({ children }: PropsWithChildren) => (
 MakingList.ItemDescription = ({ children }: PropsWithChildren) => (
   <MakingListItemDescription>{children}</MakingListItemDescription>
 )
+MakingList.ItemImage = ({ src }: { src: string }) => (
+  <MakingListImage src={src} />
+)
 
 export default function Home() {
   return (
@@ -78,13 +99,16 @@ export default function Home() {
       <ListSectionHeaderText>What we are making...</ListSectionHeaderText>
       <MakingList
         data={productData}
-        renderItem={({ title, description }, index) => (
-          <MakingList.Item key={`${title}-${index}`}>
-            <MakingList.ItemTitle>{title}</MakingList.ItemTitle>
-            <MakingList.ItemDescription>
-              {description}
-            </MakingList.ItemDescription>
-          </MakingList.Item>
+        renderItem={({ title, description, url, imgUrl }, index) => (
+          <Link key={`${title}-${index}`} href={url ?? '#'}>
+            <MakingList.Item>
+              {imgUrl && <MakingList.ItemImage src={imgUrl} />}
+              <MakingList.ItemTitle>{title}</MakingList.ItemTitle>
+              <MakingList.ItemDescription>
+                {description}
+              </MakingList.ItemDescription>
+            </MakingList.Item>
+          </Link>
         )}
       />
     </View>
