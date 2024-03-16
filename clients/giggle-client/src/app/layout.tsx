@@ -1,25 +1,30 @@
-import Header from '@/ui/Header'
 import './globals.css'
 import { Metadata } from 'next'
-import StyledComponentsRegistry from './StyledComponentsRegistry'
+import GlobalProviders from '@/components/GlobalProviders'
+import HeaderContainer from '@/components/HeaderContainer'
+import { SessionProvider } from 'next-auth/react'
+import { auth } from '@/libs/auth'
 
 export const metadata: Metadata = {
   title: 'Giggle Official Website',
   description: 'Giggle is another gig platform based on artists and venues!',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await auth()
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <Header />
-          {children}
-        </StyledComponentsRegistry>
+        <SessionProvider session={session}>
+          <GlobalProviders>
+            <HeaderContainer />
+            {children}
+          </GlobalProviders>
+        </SessionProvider>
       </body>
     </html>
   )
