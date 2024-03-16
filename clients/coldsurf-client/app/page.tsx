@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { PropsWithChildren, ReactNode, useMemo } from 'react'
 import { View } from 'react-native'
@@ -32,7 +33,7 @@ const MakingListItemUI = styled.div`
   width: calc(100% / 3 - 12px);
 `
 
-const MakingListImage = styled.img`
+const MakingListImage = styled(Image)`
   width: 100%;
   height: 250px;
 `
@@ -66,7 +67,7 @@ const productData: Product[] = [
     description: `Giggle is another gig platform based on artists and venues!`,
     url: 'https://giggle.coldsurf.io',
     imgUrl:
-      'https://images.unsplash.com/photo-1622817245531-a07976979cf5?q=80&w=2041&auto=format&fit=crop&ixlib=rb-4.0.3',
+      'https://images.unsplash.com/photo-1622817245531-a07976979cf5?q=80&w=2041&auto=format&fit=crop',
   },
 ]
 
@@ -88,8 +89,8 @@ MakingList.ItemTitle = ({ children }: PropsWithChildren) => (
 MakingList.ItemDescription = ({ children }: PropsWithChildren) => (
   <MakingListItemDescription>{children}</MakingListItemDescription>
 )
-MakingList.ItemImage = ({ src }: { src: string }) => (
-  <MakingListImage src={src} />
+MakingList.ItemImage = ({ src, alt }: { src: string; alt: string }) => (
+  <MakingListImage src={src} alt={alt} width={500} height={500} />
 )
 
 export default function Home() {
@@ -102,7 +103,9 @@ export default function Home() {
         renderItem={({ title, description, url, imgUrl }, index) => (
           <Link key={`${title}-${index}`} href={url ?? '#'}>
             <MakingList.Item>
-              {imgUrl && <MakingList.ItemImage src={imgUrl} />}
+              {imgUrl && (
+                <MakingList.ItemImage src={imgUrl} alt={`${title}-thumbnail`} />
+              )}
               <MakingList.ItemTitle>{title}</MakingList.ItemTitle>
               <MakingList.ItemDescription>
                 {description}
