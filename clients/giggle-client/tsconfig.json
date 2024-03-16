@@ -21,7 +21,8 @@
       { "name": "typescript-plugin-css-modules" },
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@coldsurfers/next-registries": ["../next-registries/src/index.ts"]
     }
   },
   "include": [

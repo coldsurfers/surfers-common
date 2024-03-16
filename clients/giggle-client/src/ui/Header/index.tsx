@@ -1,6 +1,17 @@
+'use client'
+
 import Link from 'next/link'
 import { memo } from 'react'
 import styles from './header.module.css'
+import styled from 'styled-components'
+
+const LoginLink = styled(Link)`
+  border-radius: 18px;
+  background-color: yellow;
+  padding: 12px;
+  color: black;
+  font-weight: 600;
+`
 
 const Header = () => {
   return (
@@ -13,9 +24,7 @@ const Header = () => {
           <Link href="/about">{"What's Giggle?"}</Link>
         </li>
         <li>
-          <Link className={styles.menusLogin} href="/login">
-            LOG IN
-          </Link>
+          <LoginLink href="/login">LOG IN</LoginLink>
         </li>
       </ul>
     </div>

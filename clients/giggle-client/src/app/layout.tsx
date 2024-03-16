@@ -1,6 +1,10 @@
 import Header from '@/ui/Header'
 import './globals.css'
 import { Metadata } from 'next'
+import {
+  StyledComponentsRegistry,
+  RegistryProvider,
+} from '@coldsurfers/next-registries'
 
 export const metadata: Metadata = {
   title: 'Giggle Official Website',
@@ -15,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        {children}
+        <RegistryProvider registries={[StyledComponentsRegistry]}>
+          <Header />
+          {children}
+        </RegistryProvider>
       </body>
     </html>
   )
