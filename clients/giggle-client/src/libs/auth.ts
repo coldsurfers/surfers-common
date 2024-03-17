@@ -156,6 +156,8 @@ export const config = {
         return false
       }
 
+      // TODO: connect with db
+
       return true
 
       // await accountsKit.fetchSignIn({

@@ -5,6 +5,8 @@ import { signIn } from 'next-auth/react'
 import styled from 'styled-components'
 import LoginButton from '@/ui/Button/LoginButton'
 import Link from 'next/link'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import log from '@/libs/log'
 
 const TITLE_MESSAGE = 'Log in to Giggle'
 const LOGIN_PRE_MESSAGE = 'Continue with'
@@ -43,8 +45,25 @@ const TextInput = styled.input`
   font-weight: 600;
 `
 
+type Inputs = {
+  email: string
+  password: string
+}
+
 export default function LoginPage() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = (data) => log(data)
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
+
+  if (process.env.NODE_ENV === 'development') {
+    log(watch('email')) // watch input value by passing the name of it
+    log(watch('password')) // watch input value by passing the name of it
+  }
 
   return (
     <Wrapper>
@@ -54,10 +73,12 @@ export default function LoginPage() {
         fullWidth
       >{`${LOGIN_PRE_MESSAGE} Google`}</LoginButton>
       <Divider />
-      <EmailLoginForm>
-        <TextInput placeholder="Email" />
+      <EmailLoginForm onSubmit={handleSubmit(onSubmit)}>
+        <TextInput type="email" placeholder="Email" {...register('email')} />
         <TextInput
           placeholder="Password"
+          {...register('password')}
+          type="password"
           style={{ marginTop: '1rem', marginBottom: '1rem' }}
         />
         <LoginButton withScale fullWidth style={{ marginBottom: '1rem' }}>
