@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { memo } from 'react'
 import styled from 'styled-components'
+import LoginButton from '../Button/LoginButton'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -29,14 +30,6 @@ const Title = styled.span`
   margin: unset;
 
   font-size: 28px;
-`
-
-export const LoginButton = styled.div`
-  border-radius: 18px;
-  background-color: yellow;
-  padding: 12px;
-  color: black;
-  font-weight: 600;
 `
 
 const Menus = styled.ul`
@@ -68,10 +61,12 @@ const Header = ({ isLoggedIn = false, onClickLogout }: HeaderProps) => {
         </li>
         <li>
           {isLoggedIn ? (
-            <LoginButton onClick={onClickLogout}>LOG OUT</LoginButton>
+            <LoginButton withScale onClick={onClickLogout}>
+              LOG OUT
+            </LoginButton>
           ) : (
             <Link href="/login">
-              <LoginButton>LOG IN</LoginButton>
+              <LoginButton withScale>LOG IN</LoginButton>
             </Link>
           )}
         </li>
