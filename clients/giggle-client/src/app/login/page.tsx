@@ -74,10 +74,11 @@ export default function LoginPage() {
       >{`${LOGIN_PRE_MESSAGE} Google`}</LoginButton>
       <Divider />
       <EmailLoginForm onSubmit={handleSubmit(onSubmit)}>
-        <TextInput placeholder="Email" {...register('email')} />
+        <TextInput type="email" placeholder="Email" {...register('email')} />
         <TextInput
           placeholder="Password"
           {...register('password')}
+          type="password"
           style={{ marginTop: '1rem', marginBottom: '1rem' }}
         />
         <LoginButton withScale fullWidth style={{ marginBottom: '1rem' }}>
