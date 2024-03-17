@@ -31,7 +31,7 @@ const Title = styled.span`
   font-size: 28px;
 `
 
-const LoginLink = styled(Link)`
+export const LoginButton = styled.div`
   border-radius: 18px;
   background-color: yellow;
   padding: 12px;
@@ -51,7 +51,12 @@ const Menus = styled.ul`
   }
 `
 
-const Header = () => {
+interface HeaderProps {
+  isLoggedIn?: boolean
+  onClickLogout?: () => void
+}
+
+const Header = ({ isLoggedIn = false, onClickLogout }: HeaderProps) => {
   return (
     <Wrapper>
       <Link href="/">
@@ -62,7 +67,13 @@ const Header = () => {
           <Link href="/about">{"What's Giggle?"}</Link>
         </li>
         <li>
-          <LoginLink href="/login">LOG IN</LoginLink>
+          {isLoggedIn ? (
+            <LoginButton onClick={onClickLogout}>LOG OUT</LoginButton>
+          ) : (
+            <Link href="/login">
+              <LoginButton>LOG IN</LoginButton>
+            </Link>
+          )}
         </li>
       </Menus>
     </Wrapper>
