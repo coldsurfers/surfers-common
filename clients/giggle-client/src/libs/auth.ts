@@ -69,7 +69,7 @@ export const config = {
   theme: {
     logo: 'https://next-auth.js.org/img/logo/logo-sm.png',
   },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXT_AUTH_SECRET,
   providers: [
     // Apple,
     // Atlassian,
