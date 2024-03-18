@@ -64,6 +64,10 @@ import Google from 'next-auth/providers/google'
 // import Zoom from "next-auth/providers/zoom"
 
 import type { NextAuthConfig } from 'next-auth'
+import {
+  signIn as databaseSignIn,
+  verifyGoogleAccessToken,
+} from '../database/services'
 
 export const config = {
   theme: {
@@ -147,24 +151,27 @@ export const config = {
       return true
     },
     async signIn(params) {
-      const { account } = params
-      if (!account) {
+      const { account, profile } = params
+      if (!account || !profile?.email) {
         return false
       }
-      const { access_token: accessToken, provider } = account
+      const { id_token: accessToken, provider } = account
       if (provider !== 'google' || !accessToken) {
         return false
       }
-
       // TODO: connect with db
+      const verified = await verifyGoogleAccessToken(accessToken)
+      if (!verified) {
+        return false
+      }
+      const signInResult = await databaseSignIn({
+        email: profile.email,
+      })
+      if (signInResult.isError) {
+        return false
+      }
 
       return true
-
-      // await accountsKit.fetchSignIn({
-      //   provider,
-      //   access_token: accessToken,
-      // })
-      // return true
     },
   },
 } satisfies NextAuthConfig
