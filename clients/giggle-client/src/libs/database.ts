@@ -1,3 +1,5 @@
+import { PrismaClient } from '@prisma/client'
+
 // for encode password for prisma postresql DATABASE_URL
 export function percentEncodeAllChars(plainPassword: string) {
   var strEncoded = ''
@@ -8,3 +10,5 @@ export function percentEncodeAllChars(plainPassword: string) {
   }
   return strEncoded
 }
+
+export const prismaClient = new PrismaClient()
