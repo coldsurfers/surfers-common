@@ -7,8 +7,9 @@ import LoginButton from '@/ui/Button/LoginButton'
 import Link from 'next/link'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import log from '@/libs/log'
+import { BRANDING_NAME } from '@/libs/constants'
 
-const TITLE_MESSAGE = 'Log in to Giggle'
+const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
 const EMAIL_LOGIN_MESSAGE = 'Log In'
 

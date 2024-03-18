@@ -3,6 +3,7 @@
 import { memo } from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
+import { BRANDING_NAME } from '@/libs/constants'
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,11 +25,13 @@ const AboutBox = () => {
   return (
     <Wrapper>
       <Inner>
-        <div>Hello! Welcome to Giggle.</div>
-        <div>Giggle is another gig platform based on artists and venues.</div>
+        <div>Hello! Welcome to {BRANDING_NAME}.</div>
         <div>
-          Giggle is in making progress with{' '}
-          <Link href={'https://coldsurf.io'}>
+          {BRANDING_NAME} is another gig platform based on artists and venues.
+        </div>
+        <div>
+          {BRANDING_NAME} is in making progress with{' '}
+          <Link href={'https://about.coldsurf.io'} target="_blank">
             <AboutLinkText>coldsurfers</AboutLinkText>
           </Link>
           !

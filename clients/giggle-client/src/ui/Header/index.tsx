@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { memo } from 'react'
 import styled from 'styled-components'
 import LoginButton from '../Button/LoginButton'
+import { BRANDING_NAME } from '@/libs/constants'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -53,11 +54,16 @@ const Header = ({ isLoggedIn = false, onClickLogout }: HeaderProps) => {
   return (
     <Wrapper>
       <Link href="/">
-        <Title>Giggle</Title>
+        <Title>{BRANDING_NAME}</Title>
       </Link>
       <Menus>
         <li>
-          <Link href="/about">{"What's Giggle?"}</Link>
+          <Link href="/about">{`What's ${BRANDING_NAME}?`}</Link>
+        </li>
+        <li>
+          <Link href="https://blog.coldsurf.io" target="_blank">
+            {'Blog'}
+          </Link>
         </li>
         <li>
           {isLoggedIn ? (
