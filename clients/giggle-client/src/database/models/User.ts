@@ -1,4 +1,5 @@
 import { prismaClient } from '@/libs/database'
+import { User } from '@prisma/client'
 import { z } from 'zod'
 
 export const UserModelSchema = z.object({
@@ -26,6 +27,16 @@ class UserModel {
     this.passwordSalt = params.passwordSalt
   }
 
+  private static modelize(prismaModel: User) {
+    return new UserModel({
+      id: prismaModel.id,
+      email: prismaModel.email,
+      password: prismaModel.password,
+      passwordSalt: prismaModel.passwordSalt,
+      createdAt: prismaModel.createdAt.toISOString(),
+    })
+  }
+
   async create() {
     const created = await prismaClient.user.create({
       data: {
@@ -35,13 +46,19 @@ class UserModel {
       },
     })
 
-    return new UserModel({
-      id: created.id,
-      email: created.email,
-      password: created.password,
-      passwordSalt: created.passwordSalt,
-      createdAt: created.createdAt.toISOString(),
+    return UserModel.modelize(created)
+  }
+
+  static async findByEmail(email: string) {
+    const existing = await prismaClient.user.findFirst({
+      where: {
+        email,
+      },
     })
+
+    if (!existing) return null
+
+    return UserModel.modelize(existing)
   }
 }
 
