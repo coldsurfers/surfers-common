@@ -1,4 +1,22 @@
 import { UserModel } from '@/database'
+import encryptPassword from '@/libs/encryptPassword'
+
+enum SIGN_IN_SERVICE_ERROR_CODE {
+  ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
+  PASSWORD_NOT_MATCH = 'PASSWORD_NOT_MATCH',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+}
+
+type SignInReturnType =
+  | {
+      isError: false
+      data: UserModel
+    }
+  | {
+      isError: true
+      data: null
+      errorCode: SIGN_IN_SERVICE_ERROR_CODE
+    }
 
 export const signIn = async ({
   email,
@@ -6,25 +24,75 @@ export const signIn = async ({
 }: {
   email: string
   password?: string
-}): Promise<UserModel | null> => {
+}): Promise<SignInReturnType> => {
   const emailSignInUser = !!password
   try {
-    if (emailSignInUser) {
-      // TODO: encrypt password with salt
-      return null
-    } else {
-      const userModel = new UserModel({
-        email: email,
-        password: null,
-        passwordSalt: null,
-        createdAt: null,
-        id: null,
-      })
-      const user = await userModel.create()
-      return user
+    // TODO: check existing email
+    const existing = await UserModel.findByEmail(email)
+    if (!existing) {
+      // TODO: signup
+      if (emailSignInUser) {
+        // TODO: signup with email and password
+        const encrypted = encryptPassword({
+          plain: password,
+        })
+        const { encrypted: encryptedPassword, salt: passwordSalt } = encrypted
+        const user = await new UserModel({
+          email: email,
+          password: encryptedPassword,
+          passwordSalt: passwordSalt,
+          id: null,
+          createdAt: null,
+        }).create()
+        return {
+          isError: false,
+          data: user,
+        }
+      } else {
+        // TODO: signup with social login services
+        const user = await new UserModel({
+          email: email,
+          password: null,
+          passwordSalt: null,
+          id: null,
+          createdAt: null,
+        }).create()
+        return {
+          isError: false,
+          data: user,
+        }
+      }
+    }
+
+    // TODO: existing account with email and password login
+    if (!!existing.password && !!existing.passwordSalt) {
+      if (
+        existing.password !==
+        encryptPassword({
+          plain: password ?? '',
+          originalSalt: existing.passwordSalt,
+        }).encrypted
+      ) {
+        // TODO: password not correct
+        return {
+          isError: true,
+          errorCode: SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH,
+          data: null,
+        }
+      }
+    }
+
+    // TODO: social logged in users
+    return {
+      isError: false,
+      data: existing,
     }
   } catch (e) {
     console.error(e)
-    return null
+    return {
+      isError: true,
+      data: null,
+      errorCode: SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
+    }
   }
 }
