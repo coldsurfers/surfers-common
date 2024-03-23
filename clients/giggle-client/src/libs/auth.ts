@@ -173,6 +173,9 @@ export const config = {
 
       return true
     },
+    redirect: (params) => {
+      return '/'
+    },
   },
 } satisfies NextAuthConfig
 
