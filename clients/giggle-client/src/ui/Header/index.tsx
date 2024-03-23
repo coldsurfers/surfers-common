@@ -45,6 +45,10 @@ const Menus = styled.ul`
   }
 `
 
+const SignUpLink = styled(Link)`
+  color: gray;
+`
+
 interface HeaderProps {
   isLoggedIn?: boolean
   onClickLogout?: () => void
@@ -72,11 +76,12 @@ const Header = ({ isLoggedIn = false, onClickLogout }: HeaderProps) => {
             </LoginButton>
           ) : (
             <>
-              <Link href="/signup">
-                <LoginButton withScale style={{ marginRight: '1rem' }}>
-                  SIGN UP
-                </LoginButton>
-              </Link>
+              <SignUpLink
+                href="signup"
+                style={{ marginRight: '1rem', fontWeight: 'bold' }}
+              >
+                SIGN UP
+              </SignUpLink>
               <Link href="/login">
                 <LoginButton withScale>LOG IN</LoginButton>
               </Link>
