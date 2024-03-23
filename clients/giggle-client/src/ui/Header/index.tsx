@@ -71,9 +71,16 @@ const Header = ({ isLoggedIn = false, onClickLogout }: HeaderProps) => {
               LOG OUT
             </LoginButton>
           ) : (
-            <Link href="/login">
-              <LoginButton withScale>LOG IN</LoginButton>
-            </Link>
+            <>
+              <Link href="/signup">
+                <LoginButton withScale style={{ marginRight: '1rem' }}>
+                  SIGN UP
+                </LoginButton>
+              </Link>
+              <Link href="/login">
+                <LoginButton withScale>LOG IN</LoginButton>
+              </Link>
+            </>
           )}
         </li>
       </Menus>
