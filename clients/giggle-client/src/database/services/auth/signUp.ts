@@ -1,20 +1,39 @@
 import { UserModel } from '@/database/models'
+import { UserModelSerialzedSchemaType } from '@/database/models/User'
 
-enum SIGN_UP_SERVICE_ERROR_CODE {
+enum CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
-  PASSWORD_NOT_MATCH = 'PASSWORD_NOT_MATCH',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
-type SignUpReturnType =
+type CheckEmailSignUpReturnType =
   | {
       isError: false
-      data: UserModel
+      data: UserModelSerialzedSchemaType | null
     }
   | {
       isError: true
       data: null
-      errorCode: SIGN_UP_SERVICE_ERROR_CODE
+      errorCode: CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE
     }
 
-export const signUp = async (): Promise<SignUpReturnType> => {}
+export const checkEmailForSignUp = async ({
+  email,
+}: {
+  email: string
+}): Promise<CheckEmailSignUpReturnType> => {
+  try {
+    const user = await UserModel.findByEmail(email)
+    return {
+      isError: false,
+      data: user ? user.serialize() : null,
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      isError: true,
+      data: null,
+      errorCode: CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { UserModel } from '@/database'
 import encryptPassword from '@/libs/encryptPassword'
 import googleOAuthClient from '../../libs/googleOAuthClient'
+import { UserModelSerialzedSchemaType } from '@/database/models/User'
 
 enum SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
@@ -11,7 +12,7 @@ enum SIGN_IN_SERVICE_ERROR_CODE {
 type SignInReturnType =
   | {
       isError: false
-      data: UserModel
+      data: UserModelSerialzedSchemaType
     }
   | {
       isError: true
@@ -47,7 +48,7 @@ export const signIn = async ({
         }).create()
         return {
           isError: false,
-          data: user,
+          data: user.serialize(),
         }
       } else {
         // TODO: signup with social login services
@@ -60,7 +61,7 @@ export const signIn = async ({
         }).create()
         return {
           isError: false,
-          data: user,
+          data: user.serialize(),
         }
       }
     }
@@ -86,7 +87,7 @@ export const signIn = async ({
     // TODO: social logged in users
     return {
       isError: false,
-      data: existing,
+      data: existing.serialize(),
     }
   } catch (e) {
     console.error(e)
