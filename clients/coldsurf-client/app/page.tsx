@@ -63,9 +63,9 @@ type Product = z.infer<typeof productSchema>
 
 const productData: Product[] = [
   {
-    title: 'giggle',
-    description: `Giggle is another gig platform based on artists and venues!`,
-    url: 'https://giggle.coldsurf.io',
+    title: 'ColdSurf',
+    description: `Coldsurf is another gig platform based on artists and venues!`,
+    url: 'https://coldsurf.io',
     imgUrl:
       'https://images.unsplash.com/photo-1622817245531-a07976979cf5?q=80&w=2041&auto=format&fit=crop',
   },

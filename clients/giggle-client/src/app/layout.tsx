@@ -4,10 +4,11 @@ import GlobalProviders from '@/components/GlobalProviders'
 import HeaderContainer from '@/components/HeaderContainer'
 import { SessionProvider } from 'next-auth/react'
 import { auth } from '@/libs/auth'
+import { BRANDING_NAME } from '@/libs/constants'
 
 export const metadata: Metadata = {
-  title: 'Giggle Official Website',
-  description: 'Giggle is another gig platform based on artists and venues!',
+  title: `${BRANDING_NAME} Official Website`,
+  description: `${BRANDING_NAME} is another gig platform based on artists and venues!`,
 }
 
 export default async function RootLayout({
