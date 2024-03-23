@@ -12,6 +12,8 @@ import { BRANDING_NAME } from '@/libs/constants'
 const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
 const EMAIL_LOGIN_MESSAGE = 'Log In'
+const DONT_HAVE_AN_ACCOUNT_MESSAGE = `Don't have an account?`
+const SIGN_UP_MESSAGE = 'Sign up for ColdSurf'
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -33,7 +35,8 @@ const Divider = styled.div`
 `
 
 const EmailLoginForm = styled.form``
-const EmailLoginForgotPasswordMessage = styled.p`
+const EmailLoginText = styled.p``
+const EmailLoginUnderlineText = styled.p`
   text-decoration: underline;
 `
 
@@ -87,10 +90,17 @@ export default function LoginPage() {
         </LoginButton>
       </EmailLoginForm>
       <Link href="/password-reset">
-        <EmailLoginForgotPasswordMessage>
-          Forgot your password?
-        </EmailLoginForgotPasswordMessage>
+        <EmailLoginUnderlineText>Forgot your password?</EmailLoginUnderlineText>
       </Link>
+      <Divider />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <EmailLoginText>{DONT_HAVE_AN_ACCOUNT_MESSAGE}</EmailLoginText>
+        <Link href="/signup">
+          <EmailLoginUnderlineText style={{ marginLeft: '1rem' }}>
+            {SIGN_UP_MESSAGE}
+          </EmailLoginUnderlineText>
+        </Link>
+      </div>
     </Wrapper>
   )
 }
