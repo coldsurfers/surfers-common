@@ -1,6 +1,6 @@
 import { UserModel } from '@/database'
 import encryptPassword from '@/libs/encryptPassword'
-import googleOAuthClient from '../libs/googleOAuthClient'
+import googleOAuthClient from '../../libs/googleOAuthClient'
 
 enum SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
