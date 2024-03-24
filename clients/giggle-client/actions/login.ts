@@ -1,11 +1,13 @@
+'use server'
+
 import { signIn } from '@/libs/auth'
 import { AuthError } from 'next-auth'
 
-export const login = async () => {
+export const emailLogin = async () => {
   try {
-    await signIn('google')
+    await signIn('credentials', { redirect: false })
   } catch (e) {
-    console.log(e instanceof AuthError)
+    console.log(e)
     if (e instanceof AuthError) {
       console.log('ERROR has been occurred')
       // switch (error.type) {

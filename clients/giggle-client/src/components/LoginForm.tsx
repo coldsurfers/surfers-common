@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import log from '@/libs/log'
 import { BRANDING_NAME } from '@/libs/constants'
+import { signIn } from 'next-auth/react'
 
 const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
@@ -53,7 +54,11 @@ type Inputs = {
   password: string
 }
 
-export default function LoginForm({ login }: { login: () => Promise<void> }) {
+export default function LoginForm({
+  emailLogin,
+}: {
+  emailLogin: () => Promise<void>
+}) {
   const {
     register,
     handleSubmit,
@@ -61,9 +66,10 @@ export default function LoginForm({ login }: { login: () => Promise<void> }) {
     formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = (data) => log(data)
+  const onClickEmailLoginButton = useCallback(emailLogin, [emailLogin])
   const onClickGoogleLoginButton = useCallback(async () => {
-    await login()
-  }, [login])
+    await signIn('google', { redirect: false })
+  }, [])
 
   if (process.env.NODE_ENV === 'development') {
     log(watch('email')) // watch input value by passing the name of it
