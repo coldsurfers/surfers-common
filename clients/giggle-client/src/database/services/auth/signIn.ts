@@ -6,6 +6,8 @@ import { UserModelSerialzedSchemaType } from '@/database/models/User'
 enum SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
   PASSWORD_NOT_MATCH = 'PASSWORD_NOT_MATCH',
+  NOT_EXISTING_ACCOUNT = 'NOT_EXISTING_ACCOUNT',
+  PASSWORD_NOT_EXISTING = 'PASSWORD_NOT_EXISTING',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
@@ -20,71 +22,48 @@ type SignInReturnType =
       errorCode: SIGN_IN_SERVICE_ERROR_CODE
     }
 
-export const signIn = async ({
+export const emailSignIn = async ({
   email,
   password,
 }: {
   email: string
   password?: string
 }): Promise<SignInReturnType> => {
-  const emailSignInUser = !!password
   try {
-    // TODO: check existing email
+    // check existing email
     const existing = await UserModel.findByEmail(email)
     if (!existing) {
-      // TODO: signup
-      if (emailSignInUser) {
-        // TODO: signup with email and password
-        const encrypted = encryptPassword({
-          plain: password,
-        })
-        const { encrypted: encryptedPassword, salt: passwordSalt } = encrypted
-        const user = await new UserModel({
-          email: email,
-          password: encryptedPassword,
-          passwordSalt: passwordSalt,
-          id: null,
-          createdAt: null,
-        }).create()
-        return {
-          isError: false,
-          data: user.serialize(),
-        }
-      } else {
-        // TODO: signup with social login services
-        const user = await new UserModel({
-          email: email,
-          password: null,
-          passwordSalt: null,
-          id: null,
-          createdAt: null,
-        }).create()
-        return {
-          isError: false,
-          data: user.serialize(),
-        }
+      return {
+        isError: true,
+        data: null,
+        errorCode: SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT,
       }
     }
 
-    // TODO: existing account with email and password login
-    if (!!existing.password && !!existing.passwordSalt) {
-      if (
-        existing.password !==
-        encryptPassword({
-          plain: password ?? '',
-          originalSalt: existing.passwordSalt,
-        }).encrypted
-      ) {
-        // TODO: password not correct
-        return {
-          isError: true,
-          errorCode: SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH,
-          data: null,
-        }
+    if (!existing.password || !existing.passwordSalt) {
+      return {
+        isError: true,
+        data: null,
+        errorCode: SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING,
       }
     }
 
-    // TODO: social logged in users
+    // existing account with email and password login
+    if (
+      existing.password !==
+      encryptPassword({
+        plain: password ?? '',
+        originalSalt: existing.passwordSalt,
+      }).encrypted
+    ) {
+      // password not correct
+      return {
+        isError: true,
+        errorCode: SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH,
+        data: null,
+      }
+    }
+
     return {
       isError: false,
       data: existing.serialize(),
