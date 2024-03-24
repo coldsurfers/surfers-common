@@ -25,6 +25,7 @@ import NextAuth from 'next-auth'
 // import GitHub from 'next-auth/providers/github'
 // import Gitlab from "next-auth/providers/gitlab"
 import Google from 'next-auth/providers/google'
+import Credentials from 'next-auth/providers/credentials'
 // import Hubspot from "next-auth/providers/hubspot"
 // import Instagram from "next-auth/providers/instagram"
 // import Kakao from 'next-auth/providers/kakao'
@@ -65,9 +66,11 @@ import Google from 'next-auth/providers/google'
 
 import type { NextAuthConfig } from 'next-auth'
 import {
-  signIn as databaseSignIn,
+  EMAIL_SIGN_IN_SERVICE_ERROR_CODE,
+  emailSignIn,
   verifyGoogleAccessToken,
 } from '../database/services'
+import { NextResponse } from 'next/server'
 
 export const config = {
   theme: {
@@ -105,6 +108,16 @@ export const config = {
     Google({
       clientId: process.env.GOOGLE_OAUTH_CLIENT_ID ?? '',
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET ?? '',
+    }),
+    Credentials({
+      authorize: async () => {
+        await console.log('email credentials')
+        return {
+          email: 'email',
+          id: 'id',
+          name: 'name',
+        }
+      },
     }),
     // Hubspot,
     // Instagram,
@@ -145,11 +158,11 @@ export const config = {
     // Zoom,
   ],
   callbacks: {
-    authorized({ request, auth }) {
-      //   const { pathname } = request.nextUrl
-      //   if (pathname === '/middleware-example') return !!auth
-      return true
-    },
+    // authorized({ request, auth }) {
+    //   //   const { pathname } = request.nextUrl
+    //   //   if (pathname === '/middleware-example') return !!auth
+    //   return true
+    // },
     async signIn(params) {
       const { account, profile } = params
       if (!account || !profile?.email) {
@@ -159,17 +172,20 @@ export const config = {
       if (provider !== 'google' || !accessToken) {
         return false
       }
-      // TODO: connect with db
+
       const verified = await verifyGoogleAccessToken(accessToken)
       if (!verified) {
         return false
       }
-      const signInResult = await databaseSignIn({
-        email: profile.email,
-      })
-      if (signInResult.isError) {
-        return false
-      }
+      // TODO: connect with db
+      // const signInResult = await emailSignIn({
+      //   email: profile.email,
+      // })
+      // console.log(signInResult)
+      // if (signInResult.isError) {
+      //   return false
+      //   // throw new Error(JSON.stringify({ errors: true, status: false }))
+      // }
 
       return true
     },

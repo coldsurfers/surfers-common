@@ -12,6 +12,16 @@ export const UserModelSchema = z.object({
 
 export type UserModelSchemaType = z.infer<typeof UserModelSchema>
 
+export const UserModelSerialzedSchema = z.object({
+  id: z.number(),
+  createdAt: z.string().datetime(),
+  email: z.string().email(),
+})
+
+export type UserModelSerialzedSchemaType = z.TypeOf<
+  typeof UserModelSerialzedSchema
+>
+
 class UserModel {
   public id: number | null
   public createdAt: string | null
@@ -25,6 +35,17 @@ class UserModel {
     this.email = params.email
     this.password = params.password
     this.passwordSalt = params.passwordSalt
+  }
+
+  public serialize(): UserModelSerialzedSchemaType {
+    if (!this.id || !this.createdAt) {
+      throw Error('UserModelSerialize failed')
+    }
+    return {
+      id: this.id,
+      email: this.email,
+      createdAt: this.createdAt,
+    }
   }
 
   private static modelize(prismaModel: User) {
