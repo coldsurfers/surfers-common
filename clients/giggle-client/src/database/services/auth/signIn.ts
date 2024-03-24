@@ -3,7 +3,7 @@ import encryptPassword from '@/libs/encryptPassword'
 import googleOAuthClient from '../../libs/googleOAuthClient'
 import { UserModelSerialzedSchemaType } from '@/database/models/User'
 
-enum SIGN_IN_SERVICE_ERROR_CODE {
+export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
   PASSWORD_NOT_MATCH = 'PASSWORD_NOT_MATCH',
   NOT_EXISTING_ACCOUNT = 'NOT_EXISTING_ACCOUNT',
@@ -11,7 +11,7 @@ enum SIGN_IN_SERVICE_ERROR_CODE {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
-type SignInReturnType =
+type EmailSignInReturnType =
   | {
       isError: false
       data: UserModelSerialzedSchemaType
@@ -19,7 +19,7 @@ type SignInReturnType =
   | {
       isError: true
       data: null
-      errorCode: SIGN_IN_SERVICE_ERROR_CODE
+      errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE
     }
 
 export const emailSignIn = async ({
@@ -28,7 +28,7 @@ export const emailSignIn = async ({
 }: {
   email: string
   password?: string
-}): Promise<SignInReturnType> => {
+}): Promise<EmailSignInReturnType> => {
   try {
     // check existing email
     const existing = await UserModel.findByEmail(email)
@@ -36,7 +36,7 @@ export const emailSignIn = async ({
       return {
         isError: true,
         data: null,
-        errorCode: SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT,
+        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT,
       }
     }
 
@@ -44,7 +44,7 @@ export const emailSignIn = async ({
       return {
         isError: true,
         data: null,
-        errorCode: SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING,
+        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING,
       }
     }
 
@@ -59,7 +59,7 @@ export const emailSignIn = async ({
       // password not correct
       return {
         isError: true,
-        errorCode: SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH,
+        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH,
         data: null,
       }
     }
@@ -73,7 +73,7 @@ export const emailSignIn = async ({
     return {
       isError: true,
       data: null,
-      errorCode: SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
+      errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
     }
   }
 }
