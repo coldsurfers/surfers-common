@@ -1,6 +1,6 @@
 'use client'
 
-import { startTransition, useCallback } from 'react'
+import { startTransition, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import LoginButton from '@/ui/Button/LoginButton'
 import Link from 'next/link'
@@ -60,6 +60,7 @@ type Inputs = {
 }
 
 export default function LoginForm() {
+  const [errorMessage, setErrorMessage] = useState('')
   const googleSignIn = useCallback(async () => {
     await signIn('google', { redirect: false })
   }, [])
@@ -69,12 +70,23 @@ export default function LoginForm() {
     watch,
     formState: { errors },
   } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => log(data)
-  const onClickEmailLoginButton = useCallback(() => {
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     startTransition(() => {
-      emailSignInAction()
+      emailSignInAction(data)
+        .then((result) => {
+          if (result.isError) {
+            setErrorMessage('Error Has Been Occurred')
+            return
+          }
+          console.log('success!')
+        })
+        .catch((e) => {
+          console.log('email sign in error')
+          console.error(e)
+        })
     })
-  }, [])
+  }
+
   const onClickGoogleLoginButton = useCallback(googleSignIn, [googleSignIn])
 
   if (process.env.NODE_ENV === 'development') {
@@ -98,7 +110,7 @@ export default function LoginForm() {
           type="password"
           style={{ marginTop: '1rem', marginBottom: '1rem' }}
         />
-        <EmailLoginButton withScale fullWidth onClick={onClickEmailLoginButton}>
+        <EmailLoginButton withScale fullWidth>
           {EMAIL_LOGIN_MESSAGE}
         </EmailLoginButton>
       </EmailLoginForm>
@@ -114,6 +126,7 @@ export default function LoginForm() {
           </EmailLoginUnderlineText>
         </Link>
       </div>
+      {errorMessage && errorMessage}
     </Wrapper>
   )
 }
