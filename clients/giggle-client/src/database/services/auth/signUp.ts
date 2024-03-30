@@ -18,7 +18,7 @@ type CheckEmailSignUpReturnType =
       errorCode: CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE
     }
 
-export const checkEmailForSignUp = async ({
+const checkEmailForSignUp = async ({
   email,
 }: {
   email: string
@@ -56,7 +56,7 @@ type EmailSignUpReturnType =
       errorCode: EMAIL_SIGN_UP_SERVICE_ERROR_CODE
     }
 
-export const emailSignUp = async ({
+const emailSignUp = async ({
   email,
   password,
   passwordConfirm,
@@ -126,7 +126,7 @@ type SocialSignUpReturnType =
       errorCode: SOCIAL_SIGN_UP_SERVICE_ERROR_CODE
     }
 
-export const socialSignUp = async ({
+const socialSignUp = async ({
   email,
 }: {
   email: string
@@ -162,3 +162,11 @@ export const socialSignUp = async ({
     }
   }
 }
+
+const AuthSignUpService = {
+  checkEmailForSignUp,
+  emailSignUp,
+  socialSignUp,
+}
+
+export default AuthSignUpService
