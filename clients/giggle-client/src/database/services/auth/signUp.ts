@@ -2,7 +2,7 @@ import { UserModel } from '@/database/models'
 import { UserModelSerialzedSchemaType } from '@/database/models/User'
 import encryptPassword from '@/libs/encryptPassword'
 
-enum CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
+export enum CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
@@ -39,7 +39,7 @@ const checkEmailForSignUp = async ({
   }
 }
 
-enum EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
+export enum EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
   PASSWORD_CONFIRM_IS_NOT_MATCH = 'PASSWORD_CONFIRM_IS_NOT_MATCH',
   ALREADY_EXISTING_ACCOUNT = 'ALREADY_EXISTING_ACCOUNT',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
@@ -110,7 +110,7 @@ const emailSignUp = async ({
   }
 }
 
-enum SOCIAL_SIGN_UP_SERVICE_ERROR_CODE {
+export enum SOCIAL_SIGN_UP_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_ACCOUNT = 'ALREADY_EXISTING_ACCOUNT',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
