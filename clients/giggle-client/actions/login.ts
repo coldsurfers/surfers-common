@@ -3,11 +3,11 @@
 import { signIn } from '@/libs/auth'
 import { AuthError } from 'next-auth'
 
-export const emailLogin = async () => {
+export const emailSignInAction = async () => {
   try {
-    await signIn('credentials', { redirect: false })
+    await signIn('credentials', { redirect: false, email: '', password: '' })
   } catch (e) {
-    console.log(e)
+    console.log('My Error', e)
     if (e instanceof AuthError) {
       console.log('ERROR has been occurred')
       // switch (error.type) {
