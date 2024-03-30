@@ -1,5 +1,26 @@
-import AuthSignUpService from '@/database/services/auth/signUp'
+import AuthSignUpService, {
+  EMAIL_SIGN_UP_SERVICE_ERROR_CODE,
+  SOCIAL_SIGN_UP_SERVICE_ERROR_CODE,
+} from '@/database/services/auth/signUp'
 import AuthSocialService from '@/database/services/auth/social'
+import { User } from 'next-auth'
+
+export type API_AUTH_SIGNUP_POST_ERROR_CODE =
+  | 'INVALID_ACCESS_TOKEN'
+  | 'INVALID_PROVIDER'
+  | 'UNKNOWN_ERROR'
+  | 'ALREADY_EXISTING_ACCOUNT'
+  | 'PASSWORD_CONFIRM_IS_NOT_MATCH'
+
+export type API_AUTH_SIGNUP_POST_RESPONSE =
+  | {
+      isError: true
+      errorCode: API_AUTH_SIGNUP_POST_ERROR_CODE
+    }
+  | {
+      isError: false
+      data: User | null
+    }
 
 export const POST = async (request: Request) => {
   try {
@@ -23,30 +44,90 @@ export const POST = async (request: Request) => {
         passwordConfirm: requestBody.passwordConfirm,
       })
       if (result.isError) {
-        return Response.json(result)
+        switch (result.errorCode) {
+          case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT:
+            return Response.json({
+              isError: true,
+              errorCode: 'ALREADY_EXISTING_ACCOUNT',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
+          case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.PASSWORD_CONFIRM_IS_NOT_MATCH:
+            return Response.json({
+              isError: true,
+              errorCode: 'PASSWORD_CONFIRM_IS_NOT_MATCH',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
+          case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR:
+          default:
+            return Response.json({
+              isError: true,
+              errorCode: 'UNKNOWN_ERROR',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
+        }
       }
-      return result.data
+      return {
+        isError: false,
+        data: result.data
+          ? {
+              ...result.data,
+              id: `${result.data?.id}`,
+            }
+          : null,
+      } satisfies API_AUTH_SIGNUP_POST_RESPONSE
     } else if (requestBody.provider === 'google') {
       const accessTokenResult = await AuthSocialService.verifyGoogleAccessToken(
         requestBody.accessToken
       )
-      if (!accessTokenResult) {
-        return Response.json({
-          isError: true,
-          error: 'INVALID_ACCESS_TOKEN',
-        })
+      if (accessTokenResult.isError) {
+        switch (accessTokenResult.error) {
+          case 'INVALID_ACCESS_TOKEN':
+            return Response.json({
+              isError: true,
+              errorCode: 'INVALID_ACCESS_TOKEN',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
+          default:
+            return Response.json({
+              isError: true,
+              errorCode: 'UNKNOWN_ERROR',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
+        }
       }
+
       const signUpResult = await AuthSignUpService.socialSignUp({
         email: requestBody.email,
       })
       if (signUpResult.isError) {
-        return Response.json(signUpResult)
+        switch (signUpResult.errorCode) {
+          case SOCIAL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT:
+            return Response.json({
+              isError: true,
+              errorCode: 'ALREADY_EXISTING_ACCOUNT',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
+          case SOCIAL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR:
+          default:
+            return Response.json({
+              isError: true,
+              errorCode: 'UNKNOWN_ERROR',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
+        }
       }
-      return Response.json(signUpResult.data)
+      return Response.json({
+        isError: false,
+        data: signUpResult.data
+          ? {
+              ...signUpResult.data,
+              id: `${signUpResult.data?.id}`,
+            }
+          : null,
+      } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
     }
 
-    return Response.json({ isError: true, error: 'INVALID_PROVIDER' })
+    return Response.json({
+      isError: true,
+      errorCode: 'INVALID_PROVIDER',
+    } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
   } catch (e) {
-    return Response.json({ isError: true, error: 'UNKNOWN_ERROR' })
+    return Response.json({
+      isError: true,
+      errorCode: 'UNKNOWN_ERROR',
+    } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
   }
 }
