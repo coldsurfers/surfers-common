@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback } from 'react'
+import { startTransition, useCallback } from 'react'
 import styled from 'styled-components'
 import LoginButton from '@/ui/Button/LoginButton'
 import Link from 'next/link'
@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import log from '@/libs/log'
 import { BRANDING_NAME } from '@/libs/constants'
 import { signIn } from 'next-auth/react'
+import { emailSignInAction } from '../../actions/login'
 
 const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
@@ -49,16 +50,19 @@ const TextInput = styled.input`
   font-weight: 600;
 `
 
+const EmailLoginButton = styled(LoginButton)`
+  margin-bottom: 1rem;
+`
+
 type Inputs = {
   email: string
   password: string
 }
 
-export default function LoginForm({
-  emailLogin,
-}: {
-  emailLogin: () => Promise<void>
-}) {
+export default function LoginForm() {
+  const googleSignIn = useCallback(async () => {
+    await signIn('google', { redirect: false })
+  }, [])
   const {
     register,
     handleSubmit,
@@ -66,10 +70,12 @@ export default function LoginForm({
     formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = (data) => log(data)
-  const onClickEmailLoginButton = useCallback(emailLogin, [emailLogin])
-  const onClickGoogleLoginButton = useCallback(async () => {
-    await signIn('google', { redirect: false })
+  const onClickEmailLoginButton = useCallback(() => {
+    startTransition(() => {
+      emailSignInAction()
+    })
   }, [])
+  const onClickGoogleLoginButton = useCallback(googleSignIn, [googleSignIn])
 
   if (process.env.NODE_ENV === 'development') {
     log(watch('email')) // watch input value by passing the name of it
@@ -92,9 +98,9 @@ export default function LoginForm({
           type="password"
           style={{ marginTop: '1rem', marginBottom: '1rem' }}
         />
-        <LoginButton withScale fullWidth style={{ marginBottom: '1rem' }}>
+        <EmailLoginButton withScale fullWidth onClick={onClickEmailLoginButton}>
           {EMAIL_LOGIN_MESSAGE}
-        </LoginButton>
+        </EmailLoginButton>
       </EmailLoginForm>
       <Link href="/password-reset">
         <EmailLoginUnderlineText>Forgot your password?</EmailLoginUnderlineText>
