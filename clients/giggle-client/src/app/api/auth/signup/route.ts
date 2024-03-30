@@ -1,4 +1,5 @@
 import AuthSignUpService from '@/database/services/auth/signUp'
+import AuthSocialService from '@/database/services/auth/social'
 
 export const POST = async (request: Request) => {
   try {
@@ -12,6 +13,7 @@ export const POST = async (request: Request) => {
       | {
           provider: 'google'
           email: string
+          accessToken: string
         }
 
     if (requestBody.provider === 'credentials') {
@@ -24,6 +26,23 @@ export const POST = async (request: Request) => {
         return Response.json(result)
       }
       return result.data
+    } else if (requestBody.provider === 'google') {
+      const accessTokenResult = await AuthSocialService.verifyGoogleAccessToken(
+        requestBody.accessToken
+      )
+      if (!accessTokenResult) {
+        return Response.json({
+          isError: true,
+          error: 'INVALID_ACCESS_TOKEN',
+        })
+      }
+      const signUpResult = await AuthSignUpService.socialSignUp({
+        email: requestBody.email,
+      })
+      if (signUpResult.isError) {
+        return Response.json(signUpResult)
+      }
+      return Response.json(signUpResult.data)
     }
 
     return Response.json({ isError: true, error: 'INVALID_PROVIDER' })
