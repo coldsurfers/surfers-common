@@ -1,6 +1,10 @@
+import { MouseEventHandler, PropsWithChildren } from 'react'
 import styled, { css } from 'styled-components'
 
-const LoginButton = styled.button<{ withScale?: boolean; fullWidth?: boolean }>`
+const LoginButtonStyled = styled.button<{
+  $withScale?: boolean
+  $fullWidth?: boolean
+}>`
   border-radius: 18px;
   background-color: yellow;
   padding: 12px;
@@ -9,10 +13,10 @@ const LoginButton = styled.button<{ withScale?: boolean; fullWidth?: boolean }>`
   cursor: pointer;
   border: 1px solid black;
 
-  width: ${(props) => (props.fullWidth ? '100%' : 'auto')};
+  width: ${(props) => (props.$fullWidth ? '100%' : 'auto')};
 
   ${(props) =>
-    props.withScale &&
+    props.$withScale &&
     css`
       &:hover {
         transform: scale(1.05);
@@ -22,5 +26,28 @@ const LoginButton = styled.button<{ withScale?: boolean; fullWidth?: boolean }>`
       }
     `}
 `
+
+const LoginButton = ({
+  fullWidth,
+  withScale,
+  children,
+  onClick,
+  ...others
+}: PropsWithChildren<{
+  fullWidth?: boolean
+  withScale?: boolean
+  onClick?: MouseEventHandler<HTMLButtonElement>
+}>) => {
+  return (
+    <LoginButtonStyled
+      onClick={onClick}
+      $fullWidth={fullWidth}
+      $withScale={withScale}
+      {...others}
+    >
+      {children}
+    </LoginButtonStyled>
+  )
+}
 
 export default LoginButton

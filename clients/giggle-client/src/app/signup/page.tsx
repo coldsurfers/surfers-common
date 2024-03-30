@@ -41,6 +41,10 @@ const Divider = styled.div`
   margin-bottom: 1rem;
 `
 
+const EmailNextButton = styled(LoginButton)`
+  margin-top: 1rem;
+`
+
 type Inputs = {
   email: string
 }
@@ -59,9 +63,9 @@ export default function SignUpPage() {
       <TopTitle>{TITLE_MESSAGE}</TopTitle>
       <EmailForm onSubmit={handleSubmit(onSubmit)}>
         <TextInput type="email" placeholder="Email" {...register('email')} />
-        <LoginButton withScale fullWidth style={{ marginTop: '1rem' }}>
+        <EmailNextButton withScale fullWidth>
           {EMAIL_NEXT_MESSAGE}
-        </LoginButton>
+        </EmailNextButton>
       </EmailForm>
       <Divider />
       <LoginButton
