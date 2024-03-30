@@ -66,7 +66,7 @@ import Credentials from 'next-auth/providers/credentials'
 
 import type { NextAuthConfig, User } from 'next-auth'
 import AuthSignInService from '../database/services/auth/signIn'
-import { NextResponse } from 'next/server'
+import AuthSocialService from '@/database/services/auth/social'
 
 export const config = {
   theme: {
@@ -176,7 +176,7 @@ export const config = {
       if (isSocialLogin) {
         // TODO: verify social login user
         if (!accessToken) return false
-        const verified = await AuthSignInService.verifyGoogleAccessToken(
+        const verified = await AuthSocialService.verifyGoogleAccessToken(
           accessToken
         )
         if (!verified) {
