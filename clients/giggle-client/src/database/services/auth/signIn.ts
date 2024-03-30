@@ -22,7 +22,7 @@ type EmailSignInReturnType =
       errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE
     }
 
-export const emailSignIn = async ({
+const emailSignIn = async ({
   email,
   password,
 }: {
@@ -78,7 +78,7 @@ export const emailSignIn = async ({
   }
 }
 
-export const verifyGoogleAccessToken = async (accessToken: string) => {
+const verifyGoogleAccessToken = async (accessToken: string) => {
   try {
     const verified = await googleOAuthClient.verifyIdToken({
       idToken: accessToken,
@@ -90,3 +90,10 @@ export const verifyGoogleAccessToken = async (accessToken: string) => {
     return undefined
   }
 }
+
+const AuthSignInService = {
+  emailSignIn,
+  verifyGoogleAccessToken,
+}
+
+export default AuthSignInService
