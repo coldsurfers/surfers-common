@@ -111,6 +111,7 @@ export const config = {
     }),
     Credentials({
       authorize: async () => {
+        // TODO: connect with db
         await console.log('email credentials')
         return {
           email: 'email',
@@ -169,6 +170,7 @@ export const config = {
         return false
       }
       const { id_token: accessToken, provider } = account
+      // for now we only support google login for social login
       if (provider !== 'google' || !accessToken) {
         return false
       }
