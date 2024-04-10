@@ -3,6 +3,8 @@ import { Fragment } from 'react'
 import { highlight, languages } from 'prismjs'
 import Link from 'next/link'
 
+// eslint-disable-next-line import/no-unresolved
+import { Tweet } from 'react-tweet'
 import Text from '../text'
 import styles from '../../styles/post.module.css'
 import SpotifyEmbed from '../embed'
@@ -205,7 +207,18 @@ export function renderBlock(block) {
         </div>
       )
     case 'embed':
-      return <SpotifyEmbed spotifyURL={block.embed.url} />
+      if (block.embed.url.includes('spotify')) {
+        return <SpotifyEmbed spotifyURL={block.embed.url} />
+      }
+      if (block.embed.url.includes('twitter')) {
+        const { url: tweetUrl } = block.embed
+        const tweetId = tweetUrl?.split('/')?.pop()
+        if (tweetId) {
+          return <Tweet id={tweetId} />
+        }
+        return null
+      }
+      return null
     case 'video':
       // eslint-disable-next-line no-case-declarations
       const videoUrl = block.video?.external?.url ?? ''
