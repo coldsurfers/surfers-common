@@ -10,6 +10,7 @@ import SignUpFormEmail from './components/SignUpFormEmail'
 import SignUpFormPassword from './components/SignUpFormPassword'
 import SignUpFormUserInfo from './components/SignUpFormUserInfo'
 import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions'
+import { useEffectOnce } from 'react-use'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -61,7 +62,7 @@ export default function SignUpForm() {
 
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
 
-  useEffect(() => {
+  useEffectOnce(() => {
     const isValidStepSearchParam =
       stepSearchParam !== null && !isNaN(+stepSearchParam)
     if (!isValidStepSearchParam) {
@@ -87,9 +88,7 @@ export default function SignUpForm() {
         return
       }
     }
-    // useEffectOnce
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  })
 
   return (
     <Wrapper>
