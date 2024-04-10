@@ -42,6 +42,7 @@ const SignUpFormPassword = ({
     <EmailForm onSubmit={handleSubmit(onSubmit)}>
       <TextInput
         type="password"
+        placeholder="password"
         {...register('password', {
           onChange: onPasswordInputChange,
         })}

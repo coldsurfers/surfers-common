@@ -71,12 +71,11 @@ export default function SignUpForm() {
       {step === 1 && (
         <SignUpFormPassword
           onPasswordInputChange={(e) => {
+            // https://regexr.com/3bfsi
+            // min 8, max 32, at least one letter and one number
             const passwordSchema = z
               .string()
-              .min(10)
-              // TODO: password regex
-              .regex(new RegExp('?=.*[!@#$%^&*]'))
-            // .regex(/?=.*[a-zA-Z]/)
+              .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,32}$/)
             const validation = passwordSchema.safeParse(e.target.value)
             if (!validation.success) {
               console.log(validation.error)
