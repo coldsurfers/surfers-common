@@ -13,11 +13,13 @@ type Inputs = {
 }
 
 const SignUpFormEmail = ({
+  initialEmailValue,
   onValidationSuccess,
   onValidationError,
   onEmailInputChange,
 }: {
-  onValidationSuccess?: () => void
+  initialEmailValue?: string
+  onValidationSuccess?: (validEmail: string) => void
   onValidationError?: () => void
   onEmailInputChange?: (e: any) => void
 }) => {
@@ -26,7 +28,7 @@ const SignUpFormEmail = ({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({ values: { email: initialEmailValue ?? '' } })
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
       const validation = InputsEmailSchema.safeParse(data.email)
@@ -34,7 +36,7 @@ const SignUpFormEmail = ({
         onValidationError && onValidationError()
         return
       }
-      onValidationSuccess && onValidationSuccess()
+      onValidationSuccess && onValidationSuccess(validation.data)
     },
     [onValidationError, onValidationSuccess]
   )

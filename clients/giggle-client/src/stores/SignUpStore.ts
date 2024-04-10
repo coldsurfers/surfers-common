@@ -1,36 +1,44 @@
 import { create } from 'zustand'
 
 interface SignUpStoreState {
-  step: number | null
   errorMessage: string
+  email: string
+  password: string
+  username: string
 }
 
 interface SignUpStoreAction {
-  initializeStep: () => void
-  increaseStep: () => void
-  decreaseStep: () => void
   setErrorMessage: (message: string) => void
+  setEmail: (email: string) => void
+  setPassword: (password: string) => void
+  setUsername: (username: string) => void
 }
 
 type SignUpStore = SignUpStoreState & SignUpStoreAction
 
-export const useSignUpStore = create<SignUpStore>((set) => ({
-  step: null,
+const initialState: SignUpStoreState = {
   errorMessage: '',
-  initializeStep: () =>
-    set(() => ({
-      step: null,
-    })),
-  increaseStep: () =>
-    set((state) => ({
-      step: typeof state.step === 'number' ? state.step + 1 : 1,
-    })),
-  decreaseStep: () =>
-    set((state) => ({
-      step: typeof state.step === 'number' ? state.step - 1 : null,
-    })),
+  email: '',
+  password: '',
+  username: '',
+}
+
+export const useSignUpStore = create<SignUpStore>((set) => ({
+  ...initialState,
   setErrorMessage: (message) =>
     set(() => ({
       errorMessage: message,
+    })),
+  setEmail: (email) =>
+    set(() => ({
+      email,
+    })),
+  setPassword: (password) =>
+    set(() => ({
+      password,
+    })),
+  setUsername: (username) =>
+    set(() => ({
+      username,
     })),
 }))

@@ -17,11 +17,13 @@ type Inputs = {
 }
 
 const SignUpFormPassword = ({
+  initialPasswordValue,
   onValidationSuccess,
   onValidationError,
   onPasswordInputChange,
 }: {
-  onValidationSuccess?: () => void
+  initialPasswordValue?: string
+  onValidationSuccess?: (validPassword: string) => void
   onValidationError?: () => void
   onPasswordInputChange?: (e: any) => void
 }) => {
@@ -30,7 +32,11 @@ const SignUpFormPassword = ({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    values: {
+      password: initialPasswordValue ?? '',
+    },
+  })
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
       const validation = InputsPasswordSchema.safeParse(data.password)
@@ -38,7 +44,7 @@ const SignUpFormPassword = ({
         onValidationError && onValidationError()
         return
       }
-      onValidationSuccess && onValidationSuccess()
+      onValidationSuccess && onValidationSuccess(validation.data)
     },
     [onValidationError, onValidationSuccess]
   )

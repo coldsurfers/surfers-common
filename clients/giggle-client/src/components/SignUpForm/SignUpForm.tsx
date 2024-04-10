@@ -36,48 +36,75 @@ const Divider = styled.div`
 export default function SignUpForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { step, increaseStep, initializeStep, setErrorMessage, errorMessage } =
-    useSignUpStore((state) => ({
-      initializeStep: state.initializeStep,
-      increaseStep: state.increaseStep,
-      setErrorMessage: state.setErrorMessage,
-      errorMessage: state.errorMessage,
-      step: state.step,
-    }))
+  const stepSearchParam = searchParams.get('step')
+  const { setErrorMessage, errorMessage } = useSignUpStore((state) => ({
+    errorMessage: state.errorMessage,
+    setErrorMessage: state.setErrorMessage,
+  }))
+
+  const { email, password, username } = useSignUpStore((state) => ({
+    email: state.email,
+    password: state.password,
+    username: state.username,
+  }))
+  const { setEmail, setPassword, setUsername } = useSignUpStore((state) => ({
+    setEmail: state.setEmail,
+    setPassword: state.setPassword,
+    setUsername: state.setUsername,
+  }))
 
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
 
   useEffect(() => {
-    // detect initial search param of "step"
-    const stepSearchParam = searchParams.get('step')
-    if (`${step}` !== stepSearchParam) {
-      initializeStep()
+    const isValidStepSearchParam =
+      stepSearchParam !== null && !isNaN(+stepSearchParam)
+    if (!isValidStepSearchParam) {
+      router.replace('/signup')
       return
     }
-    // useEffectOnce intentionally
+    const step = +stepSearchParam
+    if (step === 1) {
+      if (!email) {
+        router.replace('/signup')
+        return
+      }
+    }
+    if (step === 2) {
+      if (!password) {
+        router.replace('/signup')
+        return
+      }
+    }
+    if (step === 3) {
+      if (!username) {
+        router.replace('/signup')
+        return
+      }
+    }
+    // useEffectOnce
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    // increase step
-    if (typeof step !== 'number') return
-    router.push(`/signup?step=${step}`)
-  }, [router, step])
-
-  useEffect(() => {
-    // initialize step
-    if (step === null) {
-      router.replace('/signup')
+    if (!!email) {
+      router.push(`/signup?step=1`)
     }
-  }, [router, step])
+    if (!!password) {
+      router.push(`/signup?step=2`)
+    }
+    if (!!username) {
+      router.push(`/signup?step=3`)
+    }
+  }, [email, password, router, username])
 
   return (
     <Wrapper>
       <TopTitle>{TITLE_MESSAGE}</TopTitle>
-      {step === null && (
+      {stepSearchParam === null && (
         <SignUpFormEmail
-          onValidationSuccess={() => {
-            increaseStep()
+          initialEmailValue={email}
+          onValidationSuccess={(validEmail) => {
+            setEmail(validEmail)
           }}
           onValidationError={() => {
             setErrorMessage('Invalid Email')
@@ -87,11 +114,10 @@ export default function SignUpForm() {
           }}
         />
       )}
-      {step === 1 && (
+      {stepSearchParam && +stepSearchParam === 1 && (
         <SignUpFormPassword
-          onValidationSuccess={() => {
-            increaseStep()
-          }}
+          initialPasswordValue={password}
+          onValidationSuccess={setPassword}
           onValidationError={() => {
             setErrorMessage(
               'Password should have at least one letter and number. Min 8, Max 32'
@@ -102,11 +128,10 @@ export default function SignUpForm() {
           }}
         />
       )}
-      {step === 2 && (
+      {stepSearchParam && +stepSearchParam === 2 && (
         <SignUpFormUserInfo
-          onValidationSuccess={() => {
-            increaseStep()
-          }}
+          initialUsernameValue={username}
+          onValidationSuccess={setUsername}
           onValidationError={() => {
             setErrorMessage('Invalid username')
           }}

@@ -15,11 +15,13 @@ type Inputs = {
 }
 
 const SignUpFormUserInfo = ({
+  initialUsernameValue,
   onValidationSuccess,
   onValidationError,
   onUsernameInputChange,
 }: {
-  onValidationSuccess?: () => void
+  initialUsernameValue?: string
+  onValidationSuccess?: (validUsername: string) => void
   onValidationError?: () => void
   onUsernameInputChange?: (e: any) => void
 }) => {
@@ -28,7 +30,11 @@ const SignUpFormUserInfo = ({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    values: {
+      username: initialUsernameValue ?? '',
+    },
+  })
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
       const validation = UsernameSchema.safeParse(data.username)
@@ -36,7 +42,7 @@ const SignUpFormUserInfo = ({
         onValidationError && onValidationError()
         return
       }
-      onValidationSuccess && onValidationSuccess()
+      onValidationSuccess && onValidationSuccess(validation.data)
     },
     [onValidationError, onValidationSuccess]
   )
