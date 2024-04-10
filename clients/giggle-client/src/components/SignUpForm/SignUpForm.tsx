@@ -9,6 +9,7 @@ import { useSignUpStore } from '@/stores/SignUpStore'
 import SignUpFormEmail from './components/SignUpFormEmail'
 import SignUpFormPassword from './components/SignUpFormPassword'
 import SignUpFormUserInfo from './components/SignUpFormUserInfo'
+import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -42,16 +43,21 @@ export default function SignUpForm() {
     setErrorMessage: state.setErrorMessage,
   }))
 
-  const { email, password, username } = useSignUpStore((state) => ({
-    email: state.email,
-    password: state.password,
-    username: state.username,
-  }))
-  const { setEmail, setPassword, setUsername } = useSignUpStore((state) => ({
-    setEmail: state.setEmail,
-    setPassword: state.setPassword,
-    setUsername: state.setUsername,
-  }))
+  const { email, password, username, termsAndConditions } = useSignUpStore(
+    (state) => ({
+      email: state.email,
+      password: state.password,
+      username: state.username,
+      termsAndConditions: state.termsAndConditions,
+    })
+  )
+  const { setEmail, setPassword, setUsername, setTermsAndConditions } =
+    useSignUpStore((state) => ({
+      setEmail: state.setEmail,
+      setPassword: state.setPassword,
+      setUsername: state.setUsername,
+      setTermsAndConditions: state.setTermsAndConditions,
+    }))
 
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
 
@@ -85,18 +91,6 @@ export default function SignUpForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    if (!!email) {
-      router.push(`/signup?step=1`)
-    }
-    if (!!password) {
-      router.push(`/signup?step=2`)
-    }
-    if (!!username) {
-      router.push(`/signup?step=3`)
-    }
-  }, [email, password, router, username])
-
   return (
     <Wrapper>
       <TopTitle>{TITLE_MESSAGE}</TopTitle>
@@ -105,6 +99,7 @@ export default function SignUpForm() {
           initialEmailValue={email}
           onValidationSuccess={(validEmail) => {
             setEmail(validEmail)
+            router.push(`/signup?step=1`)
           }}
           onValidationError={() => {
             setErrorMessage('Invalid Email')
@@ -117,7 +112,10 @@ export default function SignUpForm() {
       {stepSearchParam && +stepSearchParam === 1 && (
         <SignUpFormPassword
           initialPasswordValue={password}
-          onValidationSuccess={setPassword}
+          onValidationSuccess={(validPassword) => {
+            setPassword(validPassword)
+            router.push(`/signup?step=2`)
+          }}
           onValidationError={() => {
             setErrorMessage(
               'Password should have at least one letter and number. Min 8, Max 32'
@@ -131,9 +129,24 @@ export default function SignUpForm() {
       {stepSearchParam && +stepSearchParam === 2 && (
         <SignUpFormUserInfo
           initialUsernameValue={username}
-          onValidationSuccess={setUsername}
+          onValidationSuccess={(validUsername) => {
+            setUsername(validUsername)
+            router.push(`/signup?step=3`)
+          }}
           onValidationError={() => {
             setErrorMessage('Invalid username')
+          }}
+          onUsernameInputChange={(e) => {
+            setErrorMessage('')
+          }}
+        />
+      )}
+      {stepSearchParam && +stepSearchParam === 3 && (
+        <SignUpFormTermsAndConditions
+          initialTermsAndConditions={termsAndConditions}
+          onValidationSuccess={setUsername}
+          onValidationError={() => {
+            setErrorMessage('You should check mandatory terms and conditions')
           }}
           onUsernameInputChange={(e) => {
             setErrorMessage('')
