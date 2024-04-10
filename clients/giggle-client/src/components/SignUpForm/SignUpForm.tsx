@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import SignUpFormEmail from './components/SignUpFormEmail'
 import SignUpFormPassword from './components/SignUpFormPassword'
+import SignUpFormUserInfo from './components/SignUpFormUserInfo'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -97,6 +98,19 @@ export default function SignUpForm() {
             )
           }}
           onPasswordInputChange={(e) => {
+            setErrorMessage('')
+          }}
+        />
+      )}
+      {step === 2 && (
+        <SignUpFormUserInfo
+          onValidationSuccess={() => {
+            increaseStep()
+          }}
+          onValidationError={() => {
+            setErrorMessage('Invalid username')
+          }}
+          onUsernameInputChange={(e) => {
             setErrorMessage('')
           }}
         />
