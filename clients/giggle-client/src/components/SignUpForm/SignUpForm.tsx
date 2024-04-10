@@ -2,7 +2,7 @@
 
 import LoginButton from '@/ui/Button/LoginButton'
 import { signIn } from 'next-auth/react'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import styled from 'styled-components'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSignUpStore } from '@/stores/SignUpStore'
