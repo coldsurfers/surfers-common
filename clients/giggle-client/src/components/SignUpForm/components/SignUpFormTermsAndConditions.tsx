@@ -1,60 +1,80 @@
 import { SignUpTermsAndConditions } from '@/stores/SignUpStore'
 import LoginButton from '@/ui/Button/LoginButton'
-import { useCallback } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { z } from 'zod'
+import TermsAndConditionsBox from './TermsAndConditionsBox'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
-// https://regexr.com/3cg7r
-// instagram style username schema
-const UsernameSchema = z.string().regex(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
-
-type Inputs = {
-  username: z.TypeOf<typeof UsernameSchema>
+type TermsAndConditionsStateEach = {
+  title: string
+  url: string
+  checked: boolean
 }
-
+type TermsAndConditionsState = {
+  'data-collection': TermsAndConditionsStateEach
+  'terms-of-use': TermsAndConditionsStateEach
+}
 const SignUpFormTermsAndConditions = ({
   initialTermsAndConditions,
-  onValidationSuccess,
-  onValidationError,
-  onUsernameInputChange,
+  onUserCheckedTermsAndConditions,
+  onSubmit,
 }: {
   initialTermsAndConditions?: SignUpTermsAndConditions
-  onValidationSuccess?: (validUsername: string) => void
-  onValidationError?: () => void
-  onUsernameInputChange?: (e: any) => void
+  onUserCheckedTermsAndConditions?: (state: SignUpTermsAndConditions) => void
+  onSubmit?: () => void
 }) => {
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     watch,
-  //     formState: { errors },
-  //   } = useForm<Inputs>({
-  //     values: {
-  //       username: initialUsernameValue ?? '',
-  //     },
-  //   })
-  //   const onSubmit: SubmitHandler<Inputs> = useCallback(
-  //     (data) => {
-  //       const validation = UsernameSchema.safeParse(data.username)
-  //       if (!validation.success) {
-  //         onValidationError && onValidationError()
-  //         return
-  //       }
-  //       onValidationSuccess && onValidationSuccess(validation.data)
-  //     },
-  //     [onValidationError, onValidationSuccess]
-  //   )
+  const [termsAndConditions, setTermsAndConditions] =
+    useState<TermsAndConditionsState>({
+      'data-collection': {
+        title:
+          'Collection and use of required personal information (mandatory)',
+        url: 'https://coldsurf.io/legal/collectionanduseofpersonalinformation',
+        checked: initialTermsAndConditions
+          ? initialTermsAndConditions.collectionData
+          : false,
+      },
+      'terms-of-use': {
+        title: 'ColdSurf terms and conditions of use (mandatory)',
+        url: 'https://coldsurf.io/legal/end-user-agreement',
+        checked: initialTermsAndConditions
+          ? initialTermsAndConditions.termsAndConditions
+          : false,
+      },
+    })
+
+  useEffect(() => {
+    onUserCheckedTermsAndConditions?.({
+      collectionData: termsAndConditions['data-collection'].checked,
+      termsAndConditions: termsAndConditions['terms-of-use'].checked,
+    })
+  }, [onUserCheckedTermsAndConditions, termsAndConditions])
+
   return (
-    <EmailForm>
-      {/* <TextInput
-        placeholder="Username"
-        {...register('username', {
-          onChange: onUsernameInputChange,
-        })}
-      /> */}
+    <EmailForm
+      onSubmit={(e) => {
+        e.preventDefault()
+        onSubmit?.()
+      }}
+    >
+      {Object.keys(termsAndConditions).map((key) => {
+        const targetKey = key as keyof typeof termsAndConditions
+        const target = termsAndConditions[targetKey]
+        return (
+          <TermsAndConditionsBox
+            key={key}
+            title={target.title}
+            url={target.url}
+            onChange={(checked) => {
+              const nextState = {
+                ...termsAndConditions,
+              }
+              nextState[targetKey].checked = checked
+              setTermsAndConditions(nextState)
+            }}
+          />
+        )
+      })}
       <EmailNextButton withScale fullWidth>
         {EMAIL_NEXT_MESSAGE}
       </EmailNextButton>
@@ -63,15 +83,6 @@ const SignUpFormTermsAndConditions = ({
 }
 
 const EmailForm = styled.form``
-
-const TextInput = styled.input`
-  padding: 1rem;
-  border-radius: 3px;
-  border: 1px solid black;
-  width: 100%;
-  font-size: 0.85rem;
-  font-weight: 600;
-`
 
 const EmailNextButton = styled(LoginButton)`
   margin-top: 1rem;

@@ -144,12 +144,9 @@ export default function SignUpForm() {
       {stepSearchParam && +stepSearchParam === 3 && (
         <SignUpFormTermsAndConditions
           initialTermsAndConditions={termsAndConditions}
-          onValidationSuccess={setUsername}
-          onValidationError={() => {
-            setErrorMessage('You should check mandatory terms and conditions')
-          }}
-          onUsernameInputChange={(e) => {
-            setErrorMessage('')
+          onUserCheckedTermsAndConditions={setTermsAndConditions}
+          onSubmit={() => {
+            // TODO: send data to server
           }}
         />
       )}

@@ -4,13 +4,21 @@ import styled from 'styled-components'
 const TermsAndConditionsBox = ({
   title,
   url,
+  onChange,
 }: {
   title: string
   url: string
+  onChange: (checked: boolean) => void
 }) => {
   return (
     <Box>
-      <InputCheckBox id={`checkbox-${title}`} type="checkbox" />
+      <InputCheckBox
+        id={`checkbox-${title}`}
+        type="checkbox"
+        onChange={(e) => {
+          onChange(e.target.checked)
+        }}
+      />
       <Label htmlFor={`checkbox-${title}`}>
         <CheckBox />
         <Link
