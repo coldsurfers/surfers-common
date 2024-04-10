@@ -4,11 +4,10 @@ import LoginButton from '@/ui/Button/LoginButton'
 import { signIn } from 'next-auth/react'
 import { useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import SignUpFormEmail from './components/SignUpFormEmail'
 import SignUpFormPassword from './components/SignUpFormPassword'
-import { z } from 'zod'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -35,20 +34,40 @@ const Divider = styled.div`
 
 export default function SignUpForm() {
   const router = useRouter()
-  const { increaseStep, decreaseStep, setErrorMessage, errorMessage } =
+  const searchParams = useSearchParams()
+  const { step, increaseStep, initializeStep, setErrorMessage, errorMessage } =
     useSignUpStore((state) => ({
+      initializeStep: state.initializeStep,
       increaseStep: state.increaseStep,
-      decreaseStep: state.decreaseStep,
       setErrorMessage: state.setErrorMessage,
       errorMessage: state.errorMessage,
+      step: state.step,
     }))
-  const step = useSignUpStore((state) => state.step)
 
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
 
   useEffect(() => {
+    // detect initial search param of "step"
+    const stepSearchParam = searchParams.get('step')
+    if (`${step}` !== stepSearchParam) {
+      initializeStep()
+      return
+    }
+    // useEffectOnce intentionally
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    // increase step
     if (typeof step !== 'number') return
     router.push(`/signup?step=${step}`)
+  }, [router, step])
+
+  useEffect(() => {
+    // initialize step
+    if (step === null) {
+      router.replace('/signup')
+    }
   }, [router, step])
 
   return (
