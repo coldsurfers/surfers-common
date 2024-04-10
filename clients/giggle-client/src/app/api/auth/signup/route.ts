@@ -22,7 +22,7 @@ export type API_AUTH_SIGNUP_POST_RESPONSE =
       data: User | null
     }
 
-export const POST = async (request: Request) => {
+export const POST = async (request: Request): Promise<Response> => {
   try {
     const requestBody = (await request.json()) as
       | {
@@ -63,7 +63,8 @@ export const POST = async (request: Request) => {
             } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
         }
       }
-      return {
+
+      return Response.json({
         isError: false,
         data: result.data
           ? {
@@ -71,7 +72,7 @@ export const POST = async (request: Request) => {
               id: `${result.data?.id}`,
             }
           : null,
-      } satisfies API_AUTH_SIGNUP_POST_RESPONSE
+      } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
     } else if (requestBody.provider === 'google') {
       const accessTokenResult = await AuthSocialService.verifyGoogleAccessToken(
         requestBody.accessToken
