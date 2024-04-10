@@ -35,15 +35,14 @@ const Divider = styled.div`
 
 export default function SignUpForm() {
   const router = useRouter()
-  const { increaseStep, decreaseStep, setErrorMessage } = useSignUpStore(
-    (state) => ({
+  const { increaseStep, decreaseStep, setErrorMessage, errorMessage } =
+    useSignUpStore((state) => ({
       increaseStep: state.increaseStep,
       decreaseStep: state.decreaseStep,
       setErrorMessage: state.setErrorMessage,
-    })
-  )
+      errorMessage: state.errorMessage,
+    }))
   const step = useSignUpStore((state) => state.step)
-  const errorMessage = useSignUpStore((state) => state.errorMessage)
 
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
 
@@ -70,16 +69,16 @@ export default function SignUpForm() {
       )}
       {step === 1 && (
         <SignUpFormPassword
+          onValidationSuccess={() => {
+            increaseStep()
+          }}
+          onValidationError={() => {
+            setErrorMessage(
+              'Password should have at least one letter and number. Min 8, Max 32'
+            )
+          }}
           onPasswordInputChange={(e) => {
-            // https://regexr.com/3bfsi
-            // min 8, max 32, at least one letter and one number
-            const passwordSchema = z
-              .string()
-              .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,32}$/)
-            const validation = passwordSchema.safeParse(e.target.value)
-            if (!validation.success) {
-              console.log(validation.error)
-            }
+            setErrorMessage('')
           }}
         />
       )}

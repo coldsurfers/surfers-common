@@ -6,7 +6,11 @@ import { z } from 'zod'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
-const InputsPasswordSchema = z.string()
+// https://regexr.com/3bfsi
+// min 8, max 32, at least one letter and one number
+const InputsPasswordSchema = z
+  .string()
+  .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,32}$/)
 
 type Inputs = {
   password: z.TypeOf<typeof InputsPasswordSchema>
