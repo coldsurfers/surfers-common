@@ -11,6 +11,9 @@ import SignUpFormPassword from './components/SignUpFormPassword'
 import SignUpFormUserInfo from './components/SignUpFormUserInfo'
 import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions'
 import { useEffectOnce } from 'react-use'
+import { EmailSignUpActionParams } from '../../../actions/signup'
+
+const MAX_STEP = 3
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -62,29 +65,45 @@ export default function SignUpForm() {
 
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
 
+  const initializeStepRoute = useCallback(() => {
+    router.replace('/signup')
+  }, [router])
+
+  const increaseStepRoute = useCallback(() => {
+    if (stepSearchParam === null) {
+      router.push('/signup?step=1')
+      return
+    }
+    if (+stepSearchParam >= MAX_STEP) {
+      router.push(`/signup?step=${MAX_STEP}`)
+      return
+    }
+    router.push(`/signup?step=${+stepSearchParam + 1}`)
+  }, [router, stepSearchParam])
+
   useEffectOnce(() => {
     const isValidStepSearchParam =
       stepSearchParam !== null && !isNaN(+stepSearchParam)
     if (!isValidStepSearchParam) {
-      router.replace('/signup')
+      initializeStepRoute()
       return
     }
     const step = +stepSearchParam
     if (step === 1) {
       if (!email) {
-        router.replace('/signup')
+        initializeStepRoute()
         return
       }
     }
     if (step === 2) {
       if (!password) {
-        router.replace('/signup')
+        initializeStepRoute()
         return
       }
     }
     if (step === 3) {
       if (!username) {
-        router.replace('/signup')
+        initializeStepRoute()
         return
       }
     }
@@ -98,7 +117,7 @@ export default function SignUpForm() {
           initialEmailValue={email}
           onValidationSuccess={(validEmail) => {
             setEmail(validEmail)
-            router.push(`/signup?step=1`)
+            increaseStepRoute()
           }}
           onValidationError={() => {
             setErrorMessage('Invalid Email')
@@ -113,7 +132,7 @@ export default function SignUpForm() {
           initialPasswordValue={password}
           onValidationSuccess={(validPassword) => {
             setPassword(validPassword)
-            router.push(`/signup?step=2`)
+            increaseStepRoute()
           }}
           onValidationError={() => {
             setErrorMessage(
@@ -130,7 +149,7 @@ export default function SignUpForm() {
           initialUsernameValue={username}
           onValidationSuccess={(validUsername) => {
             setUsername(validUsername)
-            router.push(`/signup?step=3`)
+            increaseStepRoute()
           }}
           onValidationError={() => {
             setErrorMessage('Invalid username')
@@ -145,6 +164,12 @@ export default function SignUpForm() {
           initialTermsAndConditions={termsAndConditions}
           onUserCheckedTermsAndConditions={setTermsAndConditions}
           onSubmit={() => {
+            const needData: EmailSignUpActionParams = {
+              email,
+              password,
+              passwordConfirm: password,
+            }
+            console.log(needData)
             // TODO: send data to server
           }}
         />

@@ -6,15 +6,17 @@ import {
 } from '@/app/api/auth/signup/route'
 import { User } from 'next-auth'
 
+export type EmailSignUpActionParams = {
+  email: string
+  password: string
+  passwordConfirm: string
+}
+
 export const emailSignUpAction = async ({
   email,
   password,
   passwordConfirm,
-}: {
-  email: string
-  password: string
-  passwordConfirm: string
-}): Promise<
+}: EmailSignUpActionParams): Promise<
   | { isError: true; errorCode: API_AUTH_SIGNUP_POST_ERROR_CODE }
   | {
       isError: false
