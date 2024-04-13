@@ -25,6 +25,7 @@ import NextAuth from 'next-auth'
 // import GitHub from 'next-auth/providers/github'
 // import Gitlab from "next-auth/providers/gitlab"
 import Google from 'next-auth/providers/google'
+import Credentials from 'next-auth/providers/credentials'
 // import Hubspot from "next-auth/providers/hubspot"
 // import Instagram from "next-auth/providers/instagram"
 // import Kakao from 'next-auth/providers/kakao'
@@ -63,11 +64,9 @@ import Google from 'next-auth/providers/google'
 // import Zoho from "next-auth/providers/zoho"
 // import Zoom from "next-auth/providers/zoom"
 
-import type { NextAuthConfig } from 'next-auth'
-import {
-  signIn as databaseSignIn,
-  verifyGoogleAccessToken,
-} from '../database/services'
+import type { NextAuthConfig, User } from 'next-auth'
+import AuthSignInService from '../database/services/auth/signIn'
+import AuthSocialService from '@/database/services/auth/social'
 
 export const config = {
   theme: {
@@ -105,6 +104,22 @@ export const config = {
     Google({
       clientId: process.env.GOOGLE_OAUTH_CLIENT_ID ?? '',
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET ?? '',
+    }),
+    Credentials({
+      authorize: async (credentials) => {
+        if (!credentials.email || !credentials.password) {
+          return null
+        }
+        const result = await AuthSignInService.emailSignIn({
+          email: credentials.email as string,
+          password: credentials.password as string,
+        })
+        if (result.isError) return null
+        return {
+          email: result.data.email,
+          id: `${result.data.id}`,
+        } satisfies User
+      },
     }),
     // Hubspot,
     // Instagram,
@@ -145,31 +160,39 @@ export const config = {
     // Zoom,
   ],
   callbacks: {
-    authorized({ request, auth }) {
-      //   const { pathname } = request.nextUrl
-      //   if (pathname === '/middleware-example') return !!auth
-      return true
-    },
+    // authorized({ request, auth }) {
+    //   //   const { pathname } = request.nextUrl
+    //   //   if (pathname === '/middleware-example') return !!auth
+    //   return true
+    // },
     async signIn(params) {
       const { account, profile } = params
       if (!account || !profile?.email) {
         return false
       }
       const { id_token: accessToken, provider } = account
-      if (provider !== 'google' || !accessToken) {
+      // for now we only support google login for social login
+      const isSocialLogin = provider === 'google'
+      if (isSocialLogin) {
+        // TODO: verify social login user
+        if (!accessToken) return false
+        const verified = await AuthSocialService.verifyGoogleAccessToken(
+          accessToken
+        )
+        if (!verified) {
+          return false
+        }
+        // TODO: connect with db and find user
+        return true
+      }
+
+      // email login user
+      // TODO: find user by email
+      const { credentials } = params
+      if (!credentials) {
         return false
       }
-      // TODO: connect with db
-      const verified = await verifyGoogleAccessToken(accessToken)
-      if (!verified) {
-        return false
-      }
-      const signInResult = await databaseSignIn({
-        email: profile.email,
-      })
-      if (signInResult.isError) {
-        return false
-      }
+      const { email, password } = credentials
 
       return true
     },
