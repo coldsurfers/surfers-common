@@ -163,6 +163,9 @@ export default function SignUpForm() {
         <SignUpFormTermsAndConditions
           initialTermsAndConditions={termsAndConditions}
           onUserCheckedTermsAndConditions={setTermsAndConditions}
+          onValidationError={() => {
+            setErrorMessage('You have to check all mandatory terms')
+          }}
           onSubmit={() => {
             const needData: EmailSignUpActionParams = {
               email,

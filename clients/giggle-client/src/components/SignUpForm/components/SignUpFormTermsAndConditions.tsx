@@ -10,6 +10,7 @@ type TermsAndConditionsStateEach = {
   title: string
   url: string
   checked: boolean
+  isMandatory: boolean
 }
 type TermsAndConditionsState = {
   'data-collection': TermsAndConditionsStateEach
@@ -17,10 +18,12 @@ type TermsAndConditionsState = {
 }
 const SignUpFormTermsAndConditions = ({
   initialTermsAndConditions,
+  onValidationError,
   onUserCheckedTermsAndConditions,
   onSubmit,
 }: {
   initialTermsAndConditions?: SignUpTermsAndConditions
+  onValidationError?: () => void
   onUserCheckedTermsAndConditions?: (state: SignUpTermsAndConditions) => void
   onSubmit?: () => void
 }) => {
@@ -33,6 +36,7 @@ const SignUpFormTermsAndConditions = ({
         checked: initialTermsAndConditions
           ? initialTermsAndConditions.collectionData
           : false,
+        isMandatory: true,
       },
       'terms-of-use': {
         title: 'ColdSurf terms and conditions of use (mandatory)',
@@ -40,6 +44,7 @@ const SignUpFormTermsAndConditions = ({
         checked: initialTermsAndConditions
           ? initialTermsAndConditions.termsAndConditions
           : false,
+        isMandatory: true,
       },
     })
 
@@ -54,6 +59,23 @@ const SignUpFormTermsAndConditions = ({
     <EmailForm
       onSubmit={(e) => {
         e.preventDefault()
+        const isAllMandatoryChecked = Object.keys(termsAndConditions).every(
+          (key) => {
+            const currKey = key as keyof typeof termsAndConditions
+            if (
+              termsAndConditions[currKey].isMandatory &&
+              !termsAndConditions[currKey].checked
+            ) {
+              return false
+            }
+            return true
+          }
+        )
+        if (!isAllMandatoryChecked) {
+          onValidationError?.()
+          return
+        }
+
         onSubmit?.()
       }}
     >
