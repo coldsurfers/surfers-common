@@ -10,7 +10,10 @@ import SignUpFormPassword from './components/SignUpFormPassword'
 import SignUpFormUserInfo from './components/SignUpFormUserInfo'
 import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
 import { useEffectOnce } from 'react-use'
-import { EmailSignUpActionParams } from '../../../actions/signup'
+import {
+  EmailSignUpActionParams,
+  emailSignUpAction,
+} from '../../../actions/signup'
 import useSignUpRoute from './hooks/useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
@@ -172,15 +175,22 @@ export default function SignUpForm() {
             onValidationError={() => {
               setErrorMessage('You have to check all mandatory terms')
             }}
-            onSubmit={() => {
+            onSubmit={async () => {
               setErrorMessage('')
               const needData: EmailSignUpActionParams = {
                 email,
                 password,
                 passwordConfirm: password,
               }
-              console.log(needData)
-              // TODO: send data to server
+              try {
+                const response = await emailSignUpAction(needData)
+                if (response.isError) {
+                  setErrorMessage(response.errorCode)
+                  return
+                }
+              } catch (e) {
+                console.error(e)
+              }
             }}
           />
         ))
