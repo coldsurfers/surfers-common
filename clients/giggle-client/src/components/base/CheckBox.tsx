@@ -55,16 +55,18 @@ const Label = styled.label`
   align-items: center;
 `
 
+export interface CheckBoxProps {
+  id?: string
+  labelHtmlFor?: string
+  onChange?: ChangeEventHandler<HTMLInputElement>
+}
+
 const CheckBox = ({
   id,
   labelHtmlFor,
   onChange,
   children,
-}: PropsWithChildren<{
-  id?: string
-  labelHtmlFor?: string
-  onChange?: ChangeEventHandler<HTMLInputElement>
-}>) => {
+}: PropsWithChildren<CheckBoxProps>) => {
   return (
     <>
       <InputCheckBox id={id} type="checkbox" onChange={onChange} />
