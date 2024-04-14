@@ -173,6 +173,7 @@ export default function SignUpForm() {
               setErrorMessage('You have to check all mandatory terms')
             }}
             onSubmit={() => {
+              setErrorMessage('')
               const needData: EmailSignUpActionParams = {
                 email,
                 password,
