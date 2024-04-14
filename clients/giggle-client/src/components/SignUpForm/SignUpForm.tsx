@@ -12,6 +12,7 @@ import SignUpFormUserInfo from './components/SignUpFormUserInfo'
 import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions'
 import { useEffectOnce } from 'react-use'
 import { EmailSignUpActionParams } from '../../../actions/signup'
+import useSignUpRoute from './useSignUpRoute'
 
 const MAX_STEP = 3
 
@@ -39,9 +40,9 @@ const Divider = styled.div`
 `
 
 export default function SignUpForm() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const stepSearchParam = searchParams.get('step')
+  const { initializeStepRoute, increaseStepRoute, stepSearchParam } =
+    useSignUpRoute()
+
   const { setErrorMessage, errorMessage } = useSignUpStore((state) => ({
     errorMessage: state.errorMessage,
     setErrorMessage: state.setErrorMessage,
@@ -64,22 +65,6 @@ export default function SignUpForm() {
     }))
 
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
-
-  const initializeStepRoute = useCallback(() => {
-    router.replace('/signup')
-  }, [router])
-
-  const increaseStepRoute = useCallback(() => {
-    if (stepSearchParam === null) {
-      router.push('/signup?step=1')
-      return
-    }
-    if (+stepSearchParam >= MAX_STEP) {
-      router.push(`/signup?step=${MAX_STEP}`)
-      return
-    }
-    router.push(`/signup?step=${+stepSearchParam + 1}`)
-  }, [router, stepSearchParam])
 
   useEffectOnce(() => {
     const isValidStepSearchParam =
