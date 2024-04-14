@@ -11,7 +11,7 @@ import SignUpFormUserInfo from './components/SignUpFormUserInfo'
 import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
 import { useEffectOnce } from 'react-use'
 import { EmailSignUpActionParams } from '../../../actions/signup'
-import useSignUpRoute from './useSignUpRoute'
+import useSignUpRoute from './hooks/useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 
