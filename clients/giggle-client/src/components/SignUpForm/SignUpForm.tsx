@@ -15,8 +15,6 @@ import useSignUpRoute from './useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 
-const MAX_STEP = 3
-
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
 const LOGIN_PRE_MESSAGE = 'Sign up with'
