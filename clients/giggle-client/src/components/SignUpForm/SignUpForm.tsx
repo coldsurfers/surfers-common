@@ -2,7 +2,7 @@
 
 import LoginButton from '@/ui/Button/LoginButton'
 import { signIn } from 'next-auth/react'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSignUpStore } from '@/stores/SignUpStore'
@@ -13,6 +13,8 @@ import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditi
 import { useEffectOnce } from 'react-use'
 import { EmailSignUpActionParams } from '../../../actions/signup'
 import useSignUpRoute from './useSignUpRoute'
+import { match } from 'ts-pattern'
+import { z } from 'zod'
 
 const MAX_STEP = 3
 
@@ -39,9 +41,35 @@ const Divider = styled.div`
   margin-bottom: 1rem;
 `
 
+const StepSchema = z.number()
+
+enum StepEnum {
+  EMAIL = 1,
+  PASSWORD,
+  TERMS_AND_CONDITIONS,
+}
+
 export default function SignUpForm() {
   const { initializeStepRoute, increaseStepRoute, stepSearchParam } =
     useSignUpRoute()
+
+  const step = useMemo<StepEnum | null>(() => {
+    if (stepSearchParam === null) {
+      return null
+    }
+    const validation = StepSchema.safeParse(+stepSearchParam)
+    if (!validation.success) {
+      return null
+    }
+
+    return match(validation.data)
+      .when(
+        (value) =>
+          value >= StepEnum.EMAIL && value <= StepEnum.TERMS_AND_CONDITIONS,
+        (payload) => payload
+      )
+      .otherwise(() => null)
+  }, [stepSearchParam])
 
   const { setErrorMessage, errorMessage } = useSignUpStore((state) => ({
     errorMessage: state.errorMessage,
@@ -67,101 +95,98 @@ export default function SignUpForm() {
   const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
 
   useEffectOnce(() => {
-    const isValidStepSearchParam =
-      stepSearchParam !== null && !isNaN(+stepSearchParam)
-    if (!isValidStepSearchParam) {
-      initializeStepRoute()
-      return
-    }
-    const step = +stepSearchParam
-    if (step === 1) {
-      if (!email) {
+    match(step)
+      .with(null, () => {
         initializeStepRoute()
-        return
-      }
-    }
-    if (step === 2) {
-      if (!password) {
-        initializeStepRoute()
-        return
-      }
-    }
-    if (step === 3) {
-      if (!username) {
-        initializeStepRoute()
-        return
-      }
-    }
+      })
+      .with(1, () => {
+        if (!email) {
+          initializeStepRoute()
+        }
+      })
+      .with(2, () => {
+        if (!password) {
+          initializeStepRoute()
+        }
+      })
+      .with(3, () => {
+        if (!username) {
+          initializeStepRoute()
+        }
+      })
+      .exhaustive()
   })
 
   return (
     <Wrapper>
       <TopTitle>{TITLE_MESSAGE}</TopTitle>
-      {stepSearchParam === null && (
-        <SignUpFormEmail
-          initialEmailValue={email}
-          onValidationSuccess={(validEmail) => {
-            setEmail(validEmail)
-            increaseStepRoute()
-          }}
-          onValidationError={() => {
-            setErrorMessage('Invalid Email')
-          }}
-          onEmailInputChange={() => {
-            setErrorMessage('')
-          }}
-        />
-      )}
-      {stepSearchParam && +stepSearchParam === 1 && (
-        <SignUpFormPassword
-          initialPasswordValue={password}
-          onValidationSuccess={(validPassword) => {
-            setPassword(validPassword)
-            increaseStepRoute()
-          }}
-          onValidationError={() => {
-            setErrorMessage(
-              'Password should have at least one letter and number. Min 8, Max 32'
-            )
-          }}
-          onPasswordInputChange={(e) => {
-            setErrorMessage('')
-          }}
-        />
-      )}
-      {stepSearchParam && +stepSearchParam === 2 && (
-        <SignUpFormUserInfo
-          initialUsernameValue={username}
-          onValidationSuccess={(validUsername) => {
-            setUsername(validUsername)
-            increaseStepRoute()
-          }}
-          onValidationError={() => {
-            setErrorMessage('Invalid username')
-          }}
-          onUsernameInputChange={(e) => {
-            setErrorMessage('')
-          }}
-        />
-      )}
-      {stepSearchParam && +stepSearchParam === 3 && (
-        <SignUpFormTermsAndConditions
-          initialTermsAndConditions={termsAndConditions}
-          onUserCheckedTermsAndConditions={setTermsAndConditions}
-          onValidationError={() => {
-            setErrorMessage('You have to check all mandatory terms')
-          }}
-          onSubmit={() => {
-            const needData: EmailSignUpActionParams = {
-              email,
-              password,
-              passwordConfirm: password,
-            }
-            console.log(needData)
-            // TODO: send data to server
-          }}
-        />
-      )}
+      {match(step)
+        .with(null, () => (
+          <SignUpFormEmail
+            initialEmailValue={email}
+            onValidationSuccess={(validEmail) => {
+              setEmail(validEmail)
+              increaseStepRoute()
+            }}
+            onValidationError={() => {
+              setErrorMessage('Invalid Email')
+            }}
+            onEmailInputChange={() => {
+              setErrorMessage('')
+            }}
+          />
+        ))
+        .with(1, () => (
+          <SignUpFormPassword
+            initialPasswordValue={password}
+            onValidationSuccess={(validPassword) => {
+              setPassword(validPassword)
+              increaseStepRoute()
+            }}
+            onValidationError={() => {
+              setErrorMessage(
+                'Password should have at least one letter and number. Min 8, Max 32'
+              )
+            }}
+            onPasswordInputChange={(e) => {
+              setErrorMessage('')
+            }}
+          />
+        ))
+        .with(2, () => (
+          <SignUpFormUserInfo
+            initialUsernameValue={username}
+            onValidationSuccess={(validUsername) => {
+              setUsername(validUsername)
+              increaseStepRoute()
+            }}
+            onValidationError={() => {
+              setErrorMessage('Invalid username')
+            }}
+            onUsernameInputChange={(e) => {
+              setErrorMessage('')
+            }}
+          />
+        ))
+        .with(3, () => (
+          <SignUpFormTermsAndConditions
+            initialTermsAndConditions={termsAndConditions}
+            onUserCheckedTermsAndConditions={setTermsAndConditions}
+            onValidationError={() => {
+              setErrorMessage('You have to check all mandatory terms')
+            }}
+            onSubmit={() => {
+              const needData: EmailSignUpActionParams = {
+                email,
+                password,
+                passwordConfirm: password,
+              }
+              console.log(needData)
+              // TODO: send data to server
+            }}
+          />
+        ))
+        .exhaustive()}
       <Divider />
       <LoginButton
         onClick={onClickGoogleLoginButton}
