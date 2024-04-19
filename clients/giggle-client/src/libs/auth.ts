@@ -67,6 +67,7 @@ import Credentials from 'next-auth/providers/credentials'
 import type { NextAuthConfig, User } from 'next-auth'
 import AuthSignInService from '../database/services/auth/signIn'
 import AuthSocialService from '@/database/services/auth/social'
+import log from './log'
 
 export const config = {
   theme: {
@@ -107,6 +108,7 @@ export const config = {
     }),
     Credentials({
       authorize: async (credentials) => {
+        log(`libs-auth.ts - credentials, ${JSON.stringify(credentials)}`)
         if (!credentials.email || !credentials.password) {
           return null
         }
@@ -114,6 +116,7 @@ export const config = {
           email: credentials.email as string,
           password: credentials.password as string,
         })
+        log(`libs-auth.ts - credentials error, ${JSON.stringify(result)}`)
         if (result.isError) return null
         return {
           email: result.data.email,
@@ -167,13 +170,15 @@ export const config = {
     // },
     async signIn(params) {
       const { account, profile } = params
-      if (!account || !profile?.email) {
+      log(`libs-auth.ts - signIn, ${JSON.stringify(params)}`)
+      if (!account) {
         return false
       }
-      const { id_token: accessToken, provider } = account
+      const { provider } = account
       // for now we only support google login for social login
       const isSocialLogin = provider === 'google'
       if (isSocialLogin) {
+        const { id_token: accessToken } = account
         // TODO: verify social login user
         if (!accessToken) return false
         const verified = await AuthSocialService.verifyGoogleAccessToken(
@@ -189,6 +194,7 @@ export const config = {
       // email login user
       // TODO: find user by email
       const { credentials } = params
+      log(`libs-auth.ts - signIn, noCredentials`)
       if (!credentials) {
         return false
       }

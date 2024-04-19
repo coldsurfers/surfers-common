@@ -1,7 +1,6 @@
 'use client'
 
 import LoginButton from '@/ui/Button/LoginButton'
-import { signIn } from 'next-auth/react'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
@@ -17,6 +16,10 @@ import {
 import useSignUpRoute from './hooks/useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
+import { signIn } from 'next-auth/react'
+import { emailSignInAction } from '../../../actions/login'
+import { useRouter } from 'next/navigation'
+import * as ReactAuth from 'next-auth/react'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -50,6 +53,7 @@ enum StepEnum {
 }
 
 export default function SignUpForm() {
+  const router = useRouter()
   const { initializeStepRoute, increaseStepRoute, stepSearchParam } =
     useSignUpRoute()
 
@@ -188,6 +192,18 @@ export default function SignUpForm() {
                   setErrorMessage(response.errorCode)
                   return
                 }
+                const signInResponse = await emailSignInAction({
+                  ...needData,
+                })
+                if (signInResponse.isError) {
+                  setErrorMessage(signInResponse.error)
+                  return
+                }
+                await ReactAuth.signIn('credentials', {
+                  redirect: true,
+                  ...needData,
+                })
+                router.push('/')
               } catch (e) {
                 console.error(e)
               }
