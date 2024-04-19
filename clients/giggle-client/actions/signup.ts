@@ -4,6 +4,8 @@ import {
   API_AUTH_SIGNUP_POST_ERROR_CODE,
   API_AUTH_SIGNUP_POST_RESPONSE,
 } from '@/app/api/auth/signup/route'
+import httpRequest from '@/libs/httpRequest'
+import log from '@/libs/log'
 import { User } from 'next-auth'
 
 export type EmailSignUpActionParams = {
@@ -23,13 +25,17 @@ export const emailSignUpAction = async ({
       data: User | null
     }
 > => {
+  log(
+    `emailSignUpAction ${JSON.stringify({ email, password, passwordConfirm })}`
+  )
   try {
-    const response = await fetch('/api/auth/signup', {
+    const response = await httpRequest('/api/auth/signup', {
       method: 'POST',
       body: JSON.stringify({
         email,
         password,
         passwordConfirm,
+        provider: 'credentials',
       }),
     })
     const responseJson =
@@ -46,6 +52,7 @@ export const emailSignUpAction = async ({
       data: responseJson.data,
     }
   } catch (e) {
+    log(`emailSignUpAction Error ${e}`)
     return {
       isError: true,
       errorCode: 'UNKNOWN_ERROR',

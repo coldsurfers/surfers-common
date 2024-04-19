@@ -9,6 +9,7 @@ import log from '@/libs/log'
 import { BRANDING_NAME } from '@/libs/constants'
 import { signIn } from 'next-auth/react'
 import { emailSignInAction } from '../../actions/login'
+import * as ReactAuth from 'next-auth/react'
 
 const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
@@ -78,11 +79,11 @@ export default function LoginForm() {
             setErrorMessage('Error Has Been Occurred')
             return
           }
-          console.log('success!')
+          log('success!')
+          ReactAuth.signIn('credentials', { redirect: true, ...data })
         })
         .catch((e) => {
-          console.log('email sign in error')
-          console.error(e)
+          log(`email sign in error ${e}`)
         })
     })
   }

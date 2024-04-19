@@ -2,7 +2,7 @@ import { SignUpTermsAndConditions } from '@/stores/SignUpStore'
 import LoginButton from '@/ui/Button/LoginButton'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import TermsAndConditionsBox from './TermsAndConditionsBox'
+import SignUpFormTermsAndConditionsBox from './SignUpFormTermsAndConditionsBox'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
@@ -83,7 +83,7 @@ const SignUpFormTermsAndConditions = ({
         const targetKey = key as keyof typeof termsAndConditions
         const target = termsAndConditions[targetKey]
         return (
-          <TermsAndConditionsBox
+          <SignUpFormTermsAndConditionsBox
             key={key}
             title={target.title}
             url={target.url}

@@ -1,19 +1,25 @@
 'use client'
 
 import LoginButton from '@/ui/Button/LoginButton'
-import { signIn } from 'next-auth/react'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import SignUpFormEmail from './components/SignUpFormEmail'
 import SignUpFormPassword from './components/SignUpFormPassword'
 import SignUpFormUserInfo from './components/SignUpFormUserInfo'
-import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions'
+import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
 import { useEffectOnce } from 'react-use'
-import { EmailSignUpActionParams } from '../../../actions/signup'
-import useSignUpRoute from './useSignUpRoute'
+import {
+  EmailSignUpActionParams,
+  emailSignUpAction,
+} from '../../../actions/signup'
+import useSignUpRoute from './hooks/useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
+import { signIn } from 'next-auth/react'
+import { emailSignInAction } from '../../../actions/login'
+import { useRouter } from 'next/navigation'
+import * as ReactAuth from 'next-auth/react'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -47,6 +53,7 @@ enum StepEnum {
 }
 
 export default function SignUpForm() {
+  const router = useRouter()
   const { initializeStepRoute, increaseStepRoute, stepSearchParam } =
     useSignUpRoute()
 
@@ -172,14 +179,34 @@ export default function SignUpForm() {
             onValidationError={() => {
               setErrorMessage('You have to check all mandatory terms')
             }}
-            onSubmit={() => {
+            onSubmit={async () => {
+              setErrorMessage('')
               const needData: EmailSignUpActionParams = {
                 email,
                 password,
                 passwordConfirm: password,
               }
-              console.log(needData)
-              // TODO: send data to server
+              try {
+                const response = await emailSignUpAction(needData)
+                if (response.isError) {
+                  setErrorMessage(response.errorCode)
+                  return
+                }
+                const signInResponse = await emailSignInAction({
+                  ...needData,
+                })
+                if (signInResponse.isError) {
+                  setErrorMessage(signInResponse.error)
+                  return
+                }
+                await ReactAuth.signIn('credentials', {
+                  redirect: true,
+                  ...needData,
+                })
+                router.push('/')
+              } catch (e) {
+                console.error(e)
+              }
             }}
           />
         ))

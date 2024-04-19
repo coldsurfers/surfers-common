@@ -1,53 +1,5 @@
-import Link from 'next/link'
+import { ChangeEventHandler, PropsWithChildren } from 'react'
 import styled from 'styled-components'
-
-const TermsAndConditionsBox = ({
-  title,
-  url,
-  onChange,
-}: {
-  title: string
-  url: string
-  onChange: (checked: boolean) => void
-}) => {
-  return (
-    <Box>
-      <InputCheckBox
-        id={`checkbox-${title}`}
-        type="checkbox"
-        onChange={(e) => {
-          onChange(e.target.checked)
-        }}
-      />
-      <Label htmlFor={`checkbox-${title}`}>
-        <CheckBox />
-        <Link
-          target="_blank"
-          href={url}
-          style={{
-            textDecoration: 'underline',
-          }}
-        >
-          <Title>{title}</Title>
-        </Link>
-      </Label>
-    </Box>
-  )
-}
-
-const Box = styled.div`
-  border-radius: 4px;
-  background-color: white;
-  border: 1px solid black;
-
-  padding: 0.5rem;
-
-  & + & {
-    margin-top: 1rem;
-  }
-
-  display: flex;
-`
 
 const InputCheckBox = styled.input`
   border: 0px;
@@ -60,7 +12,7 @@ const InputCheckBox = styled.input`
   width: 1px;
 `
 
-const CheckBox = styled.span`
+const CheckBoxUI = styled.span`
   border: 1px solid black;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -102,8 +54,28 @@ const Label = styled.label`
   display: flex;
   align-items: center;
 `
-const Title = styled.span`
-  margin-left: 0.5rem;
-`
 
-export default TermsAndConditionsBox
+export interface CheckBoxProps {
+  id?: string
+  labelHtmlFor?: string
+  onChange?: ChangeEventHandler<HTMLInputElement>
+}
+
+const CheckBox = ({
+  id,
+  labelHtmlFor,
+  onChange,
+  children,
+}: PropsWithChildren<CheckBoxProps>) => {
+  return (
+    <>
+      <InputCheckBox id={id} type="checkbox" onChange={onChange} />
+      <Label htmlFor={labelHtmlFor}>
+        <CheckBoxUI />
+        {children}
+      </Label>
+    </>
+  )
+}
+
+export default CheckBox

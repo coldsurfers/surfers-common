@@ -3,6 +3,7 @@ import AuthSignUpService, {
   SOCIAL_SIGN_UP_SERVICE_ERROR_CODE,
 } from '@/database/services/auth/signUp'
 import AuthSocialService from '@/database/services/auth/social'
+import { log } from 'console'
 import { User } from 'next-auth'
 
 export type API_AUTH_SIGNUP_POST_ERROR_CODE =
@@ -23,6 +24,7 @@ export type API_AUTH_SIGNUP_POST_RESPONSE =
     }
 
 export const POST = async (request: Request): Promise<Response> => {
+  log('POST - EmailSignUp')
   try {
     const requestBody = (await request.json()) as
       | {
