@@ -1,6 +1,7 @@
 'use server'
 
 import { signIn } from '@/libs/auth'
+import log from '@/libs/log'
 import { AuthError } from 'next-auth'
 
 export const emailSignInAction = async ({
@@ -18,6 +19,7 @@ export const emailSignInAction = async ({
       isError: false
     }
 > => {
+  log('emailSignInAction')
   try {
     await signIn('credentials', {
       redirect: false,
