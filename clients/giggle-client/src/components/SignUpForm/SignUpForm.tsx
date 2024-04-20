@@ -16,7 +16,6 @@ import {
 import useSignUpRoute from './hooks/useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
-import { signIn } from 'next-auth/react'
 import { emailSignInAction } from '../../../actions/login'
 import { useRouter } from 'next/navigation'
 import * as ReactAuth from 'next-auth/react'
@@ -96,7 +95,9 @@ export default function SignUpForm() {
       setTermsAndConditions: state.setTermsAndConditions,
     }))
 
-  const onClickGoogleLoginButton = useCallback(() => signIn('google'), [])
+  const onClickGoogleLoginButton = useCallback(async () => {
+    await ReactAuth.signIn('google')
+  }, [])
 
   useEffectOnce(() => {
     match(step)
