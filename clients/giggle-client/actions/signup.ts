@@ -4,7 +4,9 @@ import {
   API_AUTH_SIGNUP_POST_ERROR_CODE,
   API_AUTH_SIGNUP_POST_RESPONSE,
 } from '@/app/api/auth/signup/route'
-import httpRequest from '@/libs/httpRequest'
+import AuthSignUpService, {
+  EMAIL_SIGN_UP_SERVICE_ERROR_CODE,
+} from '@/database/services/auth/signUp'
 import log from '@/libs/log'
 import { User } from 'next-auth'
 
@@ -19,7 +21,11 @@ export const emailSignUpAction = async ({
   password,
   passwordConfirm,
 }: EmailSignUpActionParams): Promise<
-  | { isError: true; errorCode: API_AUTH_SIGNUP_POST_ERROR_CODE }
+  | {
+      isError: true
+      errorCode: API_AUTH_SIGNUP_POST_ERROR_CODE
+      stack?: string
+    }
   | {
       isError: false
       data: User | null
@@ -29,33 +35,63 @@ export const emailSignUpAction = async ({
     `emailSignUpAction ${JSON.stringify({ email, password, passwordConfirm })}`
   )
   try {
-    const response = await httpRequest('/api/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        password,
-        passwordConfirm,
-        provider: 'credentials',
-      }),
-    })
-    const responseJson =
-      (await response.json()) as API_AUTH_SIGNUP_POST_RESPONSE
-
-    if (responseJson.isError) {
-      return {
-        isError: true,
-        errorCode: responseJson.errorCode,
+    const requestBody = {
+      email,
+      password,
+      passwordConfirm,
+      provider: 'credentials',
+    }
+    if (requestBody.provider === 'credentials') {
+      const result = await AuthSignUpService.emailSignUp({
+        email: requestBody.email,
+        password: requestBody.password,
+        passwordConfirm: requestBody.passwordConfirm,
+      })
+      if (result.isError) {
+        switch (result.errorCode) {
+          case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT:
+            return {
+              isError: true,
+              errorCode: 'ALREADY_EXISTING_ACCOUNT',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE
+          case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.PASSWORD_CONFIRM_IS_NOT_MATCH:
+            return {
+              isError: true,
+              errorCode: 'PASSWORD_CONFIRM_IS_NOT_MATCH',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE
+          case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR:
+          default:
+            return {
+              isError: true,
+              errorCode: 'UNKNOWN_ERROR',
+            } satisfies API_AUTH_SIGNUP_POST_RESPONSE
+        }
       }
+
+      log('POST - EmailSignUp try end')
+
+      return {
+        isError: false,
+        data: result.data
+          ? {
+              ...result.data,
+              id: `${result.data?.id}`,
+            }
+          : null,
+      } satisfies API_AUTH_SIGNUP_POST_RESPONSE
     }
+
+    log('POST - EmailSignUp try ending Response')
     return {
-      isError: false,
-      data: responseJson.data,
-    }
+      isError: true,
+      errorCode: 'INVALID_PROVIDER',
+    } satisfies API_AUTH_SIGNUP_POST_RESPONSE
   } catch (e) {
     log(`emailSignUpAction Error ${e}`)
     return {
       isError: true,
       errorCode: 'UNKNOWN_ERROR',
+      stack: `${e}`,
     }
   }
 }
