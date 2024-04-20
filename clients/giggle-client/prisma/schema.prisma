@@ -52,3 +52,11 @@ model Artist {
 
   events Event[]
 }
+
+model EmailAuthRequest {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  authcode      String
+  authenticated Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
