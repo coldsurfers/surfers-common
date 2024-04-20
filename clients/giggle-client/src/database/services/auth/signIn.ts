@@ -1,6 +1,6 @@
 import { UserModel } from '@/database'
 import encryptPassword from '@/libs/encryptPassword'
-import { UserModelSerialzedSchemaType } from '@/database/models/User'
+import { UserModelSerializedSchemaType } from '@/database/models/User'
 
 export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
@@ -13,7 +13,7 @@ export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {
 type EmailSignInReturnType =
   | {
       isError: false
-      data: UserModelSerialzedSchemaType
+      data: UserModelSerializedSchemaType
     }
   | {
       isError: true

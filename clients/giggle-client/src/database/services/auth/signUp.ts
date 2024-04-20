@@ -1,5 +1,5 @@
 import { UserModel } from '@/database/models'
-import { UserModelSerialzedSchemaType } from '@/database/models/User'
+import { UserModelSerializedSchemaType } from '@/database/models/User'
 import encryptPassword from '@/libs/encryptPassword'
 
 export enum CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
@@ -10,7 +10,7 @@ export enum CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
 type CheckEmailSignUpReturnType =
   | {
       isError: false
-      data: UserModelSerialzedSchemaType | null
+      data: UserModelSerializedSchemaType | null
     }
   | {
       isError: true
@@ -48,7 +48,7 @@ export enum EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
 type EmailSignUpReturnType =
   | {
       isError: false
-      data: UserModelSerialzedSchemaType | null
+      data: UserModelSerializedSchemaType | null
     }
   | {
       isError: true
@@ -118,7 +118,7 @@ export enum SOCIAL_SIGN_UP_SERVICE_ERROR_CODE {
 type SocialSignUpReturnType =
   | {
       isError: false
-      data: UserModelSerialzedSchemaType | null
+      data: UserModelSerializedSchemaType | null
     }
   | {
       isError: true
