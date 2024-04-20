@@ -163,10 +163,13 @@ const socialSignUp = async ({
   }
 }
 
+const sendSignUpEmailVerification = () => {}
+
 const AuthSignUpService = {
   checkEmailForSignUp,
   emailSignUp,
   socialSignUp,
+  sendSignUpEmailVerification,
 }
 
 export default AuthSignUpService
