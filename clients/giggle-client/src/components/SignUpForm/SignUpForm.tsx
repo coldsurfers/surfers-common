@@ -19,6 +19,7 @@ import { z } from 'zod'
 import { emailSignInAction } from '../../../actions/login'
 import { useRouter } from 'next/navigation'
 import * as ReactAuth from 'next-auth/react'
+import SignUpFormEmailVerification from './components/SignUpFormEmailVerification'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -49,6 +50,7 @@ enum StepEnum {
   EMAIL = 1,
   PASSWORD,
   TERMS_AND_CONDITIONS,
+  EMAIL_VERIFICATION,
 }
 
 export default function SignUpForm() {
@@ -99,6 +101,36 @@ export default function SignUpForm() {
     await ReactAuth.signIn('google')
   }, [])
 
+  const handleSignUpSubmit = useCallback(async () => {
+    setErrorMessage('')
+    const needData: EmailSignUpActionParams = {
+      email,
+      password,
+      passwordConfirm: password,
+    }
+    try {
+      const response = await emailSignUpAction(needData)
+      if (response.isError) {
+        setErrorMessage(response.errorCode)
+        return
+      }
+      const signInResponse = await emailSignInAction({
+        ...needData,
+      })
+      if (signInResponse.isError) {
+        setErrorMessage(signInResponse.error)
+        return
+      }
+      await ReactAuth.signIn('credentials', {
+        redirect: true,
+        ...needData,
+      })
+      router.push('/')
+    } catch (e) {
+      console.error(e)
+    }
+  }, [email, password, router, setErrorMessage])
+
   useEffectOnce(() => {
     match(step)
       .with(null, () => {
@@ -118,6 +150,9 @@ export default function SignUpForm() {
         if (!username) {
           initializeStepRoute()
         }
+      })
+      .with(4, () => {
+        // TODO
       })
       .exhaustive()
   })
@@ -180,37 +215,12 @@ export default function SignUpForm() {
             onValidationError={() => {
               setErrorMessage('You have to check all mandatory terms')
             }}
-            onSubmit={async () => {
-              setErrorMessage('')
-              const needData: EmailSignUpActionParams = {
-                email,
-                password,
-                passwordConfirm: password,
-              }
-              try {
-                const response = await emailSignUpAction(needData)
-                if (response.isError) {
-                  setErrorMessage(response.errorCode)
-                  return
-                }
-                const signInResponse = await emailSignInAction({
-                  ...needData,
-                })
-                if (signInResponse.isError) {
-                  setErrorMessage(signInResponse.error)
-                  return
-                }
-                await ReactAuth.signIn('credentials', {
-                  redirect: true,
-                  ...needData,
-                })
-                router.push('/')
-              } catch (e) {
-                console.error(e)
-              }
-            }}
+            onSubmit={increaseStepRoute}
           />
         ))
+        .with(4, () => {
+          return <SignUpFormEmailVerification onSubmit={handleSignUpSubmit} />
+        })
         .exhaustive()}
       <Divider />
       <LoginButton
