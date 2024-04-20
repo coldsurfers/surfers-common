@@ -1,6 +1,5 @@
 import { UserModel } from '@/database'
 import encryptPassword from '@/libs/encryptPassword'
-import googleOAuthClient from '../../libs/googleOAuthClient'
 import { UserModelSerialzedSchemaType } from '@/database/models/User'
 
 export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {

@@ -68,6 +68,7 @@ import type { NextAuthConfig, User } from 'next-auth'
 import AuthSignInService from '../database/services/auth/signIn'
 import AuthSocialService from '@/database/services/auth/social'
 import log from './log'
+import AuthSignUpService from '@/database/services/auth/signUp'
 
 export const config = {
   theme: {
@@ -179,15 +180,22 @@ export const config = {
       const isSocialLogin = provider === 'google'
       if (isSocialLogin) {
         const { id_token: accessToken } = account
-        // TODO: verify social login user
         if (!accessToken) return false
         const verified = await AuthSocialService.verifyGoogleAccessToken(
           accessToken
         )
-        if (!verified) {
+        if (!verified || verified.isError || !profile?.email) {
           return false
         }
-        // TODO: connect with db and find user
+        // connect with db and find user, also check should insert to user table
+        const existing = await AuthSocialService.checkExistingAccount(
+          profile.email
+        )
+        if (existing) {
+          return true
+        }
+        // sign up
+        await AuthSignUpService.socialSignUp({ email: profile.email })
         return true
       }
 
@@ -199,6 +207,13 @@ export const config = {
         return false
       }
       const { email, password } = credentials
+      const emailSignInData = await AuthSignInService.emailSignIn({
+        email: email as string,
+        password: password as string,
+      })
+      if (emailSignInData.isError) {
+        return false
+      }
 
       return true
     },
