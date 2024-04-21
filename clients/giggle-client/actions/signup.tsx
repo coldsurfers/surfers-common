@@ -4,10 +4,13 @@ import {
   API_AUTH_SIGNUP_POST_ERROR_CODE,
   API_AUTH_SIGNUP_POST_RESPONSE,
 } from '@/app/api/auth/signup/route'
+import AuthCodeTemplate from '@/components/email-templates/AuthCodeTemplate'
 import AuthSignUpService, {
   EMAIL_SIGN_UP_SERVICE_ERROR_CODE,
 } from '@/database/services/auth/signUp'
 import log from '@/libs/log'
+import { sendEmail } from '@/libs/mailer'
+import { render } from '@react-email/components'
 import { User } from 'next-auth'
 
 export type EmailSignUpActionParams = {
@@ -93,5 +96,27 @@ export const emailSignUpAction = async ({
       errorCode: 'UNKNOWN_ERROR',
       stack: `${e}`,
     }
+  }
+}
+
+export const sendAuthCodeTemplateEmail = async (emailTo: string) => {
+  try {
+    const emailHtml = render(<AuthCodeTemplate validationCode="123456" />)
+    const result = await sendEmail({
+      html: emailHtml,
+      from: process.env.MAILER_EMAIL_ADDRESS,
+      subject: `ColdSurf Sign Up Validation Code`,
+      to: emailTo,
+      smtpOptions: {
+        service: process.env.MAILER_SERVICE,
+        auth: {
+          user: process.env.MAILER_EMAIL_ADDRESS,
+          pass: process.env.MAILER_EMAIL_APP_PASSWORD,
+        },
+      },
+    })
+    console.log(result)
+  } catch (e) {
+    console.error(e)
   }
 }
