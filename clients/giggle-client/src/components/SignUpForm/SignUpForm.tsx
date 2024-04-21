@@ -20,6 +20,7 @@ import { emailSignInAction } from '../../../actions/login'
 import { useRouter } from 'next/navigation'
 import * as ReactAuth from 'next-auth/react'
 import SignUpFormEmailVerification from './components/SignUpFormEmailVerification'
+import { StepEnum } from './types'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -46,13 +47,6 @@ const Divider = styled.div`
 
 const StepSchema = z.number()
 
-enum StepEnum {
-  EMAIL = 1,
-  PASSWORD,
-  TERMS_AND_CONDITIONS,
-  EMAIL_VERIFICATION,
-}
-
 export default function SignUpForm() {
   const router = useRouter()
   const { initializeStepRoute, increaseStepRoute, stepSearchParam } =
@@ -70,7 +64,7 @@ export default function SignUpForm() {
     return match(validation.data)
       .when(
         (value) =>
-          value >= StepEnum.EMAIL && value <= StepEnum.TERMS_AND_CONDITIONS,
+          value >= StepEnum.EMAIL && value <= StepEnum.EMAIL_VERIFICATION,
         (payload) => payload
       )
       .otherwise(() => null)
@@ -152,7 +146,12 @@ export default function SignUpForm() {
         }
       })
       .with(4, () => {
-        // TODO
+        if (
+          !termsAndConditions?.collectionData ||
+          !termsAndConditions.termsAndConditions
+        ) {
+          initializeStepRoute()
+        }
       })
       .exhaustive()
   })
