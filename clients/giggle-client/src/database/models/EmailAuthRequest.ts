@@ -3,11 +3,11 @@ import { EmailAuthRequest } from '@prisma/client'
 import { z } from 'zod'
 
 export const EmailAuthRequestModelSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().uuid().nullable(),
   email: z.string().email(),
   authcode: z.string().length(6),
   authenticated: z.boolean(),
-  createdAt: z.string().datetime(),
+  createdAt: z.string().datetime().nullable(),
 })
 
 export type EmailAuthRequestModelSchemaType = z.TypeOf<
