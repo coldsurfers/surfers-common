@@ -177,7 +177,7 @@ type SendSignUpEmailVerificationReturnType =
       error: 'UNKNOWN_ERROR'
     }
 
-const sendSignUpEmailVerification = async (
+const createSignUpEmailVerification = async (
   email: string
 ): Promise<SendSignUpEmailVerificationReturnType> => {
   try {
@@ -207,7 +207,7 @@ const AuthSignUpService = {
   checkEmailForSignUp,
   emailSignUp,
   socialSignUp,
-  sendSignUpEmailVerification,
+  createSignUpEmailVerification,
 }
 
 export default AuthSignUpService
