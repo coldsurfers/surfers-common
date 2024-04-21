@@ -99,9 +99,12 @@ export const emailSignUpAction = async ({
   }
 }
 
-export const sendAuthCodeTemplateEmail = async (emailTo: string) => {
+export const sendSignUpAuthCodeTemplateEmail = async (
+  emailTo: string,
+  authCode: string
+) => {
   try {
-    const emailHtml = render(<AuthCodeTemplate validationCode="123456" />)
+    const emailHtml = render(<AuthCodeTemplate validationCode={authCode} />)
     const result = await sendEmail({
       html: emailHtml,
       from: process.env.MAILER_EMAIL_ADDRESS,
