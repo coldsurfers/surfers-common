@@ -1,5 +1,9 @@
 import { UserModel } from '@/database/models'
+import EmailAuthRequestModel, {
+  EmailAuthRequestModelSerializedSchemaType,
+} from '@/database/models/EmailAuthRequest'
 import { UserModelSerializedSchemaType } from '@/database/models/User'
+import authcodeGenerator from '@/libs/authcodeGenerator'
 import encryptPassword from '@/libs/encryptPassword'
 
 export enum CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
@@ -163,7 +167,41 @@ const socialSignUp = async ({
   }
 }
 
-const sendSignUpEmailVerification = () => {}
+type SendSignUpEmailVerificationReturnType =
+  | {
+      isError: false
+      data: EmailAuthRequestModelSerializedSchemaType
+    }
+  | {
+      isError: true
+      error: 'UNKNOWN_ERROR'
+    }
+
+const sendSignUpEmailVerification = async (
+  email: string
+): Promise<SendSignUpEmailVerificationReturnType> => {
+  try {
+    const created = await new EmailAuthRequestModel({
+      email,
+      authcode: authcodeGenerator.generate(),
+      authenticated: false,
+      id: null,
+      createdAt: null,
+    }).create()
+
+    return {
+      isError: false,
+      data: created.serialize(),
+    }
+  } catch (e) {
+    console.error(e)
+
+    return {
+      isError: true,
+      error: 'UNKNOWN_ERROR',
+    }
+  }
+}
 
 const AuthSignUpService = {
   checkEmailForSignUp,
