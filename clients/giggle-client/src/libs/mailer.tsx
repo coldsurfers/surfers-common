@@ -5,10 +5,10 @@ import Mail from 'nodemailer/lib/mailer'
 export async function sendEmail({
   to,
   from,
-  text,
+  html,
   subject,
   smtpOptions,
-}: Pick<Mail.Options, 'to' | 'text' | 'subject' | 'from'> & {
+}: Pick<Mail.Options, 'to' | 'html' | 'subject' | 'from'> & {
   smtpOptions: SmtpOptions
 }) {
   const transport = mailer.createTransport(smtpTransport(smtpOptions))
@@ -16,7 +16,7 @@ export async function sendEmail({
     from,
     to,
     subject, // 이메일 제목
-    text, // 이메일 내용
+    html,
   }
   const sendEmailPromise = () =>
     new Promise((resolve, reject) => {
