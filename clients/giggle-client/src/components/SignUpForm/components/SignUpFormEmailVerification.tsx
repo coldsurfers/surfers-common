@@ -8,8 +8,8 @@ import styled from 'styled-components'
 import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback, useRef, useState } from 'react'
 import { z } from 'zod'
-import SyncLoader from 'react-spinners/SyncLoader'
 import LoadingOverlay from '@/components/base/LoadingOverlay'
+import { match } from 'ts-pattern'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
@@ -70,6 +70,14 @@ const SignUpFormEmailVerification = ({
     sendSignUpAuthCodeTemplateEmail(email).then((response) => {
       setIsLoading(false)
       if (response.isError) {
+        match(response.error)
+          .with('ALREADY_AUTHENTICATED', () => {
+            setMessage('Already verified email')
+          })
+          .with('UNKNOWN_ERROR', () => {
+            setMessage('Unknown error')
+          })
+          .exhaustive()
         return
       }
       authcodeRef.current = response.data.authcode

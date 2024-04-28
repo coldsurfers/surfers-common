@@ -66,6 +66,22 @@ class EmailAuthRequestModel {
     return EmailAuthRequestModel.modelize(created)
   }
 
+  async update(authcode: string) {
+    if (!this.id) {
+      throw Error('EmailAuthRequestModel.update() - this.id is undefined')
+    }
+    const updated = await prismaClient.emailAuthRequest.update({
+      where: {
+        id: this.id,
+      },
+      data: {
+        authcode,
+      },
+    })
+
+    return EmailAuthRequestModel.modelize(updated)
+  }
+
   static async findByEmail(email: string) {
     const existing = await prismaClient.emailAuthRequest.findFirst({
       where: {
@@ -80,9 +96,9 @@ class EmailAuthRequestModel {
 
   async authenticate() {
     if (!this.id) {
-      throw Error('this.id is undefined')
+      throw Error('EmailAuthRequestModel.authenticate() - this.id is undefined')
     }
-    await prismaClient.emailAuthRequest.update({
+    const updated = await prismaClient.emailAuthRequest.update({
       where: {
         id: this.id,
       },
@@ -91,6 +107,7 @@ class EmailAuthRequestModel {
         authenticatedAt: new Date(),
       },
     })
+    return EmailAuthRequestModel.modelize(updated)
   }
 }
 

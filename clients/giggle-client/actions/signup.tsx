@@ -6,6 +6,7 @@ import {
 } from '@/app/api/auth/signup/route'
 import AuthCodeTemplate from '@/components/email-templates/AuthCodeTemplate'
 import AuthSignUpService, {
+  CREATE_OR_SEND_SIGN_UP_EMAIL_VERIFICATION_SERVICE_ERROR_CODE,
   EMAIL_SIGN_UP_SERVICE_ERROR_CODE,
 } from '@/database/services/auth/signUp'
 import log from '@/libs/log'
@@ -113,7 +114,7 @@ export const sendSignUpAuthCodeTemplateEmail = async (
 ): Promise<
   | {
       isError: true
-      error: string
+      error: CREATE_OR_SEND_SIGN_UP_EMAIL_VERIFICATION_SERVICE_ERROR_CODE
     }
   | {
       isError: false
@@ -124,7 +125,7 @@ export const sendSignUpAuthCodeTemplateEmail = async (
 > => {
   try {
     const emailVerificationResult =
-      await AuthSignUpService.createSignUpEmailVerification(emailTo)
+      await AuthSignUpService.createOrUpdateSignUpEmailVerification(emailTo)
     if (emailVerificationResult.isError) {
       return {
         isError: true,

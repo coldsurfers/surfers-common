@@ -183,31 +183,49 @@ const socialSignUp = async ({
   }
 }
 
-type SendSignUpEmailVerificationReturnType =
+export type CREATE_OR_SEND_SIGN_UP_EMAIL_VERIFICATION_SERVICE_ERROR_CODE =
+  | 'ALREADY_AUTHENTICATED'
+  | 'UNKNOWN_ERROR'
+
+export type CreateOrSendSignUpEmailVerificationReturnType =
   | {
       isError: false
       data: EmailAuthRequestModelSerializedSchemaType
     }
   | {
       isError: true
-      error: 'UNKNOWN_ERROR'
+      error: CREATE_OR_SEND_SIGN_UP_EMAIL_VERIFICATION_SERVICE_ERROR_CODE
     }
 
-const createSignUpEmailVerification = async (
+const createOrUpdateSignUpEmailVerification = async (
   email: string
-): Promise<SendSignUpEmailVerificationReturnType> => {
+): Promise<CreateOrSendSignUpEmailVerificationReturnType> => {
   try {
-    const created = await new EmailAuthRequestModel({
-      email,
-      authcode: authcodeGenerator.generate(),
-      authenticated: false,
-      id: null,
-      createdAt: null,
-    }).create()
-
-    return {
-      isError: false,
-      data: created.serialize(),
+    const existing = await EmailAuthRequestModel.findByEmail(email)
+    if (existing?.authenticated) {
+      return {
+        isError: true,
+        error: 'ALREADY_AUTHENTICATED',
+      }
+    }
+    if (existing) {
+      const updated = await existing.update(authcodeGenerator.generate())
+      return {
+        isError: false,
+        data: updated.serialize(),
+      }
+    } else {
+      const created = await new EmailAuthRequestModel({
+        email,
+        authcode: authcodeGenerator.generate(),
+        authenticated: false,
+        id: null,
+        createdAt: null,
+      }).create()
+      return {
+        isError: false,
+        data: created.serialize(),
+      }
     }
   } catch (e) {
     console.error(e)
@@ -223,7 +241,7 @@ const AuthSignUpService = {
   checkEmailForSignUp,
   emailSignUp,
   socialSignUp,
-  createSignUpEmailVerification,
+  createOrUpdateSignUpEmailVerification,
 }
 
 export default AuthSignUpService
