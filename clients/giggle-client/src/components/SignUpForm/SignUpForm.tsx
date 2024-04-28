@@ -75,21 +75,32 @@ export default function SignUpForm() {
     setErrorMessage: state.setErrorMessage,
   }))
 
-  const { email, password, username, termsAndConditions } = useSignUpStore(
-    (state) => ({
-      email: state.email,
-      password: state.password,
-      username: state.username,
-      termsAndConditions: state.termsAndConditions,
-    })
-  )
-  const { setEmail, setPassword, setUsername, setTermsAndConditions } =
-    useSignUpStore((state) => ({
-      setEmail: state.setEmail,
-      setPassword: state.setPassword,
-      setUsername: state.setUsername,
-      setTermsAndConditions: state.setTermsAndConditions,
-    }))
+  const {
+    email,
+    password,
+    username,
+    termsAndConditions,
+    emailVerificationCode,
+  } = useSignUpStore((state) => ({
+    email: state.email,
+    password: state.password,
+    username: state.username,
+    termsAndConditions: state.termsAndConditions,
+    emailVerificationCode: state.emailVerificationCode,
+  }))
+  const {
+    setEmail,
+    setPassword,
+    setUsername,
+    setTermsAndConditions,
+    setEmailVerificationCode,
+  } = useSignUpStore((state) => ({
+    setEmail: state.setEmail,
+    setPassword: state.setPassword,
+    setUsername: state.setUsername,
+    setTermsAndConditions: state.setTermsAndConditions,
+    setEmailVerificationCode: state.setEmailVerificationCode,
+  }))
 
   const onClickGoogleLoginButton = useCallback(async () => {
     await ReactAuth.signIn('google')
@@ -101,6 +112,7 @@ export default function SignUpForm() {
       email,
       password,
       passwordConfirm: password,
+      verificationCode: emailVerificationCode,
     }
     try {
       const response = await emailSignUpAction(needData)
@@ -123,7 +135,7 @@ export default function SignUpForm() {
     } catch (e) {
       console.error(e)
     }
-  }, [email, password, router, setErrorMessage])
+  }, [email, emailVerificationCode, password, router, setErrorMessage])
 
   useEffectOnce(() => {
     match(step)
@@ -218,7 +230,26 @@ export default function SignUpForm() {
           />
         ))
         .with(4, () => {
-          return <SignUpFormEmailVerification onSubmit={handleSignUpSubmit} />
+          return (
+            <SignUpFormEmailVerification
+              onVerificationCodeInputChange={(e) => {
+                setEmailVerificationCode(e.target.value)
+              }}
+              onValidationError={(reason) => {
+                match(reason)
+                  .with('ZodValidation', () => {
+                    setErrorMessage(
+                      'Email verification code should be 6 digit number'
+                    )
+                  })
+                  .with('VerificationCodeNotCorrect', () => {
+                    setErrorMessage('Email verification code is not correct')
+                  })
+                  .exhaustive()
+              }}
+              onValidationSuccess={handleSignUpSubmit}
+            />
+          )
         })
         .exhaustive()}
       <Divider />

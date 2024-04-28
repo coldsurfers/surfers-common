@@ -17,12 +17,14 @@ export type EmailSignUpActionParams = {
   email: string
   password: string
   passwordConfirm: string
+  verificationCode: string
 }
 
 export const emailSignUpAction = async ({
   email,
   password,
   passwordConfirm,
+  verificationCode,
 }: EmailSignUpActionParams): Promise<
   | {
       isError: true
@@ -35,7 +37,12 @@ export const emailSignUpAction = async ({
     }
 > => {
   log(
-    `emailSignUpAction ${JSON.stringify({ email, password, passwordConfirm })}`
+    `emailSignUpAction ${JSON.stringify({
+      email,
+      password,
+      passwordConfirm,
+      verificationCode,
+    })}`
   )
   try {
     const requestBody = {
@@ -43,12 +50,14 @@ export const emailSignUpAction = async ({
       password,
       passwordConfirm,
       provider: 'credentials',
+      verificationCode,
     }
     if (requestBody.provider === 'credentials') {
       const result = await AuthSignUpService.emailSignUp({
         email: requestBody.email,
         password: requestBody.password,
         passwordConfirm: requestBody.passwordConfirm,
+        verificationCode: requestBody.verificationCode,
       })
       if (result.isError) {
         switch (result.errorCode) {
@@ -100,12 +109,33 @@ export const emailSignUpAction = async ({
 }
 
 export const sendSignUpAuthCodeTemplateEmail = async (
-  emailTo: string,
-  authCode: string
-) => {
+  emailTo: string
+): Promise<
+  | {
+      isError: true
+      error: string
+    }
+  | {
+      isError: false
+      data: {
+        authcode: string
+      }
+    }
+> => {
   try {
-    const emailHtml = render(<AuthCodeTemplate validationCode={authCode} />)
-    const result = await sendEmail({
+    const emailVerificationResult =
+      await AuthSignUpService.createSignUpEmailVerification(emailTo)
+    if (emailVerificationResult.isError) {
+      return {
+        isError: true,
+        error: emailVerificationResult.error,
+      }
+    }
+
+    const { authcode } = emailVerificationResult.data
+
+    const emailHtml = render(<AuthCodeTemplate validationCode={authcode} />)
+    await sendEmail({
       html: emailHtml,
       from: process.env.MAILER_EMAIL_ADDRESS,
       subject: `ColdSurf Sign Up Validation Code`,
@@ -118,8 +148,17 @@ export const sendSignUpAuthCodeTemplateEmail = async (
         },
       },
     })
-    console.log(result)
+    return {
+      isError: false,
+      data: {
+        authcode,
+      },
+    }
   } catch (e) {
     console.error(e)
+    return {
+      isError: true,
+      error: 'UNKNOWN_ERROR',
+    }
   }
 }

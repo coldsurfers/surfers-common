@@ -77,6 +77,21 @@ class EmailAuthRequestModel {
 
     return EmailAuthRequestModel.modelize(existing)
   }
+
+  async authenticate() {
+    if (!this.id) {
+      throw Error('this.id is undefined')
+    }
+    await prismaClient.emailAuthRequest.update({
+      where: {
+        id: this.id,
+      },
+      data: {
+        authenticated: true,
+        authenticatedAt: new Date(),
+      },
+    })
+  }
 }
 
 export default EmailAuthRequestModel

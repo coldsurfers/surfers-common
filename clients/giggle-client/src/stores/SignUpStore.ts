@@ -11,6 +11,7 @@ interface SignUpStoreState {
   password: string
   username: string
   termsAndConditions: SignUpTermsAndConditions
+  emailVerificationCode: string
 }
 
 interface SignUpStoreAction {
@@ -19,6 +20,7 @@ interface SignUpStoreAction {
   setPassword: (password: string) => void
   setUsername: (username: string) => void
   setTermsAndConditions: (termsAndConditions: SignUpTermsAndConditions) => void
+  setEmailVerificationCode: (emailVerificationCode: string) => void
 }
 
 type SignUpStore = SignUpStoreState & SignUpStoreAction
@@ -29,6 +31,7 @@ const initialState: SignUpStoreState = {
   password: '',
   username: '',
   termsAndConditions: null,
+  emailVerificationCode: '',
 }
 
 export const useSignUpStore = create<SignUpStore>((set) => ({
@@ -52,5 +55,9 @@ export const useSignUpStore = create<SignUpStore>((set) => ({
   setTermsAndConditions: (termsAndConditions) =>
     set(() => ({
       termsAndConditions,
+    })),
+  setEmailVerificationCode: (emailVerificationCode) =>
+    set(() => ({
+      emailVerificationCode,
     })),
 }))

@@ -47,6 +47,7 @@ export enum EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
   PASSWORD_CONFIRM_IS_NOT_MATCH = 'PASSWORD_CONFIRM_IS_NOT_MATCH',
   ALREADY_EXISTING_ACCOUNT = 'ALREADY_EXISTING_ACCOUNT',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+  EMAIL_VERIFICATION_CODE_NOT_CORRECT = 'EMAIL_VERIFICATION_CODE_NOT_CORRECT',
 }
 
 type EmailSignUpReturnType =
@@ -64,10 +65,12 @@ const emailSignUp = async ({
   email,
   password,
   passwordConfirm,
+  verificationCode,
 }: {
   email: string
   password: string
   passwordConfirm: string
+  verificationCode: string
 }): Promise<EmailSignUpReturnType> => {
   try {
     // check existing
@@ -78,6 +81,19 @@ const emailSignUp = async ({
         errorCode: EMAIL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT,
         data: null,
       }
+    }
+
+    // check verification code and authenticate
+    const emailAuthRequest = await EmailAuthRequestModel.findByEmail(email)
+    if (emailAuthRequest?.authcode !== verificationCode) {
+      return {
+        isError: true,
+        errorCode:
+          EMAIL_SIGN_UP_SERVICE_ERROR_CODE.EMAIL_VERIFICATION_CODE_NOT_CORRECT,
+        data: null,
+      }
+    } else {
+      await emailAuthRequest.authenticate()
     }
 
     if (password !== passwordConfirm) {
