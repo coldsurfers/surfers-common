@@ -1,14 +1,14 @@
 'use client'
 
 import LoginButton from '@/ui/Button/LoginButton'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import SignUpFormEmail from './components/SignUpFormEmail'
 import SignUpFormPassword from './components/SignUpFormPassword'
 import SignUpFormUserInfo from './components/SignUpFormUserInfo'
 import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
-import { useEffectOnce } from 'react-use'
+import { useEffectOnce, useStartTyping } from 'react-use'
 import {
   EmailSignUpActionParams,
   emailSignUpAction,
@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation'
 import * as ReactAuth from 'next-auth/react'
 import SignUpFormEmailVerification from './components/SignUpFormEmailVerification'
 import { StepEnum } from './types'
+import LoadingOverlay from '../base/LoadingOverlay'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -51,6 +52,8 @@ export default function SignUpForm() {
   const router = useRouter()
   const { initializeStepRoute, increaseStepRoute, stepSearchParam } =
     useSignUpRoute()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const step = useMemo<StepEnum | null>(() => {
     if (stepSearchParam === null) {
@@ -107,6 +110,7 @@ export default function SignUpForm() {
   }, [])
 
   const handleSignUpSubmit = useCallback(async () => {
+    setIsLoading(true)
     setErrorMessage('')
     const needData: EmailSignUpActionParams = {
       email,
@@ -134,6 +138,8 @@ export default function SignUpForm() {
       router.push('/')
     } catch (e) {
       console.error(e)
+    } finally {
+      setIsLoading(false)
     }
   }, [email, emailVerificationCode, password, router, setErrorMessage])
 
@@ -258,6 +264,7 @@ export default function SignUpForm() {
         fullWidth
       >{`${LOGIN_PRE_MESSAGE} Google`}</LoginButton>
       {errorMessage}
+      <LoadingOverlay isLoading={isLoading} />
     </Wrapper>
   )
 }

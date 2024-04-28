@@ -8,6 +8,8 @@ import styled from 'styled-components'
 import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback, useRef, useState } from 'react'
 import { z } from 'zod'
+import SyncLoader from 'react-spinners/SyncLoader'
+import LoadingOverlay from '@/components/base/LoadingOverlay'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
@@ -29,6 +31,7 @@ const SignUpFormEmailVerification = ({
   onVerificationCodeInputChange?: (e: any) => void
 }) => {
   const email = useSignUpStore((state) => state.email)
+  const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<string>('')
   const authcodeRef = useRef<string | null>(null)
   const {
@@ -63,7 +66,9 @@ const SignUpFormEmailVerification = ({
   useEffectOnce(() => {
     if (!email) return
 
+    setIsLoading(true)
     sendSignUpAuthCodeTemplateEmail(email).then((response) => {
+      setIsLoading(false)
       if (response.isError) {
         return
       }
@@ -75,18 +80,21 @@ const SignUpFormEmailVerification = ({
   })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput
-        placeholder="Verification Code"
-        {...register('verificationCode', {
-          onChange: onVerificationCodeInputChange,
-        })}
-      />
-      <EmailNextButton withScale fullWidth>
-        {EMAIL_NEXT_MESSAGE}
-      </EmailNextButton>
-      {message}
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextInput
+          placeholder="Verification Code"
+          {...register('verificationCode', {
+            onChange: onVerificationCodeInputChange,
+          })}
+        />
+        <EmailNextButton withScale fullWidth>
+          {EMAIL_NEXT_MESSAGE}
+        </EmailNextButton>
+        {message}
+      </form>
+      <LoadingOverlay isLoading={isLoading} />
+    </>
   )
 }
 
