@@ -54,9 +54,10 @@ model Artist {
 }
 
 model EmailAuthRequest {
-  id            String   @id @default(uuid())
-  email         String   @unique
-  authcode      String
-  authenticated Boolean  @default(false)
-  createdAt     DateTime @default(now())
+  id              String    @id @default(uuid())
+  email           String    @unique
+  authcode        String
+  authenticated   Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  authenticatedAt DateTime?
 }
