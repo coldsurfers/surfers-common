@@ -29,52 +29,60 @@ const emailSignIn = async ({
   password?: string
 }): Promise<EmailSignInReturnType> => {
   try {
-    // check existing email
-    const existing = await UserModel.findByEmail(email)
-    if (!existing) {
-      return {
-        isError: true,
-        data: null,
-        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT,
-      }
+    const existingUser = await UserModel.findByEmail(email)
+
+    if (!existingUser) {
+      return createErrorResult(
+        EMAIL_SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT
+      )
     }
 
-    if (!existing.password || !existing.passwordSalt) {
-      return {
-        isError: true,
-        data: null,
-        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING,
-      }
+    if (!existingUser.password || !existingUser.passwordSalt) {
+      return createErrorResult(
+        EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING
+      )
     }
 
-    // existing account with email and password login
     if (
-      existing.password !==
-      encryptPassword({
-        plain: password ?? '',
-        originalSalt: existing.passwordSalt,
-      }).encrypted
+      !comparePasswords(
+        password ?? '',
+        existingUser.password,
+        existingUser.passwordSalt
+      )
     ) {
-      // password not correct
-      return {
-        isError: true,
-        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH,
-        data: null,
-      }
+      return createErrorResult(
+        EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH
+      )
     }
 
     return {
       isError: false,
-      data: existing.serialize(),
+      data: existingUser.serialize(),
     }
-  } catch (e) {
-    console.error(e)
-    return {
-      isError: true,
-      data: null,
-      errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
-    }
+  } catch (error) {
+    console.error(error)
+    return createErrorResult(EMAIL_SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR)
   }
+}
+
+const createErrorResult = (
+  errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE
+): EmailSignInReturnType => ({
+  isError: true,
+  data: null,
+  errorCode,
+})
+
+const comparePasswords = (
+  plainPassword: string,
+  hashedPassword: string,
+  salt: string
+): boolean => {
+  const encryptedPassword = encryptPassword({
+    plain: plainPassword,
+    originalSalt: salt,
+  }).encrypted
+  return encryptedPassword === hashedPassword
 }
 
 const AuthSignInService = {

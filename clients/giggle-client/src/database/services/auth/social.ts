@@ -1,10 +1,9 @@
 import googleOAuthClient from '@/database/libs/googleOAuthClient'
 import { UserModel } from '@/database/models'
-import { UserModelSerialzedSchemaType } from '@/database/models/User'
+import { UserModelSerializedSchemaType } from '@/database/models/User'
 import { LoginTicket } from 'google-auth-library'
 
 export type VERIFY_GOOGLE_ACCESS_TOKEN_ERROR = 'INVALID_ACCESS_TOKEN'
-export type CHECK_EXISTING_ACCOUNT_ERROR = 'UNKNOWN_ERROR'
 
 const verifyGoogleAccessToken = async (
   accessToken: string
@@ -38,30 +37,31 @@ const verifyGoogleAccessToken = async (
 
 const checkExistingAccount = async (
   email: string
-): Promise<
-  | {
-      isError: true
-      error: CHECK_EXISTING_ACCOUNT_ERROR
-    }
-  | {
-      isError: false
-      data: UserModelSerialzedSchemaType | undefined
-    }
-> => {
+): Promise<CheckExistingAccountResult> => {
   try {
-    const existing = await UserModel.findByEmail(email)
-    const serialized = existing?.serialize()
+    const existingUser = await UserModel.findByEmail(email)
+    const serializedUser = existingUser?.serialize()
     return {
       isError: false,
-      data: serialized,
+      data: serializedUser,
     }
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error)
     return {
       isError: true,
-      error: 'UNKNOWN_ERROR',
+      error: CHECK_EXISTING_ACCOUNT_ERROR.UNKNOWN_ERROR,
     }
   }
+}
+
+interface CheckExistingAccountResult {
+  isError: boolean
+  error?: CHECK_EXISTING_ACCOUNT_ERROR
+  data?: UserModelSerializedSchemaType
+}
+
+export enum CHECK_EXISTING_ACCOUNT_ERROR {
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
 const AuthSocialService = {

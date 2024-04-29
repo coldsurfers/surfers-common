@@ -28,12 +28,16 @@ const checkEmailForSignUp = async ({
   email: string
 }): Promise<CheckEmailSignUpReturnType> => {
   try {
+    // Find user by email
     const user = await UserModel.findByEmail(email)
+
+    // Return user data if found, otherwise return null
     return {
       isError: false,
       data: user ? user.serialize() : null,
     }
   } catch (e) {
+    // Log any errors and return an error response
     console.error(e)
     return {
       isError: true,
@@ -73,7 +77,7 @@ const emailSignUp = async ({
   verificationCode: string
 }): Promise<EmailSignUpReturnType> => {
   try {
-    // check existing
+    // Check if the user already exists
     const existing = await UserModel.findByEmail(email)
     if (existing) {
       return {
@@ -83,19 +87,19 @@ const emailSignUp = async ({
       }
     }
 
-    // check verification code and authenticate
+    // Check the verification code and authenticate
     const emailAuthRequest = await EmailAuthRequestModel.findByEmail(email)
-    if (emailAuthRequest?.authcode !== verificationCode) {
+    if (!emailAuthRequest || emailAuthRequest.authcode !== verificationCode) {
       return {
         isError: true,
         errorCode:
           EMAIL_SIGN_UP_SERVICE_ERROR_CODE.EMAIL_VERIFICATION_CODE_NOT_CORRECT,
         data: null,
       }
-    } else {
-      await emailAuthRequest.authenticate()
     }
+    await emailAuthRequest.authenticate()
 
+    // Check if passwords match
     if (password !== passwordConfirm) {
       return {
         isError: true,
@@ -105,22 +109,23 @@ const emailSignUp = async ({
       }
     }
 
-    const encrypted = encryptPassword({
-      plain: password,
-    })
+    // Encrypt the password and create the user
+    const encrypted = encryptPassword({ plain: password })
     const { encrypted: encryptedPassword, salt: passwordSalt } = encrypted
     const user = await new UserModel({
-      email: email,
+      email,
       password: encryptedPassword,
-      passwordSalt: passwordSalt,
+      passwordSalt,
       id: null,
       createdAt: null,
     }).create()
+
     return {
       isError: false,
       data: user.serialize(),
     }
   } catch (e) {
+    // Log any errors and return an error response
     console.error(e)
     return {
       isError: true,
@@ -152,7 +157,10 @@ const socialSignUp = async ({
   email: string
 }): Promise<SocialSignUpReturnType> => {
   try {
+    // Check if the user already exists
     const existing = await UserModel.findByEmail(email)
+
+    // If the user already exists, return an error
     if (existing) {
       return {
         isError: true,
@@ -161,19 +169,22 @@ const socialSignUp = async ({
       }
     }
 
+    // Create a new user
     const user = await new UserModel({
-      email: email,
+      email,
       password: null,
       passwordSalt: null,
       id: null,
       createdAt: null,
     }).create()
 
+    // Return the serialized user data
     return {
       isError: false,
       data: user.serialize(),
     }
   } catch (e) {
+    // Log any errors and return an error response
     console.error(e)
     return {
       isError: true,
@@ -201,13 +212,18 @@ const createOrUpdateSignUpEmailVerification = async (
   email: string
 ): Promise<CreateOrSendSignUpEmailVerificationReturnType> => {
   try {
+    // Check if there's an existing email authentication request
     const existing = await EmailAuthRequestModel.findByEmail(email)
+
+    // If there's an existing request and it's already authenticated, return an error
     if (existing?.authenticated) {
       return {
         isError: true,
         error: 'ALREADY_AUTHENTICATED',
       }
     }
+
+    // If there's an existing request, update it with a new authentication code
     if (existing) {
       const updated = await existing.update(authcodeGenerator.generate())
       return {
@@ -215,6 +231,7 @@ const createOrUpdateSignUpEmailVerification = async (
         data: updated.serialize(),
       }
     } else {
+      // If there's no existing request, create a new one
       const created = await new EmailAuthRequestModel({
         email,
         authcode: authcodeGenerator.generate(),
@@ -228,8 +245,8 @@ const createOrUpdateSignUpEmailVerification = async (
       }
     }
   } catch (e) {
+    // Log any errors and return an error response
     console.error(e)
-
     return {
       isError: true,
       error: 'UNKNOWN_ERROR',
