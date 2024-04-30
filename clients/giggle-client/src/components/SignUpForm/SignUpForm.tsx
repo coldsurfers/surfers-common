@@ -24,6 +24,7 @@ import { StepEnum } from './types'
 import LoadingOverlay from '../base/LoadingOverlay'
 import SignUpProcessEmailVerification from '../SignUpProcess/SignUpProcessEmailVerification'
 import SignUpProcessEmail from '../SignUpProcess/SignUpProcessEmail'
+import SignUpProcessPassword from '../SignUpProcess/SignUpProcessPassword'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -206,23 +207,7 @@ export default function SignUpForm() {
       <TopTitle>{TITLE_MESSAGE}</TopTitle>
       {match(step)
         .with(null, () => <SignUpProcessEmail />)
-        .with(1, () => (
-          <SignUpFormPassword
-            initialPasswordValue={password}
-            onValidationSuccess={(validPassword) => {
-              setPassword(validPassword)
-              increaseStepRoute()
-            }}
-            onValidationError={() => {
-              setErrorMessage(
-                'Password should have at least one letter and number. Min 8, Max 32'
-              )
-            }}
-            onPasswordInputChange={(e) => {
-              setErrorMessage('')
-            }}
-          />
-        ))
+        .with(1, () => <SignUpProcessPassword />)
         .with(2, () => (
           <SignUpFormUserInfo
             initialUsernameValue={username}
