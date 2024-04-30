@@ -32,6 +32,7 @@ export const POST = async (request: Request): Promise<Response> => {
           email: string
           password: string
           passwordConfirm: string
+          verificationCode: string
         }
       | {
           provider: 'google'
@@ -44,9 +45,10 @@ export const POST = async (request: Request): Promise<Response> => {
         email: requestBody.email,
         password: requestBody.password,
         passwordConfirm: requestBody.passwordConfirm,
+        verificationCode: requestBody.verificationCode,
       })
       if (result.isError) {
-        switch (result.errorCode) {
+        switch (result.error) {
           case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT:
             return Response.json({
               isError: true,
@@ -98,7 +100,7 @@ export const POST = async (request: Request): Promise<Response> => {
         email: requestBody.email,
       })
       if (signUpResult.isError) {
-        switch (signUpResult.errorCode) {
+        switch (signUpResult.error) {
           case SOCIAL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT:
             return Response.json({
               isError: true,
