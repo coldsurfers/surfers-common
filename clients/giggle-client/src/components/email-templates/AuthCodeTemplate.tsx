@@ -43,13 +43,16 @@ export const AuthCodeTemplate = ({
         <Text style={paragraph}>Not expecting this email?</Text>
         <Text style={paragraph}>
           Contact{' '}
-          <Link href="mailto:login@plaid.com" style={link}>
-            login@plaid.com
+          <Link
+            href={`mailto:${process.env.MAILER_EMAIL_ADDRESS}`}
+            style={link}
+          >
+            {process.env.MAILER_EMAIL_ADDRESS}
           </Link>{' '}
           if you did not request this code.
         </Text>
       </Container>
-      <Text style={footer}>Securely powered by Plaid.</Text>
+      <Text style={footer}>Securely powered by ColdSurf.</Text>
     </Body>
   </Html>
 )
