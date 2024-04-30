@@ -23,6 +23,7 @@ import SignUpFormEmailVerification from './components/SignUpFormEmailVerificatio
 import { StepEnum } from './types'
 import LoadingOverlay from '../base/LoadingOverlay'
 import SignUpProcessEmailVerification from '../SignUpProcess/SignUpProcessEmailVerification'
+import SignUpProcessEmail from '../SignUpProcess/SignUpProcessEmail'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -204,21 +205,7 @@ export default function SignUpForm() {
     <Wrapper>
       <TopTitle>{TITLE_MESSAGE}</TopTitle>
       {match(step)
-        .with(null, () => (
-          <SignUpFormEmail
-            initialEmailValue={email}
-            onValidationSuccess={(validEmail) => {
-              setEmail(validEmail)
-              increaseStepRoute()
-            }}
-            onValidationError={() => {
-              setErrorMessage('Invalid Email')
-            }}
-            onEmailInputChange={() => {
-              setErrorMessage('')
-            }}
-          />
-        ))
+        .with(null, () => <SignUpProcessEmail />)
         .with(1, () => (
           <SignUpFormPassword
             initialPasswordValue={password}
