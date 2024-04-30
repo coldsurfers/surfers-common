@@ -61,7 +61,7 @@ export const emailSignUpAction = async ({
         verificationCode: requestBody.verificationCode,
       })
       if (result.isError) {
-        switch (result.errorCode) {
+        switch (result.error) {
           case EMAIL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT:
             return {
               isError: true,
