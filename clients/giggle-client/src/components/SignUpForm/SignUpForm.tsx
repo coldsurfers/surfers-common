@@ -25,6 +25,7 @@ import LoadingOverlay from '../base/LoadingOverlay'
 import SignUpProcessEmailVerification from '../SignUpProcess/SignUpProcessEmailVerification'
 import SignUpProcessEmail from '../SignUpProcess/SignUpProcessEmail'
 import SignUpProcessPassword from '../SignUpProcess/SignUpProcessPassword'
+import SignUpProcessUserInfo from '../SignUpProcess/SignUpProcessUserInfo'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -208,21 +209,7 @@ export default function SignUpForm() {
       {match(step)
         .with(null, () => <SignUpProcessEmail />)
         .with(1, () => <SignUpProcessPassword />)
-        .with(2, () => (
-          <SignUpFormUserInfo
-            initialUsernameValue={username}
-            onValidationSuccess={(validUsername) => {
-              setUsername(validUsername)
-              increaseStepRoute()
-            }}
-            onValidationError={() => {
-              setErrorMessage('Invalid username')
-            }}
-            onUsernameInputChange={(e) => {
-              setErrorMessage('')
-            }}
-          />
-        ))
+        .with(2, () => <SignUpProcessUserInfo />)
         .with(3, () => (
           <SignUpFormTermsAndConditions
             initialTermsAndConditions={termsAndConditions}
