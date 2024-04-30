@@ -1,7 +1,7 @@
 'use client'
 
 import LoginButton from '@/ui/Button/LoginButton'
-import { useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import SignUpFormEmail from './components/SignUpFormEmail'
@@ -108,6 +108,31 @@ export default function SignUpForm() {
   const onClickGoogleLoginButton = useCallback(async () => {
     await ReactAuth.signIn('google')
   }, [])
+
+  const handleSignUpFormTermsAndConditionsValidationError = useCallback(() => {
+    setErrorMessage('You have to check all mandatory terms')
+  }, [setErrorMessage])
+
+  const handleVerificationCodeInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setEmailVerificationCode(e.target.value)
+    },
+    [setEmailVerificationCode]
+  )
+
+  const handleSignUpFormEmailValidationError = useCallback(
+    (reason: 'ZodValidation' | 'VerificationCodeNotCorrect') => {
+      match(reason)
+        .with('ZodValidation', () => {
+          setErrorMessage('Email verification code should be 6 digit number')
+        })
+        .with('VerificationCodeNotCorrect', () => {
+          setErrorMessage('Email verification code is not correct')
+        })
+        .exhaustive()
+    },
+    [setErrorMessage]
+  )
 
   const handleSignUpSubmit = useCallback(async () => {
     setIsLoading(true)
@@ -229,30 +254,17 @@ export default function SignUpForm() {
           <SignUpFormTermsAndConditions
             initialTermsAndConditions={termsAndConditions}
             onUserCheckedTermsAndConditions={setTermsAndConditions}
-            onValidationError={() => {
-              setErrorMessage('You have to check all mandatory terms')
-            }}
+            onValidationError={
+              handleSignUpFormTermsAndConditionsValidationError
+            }
             onSubmit={increaseStepRoute}
           />
         ))
         .with(4, () => {
           return (
             <SignUpFormEmailVerification
-              onVerificationCodeInputChange={(e) => {
-                setEmailVerificationCode(e.target.value)
-              }}
-              onValidationError={(reason) => {
-                match(reason)
-                  .with('ZodValidation', () => {
-                    setErrorMessage(
-                      'Email verification code should be 6 digit number'
-                    )
-                  })
-                  .with('VerificationCodeNotCorrect', () => {
-                    setErrorMessage('Email verification code is not correct')
-                  })
-                  .exhaustive()
-              }}
+              onVerificationCodeInputChange={handleVerificationCodeInputChange}
+              onValidationError={handleSignUpFormEmailValidationError}
               onValidationSuccess={handleSignUpSubmit}
             />
           )
