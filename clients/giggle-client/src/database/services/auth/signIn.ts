@@ -1,6 +1,7 @@
 import { UserModel } from '@/database'
 import encryptPassword from '@/libs/encryptPassword'
 import { UserModelSerializedSchemaType } from '@/database/models/User'
+import { createErrorResult, createSuccessResult } from '@/libs/createResult'
 
 export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
@@ -17,7 +18,6 @@ type EmailSignInReturnType =
     }
   | {
       isError: true
-      data: null
       errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE
     }
 
@@ -32,13 +32,13 @@ const emailSignIn = async ({
     const existingUser = await UserModel.findByEmail(email)
 
     if (!existingUser) {
-      return createErrorResult(
+      return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
         EMAIL_SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT
       )
     }
 
     if (!existingUser.password || !existingUser.passwordSalt) {
-      return createErrorResult(
+      return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
         EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING
       )
     }
@@ -50,28 +50,20 @@ const emailSignIn = async ({
         existingUser.passwordSalt
       )
     ) {
-      return createErrorResult(
+      return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
         EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH
       )
     }
 
-    return {
-      isError: false,
-      data: existingUser.serialize(),
-    }
+    const result = createSuccessResult(existingUser.serialize())
+    return result
   } catch (error) {
     console.error(error)
-    return createErrorResult(EMAIL_SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR)
+    return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
+      EMAIL_SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR
+    )
   }
 }
-
-const createErrorResult = (
-  errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE
-): EmailSignInReturnType => ({
-  isError: true,
-  data: null,
-  errorCode,
-})
 
 const comparePasswords = (
   plainPassword: string,

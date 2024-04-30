@@ -4,7 +4,9 @@ import EmailAuthRequestModel, {
 } from '@/database/models/EmailAuthRequest'
 import { UserModelSerializedSchemaType } from '@/database/models/User'
 import authcodeGenerator from '@/libs/authcodeGenerator'
+import { createErrorResult, createSuccessResult } from '@/libs/createResult'
 import encryptPassword from '@/libs/encryptPassword'
+import { ResultReturnType } from '@/libs/types'
 
 export enum CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
@@ -18,7 +20,6 @@ type CheckEmailSignUpReturnType =
     }
   | {
       isError: true
-      data: null
       errorCode: CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE
     }
 
@@ -32,18 +33,13 @@ const checkEmailForSignUp = async ({
     const user = await UserModel.findByEmail(email)
 
     // Return user data if found, otherwise return null
-    return {
-      isError: false,
-      data: user ? user.serialize() : null,
-    }
+    return createSuccessResult(user ? user.serialize() : null)
   } catch (e) {
     // Log any errors and return an error response
     console.error(e)
-    return {
-      isError: true,
-      data: null,
-      errorCode: CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
-    }
+    return createErrorResult<CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE>(
+      CHECK_EMAIL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR
+    )
   }
 }
 
@@ -53,17 +49,6 @@ export enum EMAIL_SIGN_UP_SERVICE_ERROR_CODE {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
   EMAIL_VERIFICATION_CODE_NOT_CORRECT = 'EMAIL_VERIFICATION_CODE_NOT_CORRECT',
 }
-
-type EmailSignUpReturnType =
-  | {
-      isError: false
-      data: UserModelSerializedSchemaType | null
-    }
-  | {
-      isError: true
-      data: null
-      errorCode: EMAIL_SIGN_UP_SERVICE_ERROR_CODE
-    }
 
 const emailSignUp = async ({
   email,
@@ -75,38 +60,35 @@ const emailSignUp = async ({
   password: string
   passwordConfirm: string
   verificationCode: string
-}): Promise<EmailSignUpReturnType> => {
+}): Promise<
+  ResultReturnType<
+    UserModelSerializedSchemaType | null,
+    EMAIL_SIGN_UP_SERVICE_ERROR_CODE
+  >
+> => {
   try {
     // Check if the user already exists
     const existing = await UserModel.findByEmail(email)
     if (existing) {
-      return {
-        isError: true,
-        errorCode: EMAIL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT,
-        data: null,
-      }
+      return createErrorResult(
+        EMAIL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT
+      )
     }
 
     // Check the verification code and authenticate
     const emailAuthRequest = await EmailAuthRequestModel.findByEmail(email)
     if (!emailAuthRequest || emailAuthRequest.authcode !== verificationCode) {
-      return {
-        isError: true,
-        errorCode:
-          EMAIL_SIGN_UP_SERVICE_ERROR_CODE.EMAIL_VERIFICATION_CODE_NOT_CORRECT,
-        data: null,
-      }
+      return createErrorResult(
+        EMAIL_SIGN_UP_SERVICE_ERROR_CODE.EMAIL_VERIFICATION_CODE_NOT_CORRECT
+      )
     }
     await emailAuthRequest.authenticate()
 
     // Check if passwords match
     if (password !== passwordConfirm) {
-      return {
-        isError: true,
-        data: null,
-        errorCode:
-          EMAIL_SIGN_UP_SERVICE_ERROR_CODE.PASSWORD_CONFIRM_IS_NOT_MATCH,
-      }
+      return createErrorResult(
+        EMAIL_SIGN_UP_SERVICE_ERROR_CODE.PASSWORD_CONFIRM_IS_NOT_MATCH
+      )
     }
 
     // Encrypt the password and create the user
@@ -120,18 +102,11 @@ const emailSignUp = async ({
       createdAt: null,
     }).create()
 
-    return {
-      isError: false,
-      data: user.serialize(),
-    }
+    return createSuccessResult(user.serialize())
   } catch (e) {
     // Log any errors and return an error response
     console.error(e)
-    return {
-      isError: true,
-      data: null,
-      errorCode: EMAIL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
-    }
+    return createErrorResult(EMAIL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR)
   }
 }
 
@@ -140,33 +115,25 @@ export enum SOCIAL_SIGN_UP_SERVICE_ERROR_CODE {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
-type SocialSignUpReturnType =
-  | {
-      isError: false
-      data: UserModelSerializedSchemaType | null
-    }
-  | {
-      isError: true
-      data: null
-      errorCode: SOCIAL_SIGN_UP_SERVICE_ERROR_CODE
-    }
-
 const socialSignUp = async ({
   email,
 }: {
   email: string
-}): Promise<SocialSignUpReturnType> => {
+}): Promise<
+  ResultReturnType<
+    UserModelSerializedSchemaType | null,
+    SOCIAL_SIGN_UP_SERVICE_ERROR_CODE
+  >
+> => {
   try {
     // Check if the user already exists
     const existing = await UserModel.findByEmail(email)
 
     // If the user already exists, return an error
     if (existing) {
-      return {
-        isError: true,
-        errorCode: SOCIAL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT,
-        data: null,
-      }
+      return createErrorResult(
+        SOCIAL_SIGN_UP_SERVICE_ERROR_CODE.ALREADY_EXISTING_ACCOUNT
+      )
     }
 
     // Create a new user
@@ -179,18 +146,11 @@ const socialSignUp = async ({
     }).create()
 
     // Return the serialized user data
-    return {
-      isError: false,
-      data: user.serialize(),
-    }
+    return createSuccessResult(user.serialize())
   } catch (e) {
     // Log any errors and return an error response
     console.error(e)
-    return {
-      isError: true,
-      data: null,
-      errorCode: SOCIAL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
-    }
+    return createErrorResult(SOCIAL_SIGN_UP_SERVICE_ERROR_CODE.UNKNOWN_ERROR)
   }
 }
 
@@ -239,10 +199,8 @@ const createOrUpdateSignUpEmailVerification = async (
         id: null,
         createdAt: null,
       }).create()
-      return {
-        isError: false,
-        data: created.serialize(),
-      }
+
+      return createSuccessResult(created.serialize())
     }
   } catch (e) {
     // Log any errors and return an error response
