@@ -22,6 +22,7 @@ import * as ReactAuth from 'next-auth/react'
 import SignUpFormEmailVerification from './components/SignUpFormEmailVerification'
 import { StepEnum } from './types'
 import LoadingOverlay from '../base/LoadingOverlay'
+import SignUpProcessEmailVerification from '../SignUpProcess/SignUpProcessEmailVerification'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -260,15 +261,7 @@ export default function SignUpForm() {
             onSubmit={increaseStepRoute}
           />
         ))
-        .with(4, () => {
-          return (
-            <SignUpFormEmailVerification
-              onVerificationCodeInputChange={handleVerificationCodeInputChange}
-              onValidationError={handleSignUpFormEmailValidationError}
-              onValidationSuccess={handleSignUpSubmit}
-            />
-          )
-        })
+        .with(4, () => <SignUpProcessEmailVerification />)
         .exhaustive()}
       <Divider />
       <LoginButton
