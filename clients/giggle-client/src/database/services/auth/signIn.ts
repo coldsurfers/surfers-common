@@ -1,6 +1,7 @@
 import { UserModel } from '@/database'
 import encryptPassword from '@/libs/encryptPassword'
-import { UserModelSerialzedSchemaType } from '@/database/models/User'
+import { UserModelSerializedSchemaType } from '@/database/models/User'
+import { createErrorResult, createSuccessResult } from '@/libs/createResult'
 
 export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
@@ -13,11 +14,10 @@ export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {
 type EmailSignInReturnType =
   | {
       isError: false
-      data: UserModelSerialzedSchemaType
+      data: UserModelSerializedSchemaType
     }
   | {
       isError: true
-      data: null
       errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE
     }
 
@@ -29,52 +29,52 @@ const emailSignIn = async ({
   password?: string
 }): Promise<EmailSignInReturnType> => {
   try {
-    // check existing email
-    const existing = await UserModel.findByEmail(email)
-    if (!existing) {
-      return {
-        isError: true,
-        data: null,
-        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT,
-      }
+    const existingUser = await UserModel.findByEmail(email)
+
+    if (!existingUser) {
+      return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
+        EMAIL_SIGN_IN_SERVICE_ERROR_CODE.NOT_EXISTING_ACCOUNT
+      )
     }
 
-    if (!existing.password || !existing.passwordSalt) {
-      return {
-        isError: true,
-        data: null,
-        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING,
-      }
+    if (!existingUser.password || !existingUser.passwordSalt) {
+      return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
+        EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_EXISTING
+      )
     }
 
-    // existing account with email and password login
     if (
-      existing.password !==
-      encryptPassword({
-        plain: password ?? '',
-        originalSalt: existing.passwordSalt,
-      }).encrypted
+      !comparePasswords(
+        password ?? '',
+        existingUser.password,
+        existingUser.passwordSalt
+      )
     ) {
-      // password not correct
-      return {
-        isError: true,
-        errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH,
-        data: null,
-      }
+      return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
+        EMAIL_SIGN_IN_SERVICE_ERROR_CODE.PASSWORD_NOT_MATCH
+      )
     }
 
-    return {
-      isError: false,
-      data: existing.serialize(),
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      isError: true,
-      data: null,
-      errorCode: EMAIL_SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR,
-    }
+    const result = createSuccessResult(existingUser.serialize())
+    return result
+  } catch (error) {
+    console.error(error)
+    return createErrorResult<EMAIL_SIGN_IN_SERVICE_ERROR_CODE>(
+      EMAIL_SIGN_IN_SERVICE_ERROR_CODE.UNKNOWN_ERROR
+    )
   }
+}
+
+const comparePasswords = (
+  plainPassword: string,
+  hashedPassword: string,
+  salt: string
+): boolean => {
+  const encryptedPassword = encryptPassword({
+    plain: plainPassword,
+    originalSalt: salt,
+  }).encrypted
+  return encryptedPassword === hashedPassword
 }
 
 const AuthSignInService = {

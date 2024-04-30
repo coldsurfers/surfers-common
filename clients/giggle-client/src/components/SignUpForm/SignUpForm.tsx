@@ -4,21 +4,17 @@ import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
-import SignUpFormEmail from './components/SignUpFormEmail'
-import SignUpFormPassword from './components/SignUpFormPassword'
-import SignUpFormUserInfo from './components/SignUpFormUserInfo'
-import SignUpFormTermsAndConditions from './components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
 import { useEffectOnce } from 'react-use'
-import {
-  EmailSignUpActionParams,
-  emailSignUpAction,
-} from '../../../actions/signup'
 import useSignUpRoute from './hooks/useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
-import { emailSignInAction } from '../../../actions/login'
-import { useRouter } from 'next/navigation'
 import * as ReactAuth from 'next-auth/react'
+import { StepEnum } from './types'
+import SignUpProcessEmailVerification from '../SignUpProcess/SignUpProcessEmailVerification'
+import SignUpProcessEmail from '../SignUpProcess/SignUpProcessEmail'
+import SignUpProcessPassword from '../SignUpProcess/SignUpProcessPassword'
+import SignUpProcessUserInfo from '../SignUpProcess/SignUpProcessUserInfo'
+import SignUpProcessTermsAndConditions from '../SignUpProcess/SignUpProcessTermsAndConditions'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -45,16 +41,8 @@ const Divider = styled.div`
 
 const StepSchema = z.number()
 
-enum StepEnum {
-  EMAIL = 1,
-  PASSWORD,
-  TERMS_AND_CONDITIONS,
-}
-
 export default function SignUpForm() {
-  const router = useRouter()
-  const { initializeStepRoute, increaseStepRoute, stepSearchParam } =
-    useSignUpRoute()
+  const { initializeStepRoute, stepSearchParam } = useSignUpRoute()
 
   const step = useMemo<StepEnum | null>(() => {
     if (stepSearchParam === null) {
@@ -68,16 +56,11 @@ export default function SignUpForm() {
     return match(validation.data)
       .when(
         (value) =>
-          value >= StepEnum.EMAIL && value <= StepEnum.TERMS_AND_CONDITIONS,
+          value >= StepEnum.EMAIL && value <= StepEnum.EMAIL_VERIFICATION,
         (payload) => payload
       )
       .otherwise(() => null)
   }, [stepSearchParam])
-
-  const { setErrorMessage, errorMessage } = useSignUpStore((state) => ({
-    errorMessage: state.errorMessage,
-    setErrorMessage: state.setErrorMessage,
-  }))
 
   const { email, password, username, termsAndConditions } = useSignUpStore(
     (state) => ({
@@ -87,13 +70,6 @@ export default function SignUpForm() {
       termsAndConditions: state.termsAndConditions,
     })
   )
-  const { setEmail, setPassword, setUsername, setTermsAndConditions } =
-    useSignUpStore((state) => ({
-      setEmail: state.setEmail,
-      setPassword: state.setPassword,
-      setUsername: state.setUsername,
-      setTermsAndConditions: state.setTermsAndConditions,
-    }))
 
   const onClickGoogleLoginButton = useCallback(async () => {
     await ReactAuth.signIn('google')
@@ -119,6 +95,14 @@ export default function SignUpForm() {
           initializeStepRoute()
         }
       })
+      .with(4, () => {
+        if (
+          !termsAndConditions?.collectionData ||
+          !termsAndConditions.termsAndConditions
+        ) {
+          initializeStepRoute()
+        }
+      })
       .exhaustive()
   })
 
@@ -126,98 +110,17 @@ export default function SignUpForm() {
     <Wrapper>
       <TopTitle>{TITLE_MESSAGE}</TopTitle>
       {match(step)
-        .with(null, () => (
-          <SignUpFormEmail
-            initialEmailValue={email}
-            onValidationSuccess={(validEmail) => {
-              setEmail(validEmail)
-              increaseStepRoute()
-            }}
-            onValidationError={() => {
-              setErrorMessage('Invalid Email')
-            }}
-            onEmailInputChange={() => {
-              setErrorMessage('')
-            }}
-          />
-        ))
-        .with(1, () => (
-          <SignUpFormPassword
-            initialPasswordValue={password}
-            onValidationSuccess={(validPassword) => {
-              setPassword(validPassword)
-              increaseStepRoute()
-            }}
-            onValidationError={() => {
-              setErrorMessage(
-                'Password should have at least one letter and number. Min 8, Max 32'
-              )
-            }}
-            onPasswordInputChange={(e) => {
-              setErrorMessage('')
-            }}
-          />
-        ))
-        .with(2, () => (
-          <SignUpFormUserInfo
-            initialUsernameValue={username}
-            onValidationSuccess={(validUsername) => {
-              setUsername(validUsername)
-              increaseStepRoute()
-            }}
-            onValidationError={() => {
-              setErrorMessage('Invalid username')
-            }}
-            onUsernameInputChange={(e) => {
-              setErrorMessage('')
-            }}
-          />
-        ))
-        .with(3, () => (
-          <SignUpFormTermsAndConditions
-            initialTermsAndConditions={termsAndConditions}
-            onUserCheckedTermsAndConditions={setTermsAndConditions}
-            onValidationError={() => {
-              setErrorMessage('You have to check all mandatory terms')
-            }}
-            onSubmit={async () => {
-              setErrorMessage('')
-              const needData: EmailSignUpActionParams = {
-                email,
-                password,
-                passwordConfirm: password,
-              }
-              try {
-                const response = await emailSignUpAction(needData)
-                if (response.isError) {
-                  setErrorMessage(response.errorCode)
-                  return
-                }
-                const signInResponse = await emailSignInAction({
-                  ...needData,
-                })
-                if (signInResponse.isError) {
-                  setErrorMessage(signInResponse.error)
-                  return
-                }
-                await ReactAuth.signIn('credentials', {
-                  redirect: true,
-                  ...needData,
-                })
-                router.push('/')
-              } catch (e) {
-                console.error(e)
-              }
-            }}
-          />
-        ))
+        .with(null, () => <SignUpProcessEmail />)
+        .with(1, () => <SignUpProcessPassword />)
+        .with(2, () => <SignUpProcessUserInfo />)
+        .with(3, () => <SignUpProcessTermsAndConditions />)
+        .with(4, () => <SignUpProcessEmailVerification />)
         .exhaustive()}
       <Divider />
       <LoginButton
         onClick={onClickGoogleLoginButton}
         fullWidth
       >{`${LOGIN_PRE_MESSAGE} Google`}</LoginButton>
-      {errorMessage}
     </Wrapper>
   )
 }

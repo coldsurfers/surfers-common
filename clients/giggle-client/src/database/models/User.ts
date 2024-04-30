@@ -18,7 +18,7 @@ export const UserModelSerialzedSchema = z.object({
   email: z.string().email(),
 })
 
-export type UserModelSerialzedSchemaType = z.TypeOf<
+export type UserModelSerializedSchemaType = z.TypeOf<
   typeof UserModelSerialzedSchema
 >
 
@@ -37,7 +37,7 @@ class UserModel {
     this.passwordSalt = params.passwordSalt
   }
 
-  public serialize(): UserModelSerialzedSchemaType {
+  public serialize(): UserModelSerializedSchemaType {
     if (!this.id || !this.createdAt) {
       throw Error('UserModelSerialize failed')
     }

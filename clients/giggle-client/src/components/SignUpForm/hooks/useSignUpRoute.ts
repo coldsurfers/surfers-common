@@ -1,7 +1,8 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
+import { StepEnum } from '../types'
 
-const MAX_STEP = 3
+const MAX_STEP = StepEnum.EMAIL_VERIFICATION
 
 const useSignUpRoute = () => {
   const router = useRouter()

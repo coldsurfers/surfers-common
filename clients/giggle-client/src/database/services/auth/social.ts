@@ -1,67 +1,48 @@
 import googleOAuthClient from '@/database/libs/googleOAuthClient'
 import { UserModel } from '@/database/models'
-import { UserModelSerialzedSchemaType } from '@/database/models/User'
+import { UserModelSerializedSchemaType } from '@/database/models/User'
+import { createErrorResult, createSuccessResult } from '@/libs/createResult'
+import { ResultReturnType } from '@/libs/types'
 import { LoginTicket } from 'google-auth-library'
 
-export type VERIFY_GOOGLE_ACCESS_TOKEN_ERROR = 'INVALID_ACCESS_TOKEN'
-export type CHECK_EXISTING_ACCOUNT_ERROR = 'UNKNOWN_ERROR'
+export enum VERIFY_GOOGLE_ACCESS_TOKEN_ERROR {
+  INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN',
+}
 
 const verifyGoogleAccessToken = async (
   accessToken: string
-): Promise<
-  | {
-      isError: true
-      error: VERIFY_GOOGLE_ACCESS_TOKEN_ERROR
-    }
-  | {
-      isError: false
-      data: LoginTicket
-    }
-> => {
+): Promise<ResultReturnType<LoginTicket, VERIFY_GOOGLE_ACCESS_TOKEN_ERROR>> => {
   try {
     const verified = await googleOAuthClient.verifyIdToken({
       idToken: accessToken,
       audience: process.env.GOOGLE_OAUTH_CLIENT_ID,
     })
-    return {
-      isError: false,
-      data: verified,
-    }
+    return createSuccessResult(verified)
   } catch (e) {
     console.error(e)
-    return {
-      isError: true,
-      error: 'INVALID_ACCESS_TOKEN',
-    }
+    return createErrorResult(
+      VERIFY_GOOGLE_ACCESS_TOKEN_ERROR.INVALID_ACCESS_TOKEN
+    )
   }
 }
 
 const checkExistingAccount = async (
   email: string
 ): Promise<
-  | {
-      isError: true
-      error: CHECK_EXISTING_ACCOUNT_ERROR
-    }
-  | {
-      isError: false
-      data: UserModelSerialzedSchemaType | undefined
-    }
+  ResultReturnType<UserModelSerializedSchemaType, CHECK_EXISTING_ACCOUNT_ERROR>
 > => {
   try {
-    const existing = await UserModel.findByEmail(email)
-    const serialized = existing?.serialize()
-    return {
-      isError: false,
-      data: serialized,
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      isError: true,
-      error: 'UNKNOWN_ERROR',
-    }
+    const existingUser = await UserModel.findByEmail(email)
+    const serializedUser = existingUser?.serialize()
+    return createSuccessResult(serializedUser)
+  } catch (error) {
+    console.error(error)
+    return createErrorResult(CHECK_EXISTING_ACCOUNT_ERROR.UNKNOWN_ERROR)
   }
+}
+
+export enum CHECK_EXISTING_ACCOUNT_ERROR {
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
 const AuthSocialService = {
