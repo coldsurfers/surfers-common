@@ -1,4 +1,5 @@
 import googleOAuthClient from '@/database/libs/googleOAuthClient'
+import AuthSocialService from '@/database/services/auth/social'
 import { createErrorResult, createSuccessResult } from '@/libs/createResult'
 import { z } from 'zod'
 
@@ -20,10 +21,13 @@ export const POST = async (request: Request): Promise<Response> => {
         createErrorResult(API_AUTH_POST_GOOGLE_ERROR_CODE.INVALID_BODY)
       )
     }
-    const result = await googleOAuthClient.getTokenInfo(
+    const result = await AuthSocialService.verifyGoogleAccessToken(
       validation.data.accessToken
     )
-    return Response.json(createSuccessResult(result))
+    if (result.isError) {
+      return Response.json(createErrorResult(result.errorCode))
+    }
+    return Response.json(createSuccessResult(result.data))
   } catch (e) {
     console.error(e)
     return Response.json(

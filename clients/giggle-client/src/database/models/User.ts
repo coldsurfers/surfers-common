@@ -1,4 +1,5 @@
 import { prismaClient } from '@/libs/database'
+import { CredentialsProviderSchema } from '@/libs/types'
 import { User } from '@prisma/client'
 import { z } from 'zod'
 
@@ -8,7 +9,7 @@ export const UserModelSchema = z.object({
   email: z.string().email(),
   password: z.string().nullable(),
   passwordSalt: z.string().nullable(),
-  provider: z.union([z.literal('google'), z.literal('credentials')]),
+  provider: CredentialsProviderSchema,
 })
 
 export type UserModelSchemaType = z.infer<typeof UserModelSchema>

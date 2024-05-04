@@ -100,6 +100,7 @@ const emailSignUp = async ({
       passwordSalt,
       id: null,
       createdAt: null,
+      provider: 'credentials',
     }).create()
 
     return createSuccessResult(user.serialize())
@@ -143,6 +144,8 @@ const socialSignUp = async ({
       passwordSalt: null,
       id: null,
       createdAt: null,
+      // @TEMP for now we only support google for social sign in
+      provider: 'google',
     }).create()
 
     // Return the serialized user data

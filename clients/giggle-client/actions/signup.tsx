@@ -9,6 +9,8 @@ import AuthSignUpService, {
   CREATE_OR_SEND_SIGN_UP_EMAIL_VERIFICATION_SERVICE_ERROR_CODE,
   EMAIL_SIGN_UP_SERVICE_ERROR_CODE,
 } from '@/database/services/auth/signUp'
+import AuthSocialService from '@/database/services/auth/social'
+import { createErrorResult, createSuccessResult } from '@/libs/createResult'
 import log from '@/libs/log'
 import { sendEmail } from '@/libs/mailer'
 import { render } from '@react-email/components'
@@ -106,6 +108,54 @@ export const emailSignUpAction = async ({
       errorCode: 'UNKNOWN_ERROR',
       stack: `${e}`,
     }
+  }
+}
+
+export type GoogleSignUpActionErrorCode =
+  | 'UNKNOWN_ERROR'
+  | 'INVALID_EMAIL'
+  | 'ALREADY_EXISTING'
+
+export const googleSignUpAction = async ({
+  accessToken,
+}: {
+  accessToken: string
+}) => {
+  try {
+    const verified = await AuthSocialService.verifyGoogleAccessToken(
+      accessToken
+    )
+
+    if (verified.isError) {
+      return createErrorResult(verified.errorCode)
+    }
+
+    const { email } = verified.data
+
+    if (!email) {
+      return createErrorResult<GoogleSignUpActionErrorCode>('INVALID_EMAIL')
+    }
+
+    const existing = await AuthSignUpService.checkEmailForSignUp({ email })
+
+    if (existing.isError) {
+      return createErrorResult(existing.errorCode)
+    }
+
+    if (!!existing.data) {
+      return createErrorResult<GoogleSignUpActionErrorCode>('ALREADY_EXISTING')
+    }
+
+    const result = await AuthSignUpService.socialSignUp({ email })
+
+    if (result.error) {
+      return createErrorResult(result.error)
+    }
+
+    return createSuccessResult(result.data)
+  } catch (error) {
+    console.error(error)
+    return createErrorResult<GoogleSignUpActionErrorCode>('UNKNOWN_ERROR')
   }
 }
 

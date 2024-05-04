@@ -69,6 +69,7 @@ import AuthSignInService from '../database/services/auth/signIn'
 import AuthSocialService from '@/database/services/auth/social'
 import log from './log'
 import AuthSignUpService from '@/database/services/auth/signUp'
+import { CredentialsSchema } from './types'
 
 export const config = {
   theme: {
@@ -110,19 +111,55 @@ export const config = {
     Credentials({
       authorize: async (credentials) => {
         log(`libs-auth.ts - credentials, ${JSON.stringify(credentials)}`)
-        if (!credentials.email || !credentials.password) {
+
+        const parsed = CredentialsSchema.safeParse(credentials)
+        if (!parsed.success) {
+          log(
+            `libs-auth.ts - safe parse credentials failed, ${JSON.stringify(
+              parsed.error
+            )}`
+          )
           return null
         }
-        const result = await AuthSignInService.emailSignIn({
-          email: credentials.email as string,
-          password: credentials.password as string,
-        })
-        log(`libs-auth.ts - credentials error, ${JSON.stringify(result)}`)
-        if (result.isError) return null
-        return {
-          email: result.data.email,
-          id: `${result.data.id}`,
-        } satisfies User
+
+        const { email, password, provider, accessToken } = parsed.data
+
+        if (provider === 'credentials') {
+          const signInResult = await AuthSignInService.emailSignIn({
+            email,
+            password,
+          })
+
+          log(
+            `libs-auth.ts - credentials error, ${JSON.stringify(signInResult)}`
+          )
+
+          if (signInResult.isError) return null
+
+          return {
+            email: signInResult.data.email,
+            id: `${signInResult.data.id}`,
+          }
+        } else if (provider === 'google' && accessToken) {
+          const signInResult = await AuthSignInService.googleSignIn(accessToken)
+
+          log(
+            `libs-auth.ts - credentials provider google, ${JSON.stringify(
+              signInResult
+            )}`
+          )
+
+          if (signInResult.isError) {
+            return null
+          }
+
+          return {
+            ...signInResult.data,
+            id: `${signInResult.data.id}`,
+          }
+        }
+
+        return null
       },
     }),
     // Hubspot,
@@ -170,52 +207,68 @@ export const config = {
     //   return true
     // },
     async signIn(params) {
-      const { account, profile } = params
+      const { account, profile, credentials } = params
       log(`libs-auth.ts - signIn, ${JSON.stringify(params)}`)
-      if (!account) {
+
+      if (!account && !credentials) {
         return false
       }
-      const { provider } = account
-      // for now we only support google login for social login
-      const isSocialLogin = provider === 'google'
-      if (isSocialLogin) {
-        const { id_token: accessToken } = account
-        if (!accessToken) return false
-        const verified = await AuthSocialService.verifyGoogleAccessToken(
-          accessToken
-        )
-        if (!verified || verified.isError || !profile?.email) {
-          return false
-        }
-        // connect with db and find user, also check should insert to user table
-        const existing = await AuthSocialService.checkExistingAccount(
-          profile.email
-        )
-        if (existing) {
+
+      if (account) {
+        const { provider, id_token: idToken } = account
+
+        if (provider === 'google' && idToken) {
+          const verified = await AuthSocialService.verifyGoogleIdToken(idToken)
+
+          if (!verified || verified.isError || !profile?.email) {
+            return false
+          }
+
+          const existing = await AuthSocialService.checkExistingAccount(
+            profile.email
+          )
+          if (existing) {
+            return true
+          }
+
+          await AuthSignUpService.socialSignUp({ email: profile.email })
           return true
         }
-        // sign up
-        await AuthSignUpService.socialSignUp({ email: profile.email })
-        return true
       }
 
-      // email login user
-      // TODO: find user by email
-      const { credentials } = params
-      log(`libs-auth.ts - signIn, noCredentials`)
-      if (!credentials) {
-        return false
-      }
-      const { email, password } = credentials
-      const emailSignInData = await AuthSignInService.emailSignIn({
-        email: email as string,
-        password: password as string,
-      })
-      if (emailSignInData.isError) {
-        return false
+      if (credentials) {
+        const {
+          email,
+          password,
+          provider: credentialsProvider,
+          accessToken,
+        } = credentials
+
+        if (`${credentialsProvider}` === 'credentials') {
+          const emailSignInData = await AuthSignInService.emailSignIn({
+            email: email as string,
+            password: password as string,
+          })
+
+          if (emailSignInData.isError) {
+            return false
+          }
+
+          return true
+        } else if (`${credentialsProvider}` === 'google' && accessToken) {
+          const result = await AuthSignInService.googleSignIn(
+            accessToken.toString()
+          )
+
+          if (result.isError) {
+            return false
+          }
+
+          return true
+        }
       }
 
-      return true
+      return false
     },
     redirect: (params) => {
       return '/'

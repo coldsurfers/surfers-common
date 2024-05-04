@@ -2,6 +2,7 @@ import { UserModel } from '@/database'
 import encryptPassword from '@/libs/encryptPassword'
 import { UserModelSerializedSchemaType } from '@/database/models/User'
 import { createErrorResult, createSuccessResult } from '@/libs/createResult'
+import AuthSocialService from './social'
 
 export enum EMAIL_SIGN_IN_SERVICE_ERROR_CODE {
   ALREADY_EXISTING_EMAIL = 'ALREADY_EXISTING_EMAIL',
@@ -65,6 +66,42 @@ const emailSignIn = async ({
   }
 }
 
+export enum GoogleSignInErrorCode {
+  INVALID_EMAIL = 'INVALID_EMAIL',
+  NOT_FOUND_USER = 'NOT_FOUND_USER',
+  INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+}
+
+const googleSignIn = async (accessToken: string) => {
+  try {
+    const verificationResult = await AuthSocialService.verifyGoogleAccessToken(
+      accessToken
+    )
+
+    if (verificationResult.isError) {
+      return createErrorResult(GoogleSignInErrorCode.INVALID_ACCESS_TOKEN)
+    }
+
+    const email = verificationResult.data.email
+
+    if (!email) {
+      return createErrorResult(GoogleSignInErrorCode.INVALID_EMAIL)
+    }
+
+    const user = await UserModel.findByEmail(email)
+
+    if (!user) {
+      return createErrorResult(GoogleSignInErrorCode.NOT_FOUND_USER)
+    }
+
+    return createSuccessResult(user.serialize())
+  } catch (error) {
+    console.error(error)
+    return createErrorResult(GoogleSignInErrorCode.UNKNOWN_ERROR)
+  }
+}
+
 const comparePasswords = (
   plainPassword: string,
   hashedPassword: string,
@@ -79,6 +116,7 @@ const comparePasswords = (
 
 const AuthSignInService = {
   emailSignIn,
+  googleSignIn,
 }
 
 export default AuthSignInService

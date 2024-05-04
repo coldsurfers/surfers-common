@@ -7,6 +7,7 @@ export type SignUpTermsAndConditions = {
 
 export type SignUpStoreStateMetaType = {
   provider: 'google' | 'credentials' | null
+  accessToken: string | null
 }
 
 interface SignUpStoreState {
@@ -40,6 +41,7 @@ const initialState: SignUpStoreState = {
   emailVerificationCode: '',
   meta: {
     provider: null,
+    accessToken: null,
   },
 }
 

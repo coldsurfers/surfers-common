@@ -5,13 +5,13 @@ import { createErrorResult, createSuccessResult } from '@/libs/createResult'
 import { ResultReturnType } from '@/libs/types'
 import { LoginTicket } from 'google-auth-library'
 
-export enum VERIFY_GOOGLE_ACCESS_TOKEN_ERROR {
+export enum VERIFY_GOOGLE_ID_TOKEN_ERROR {
   INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN',
 }
 
-const verifyGoogleAccessToken = async (
+const verifyGoogleIdToken = async (
   accessToken: string
-): Promise<ResultReturnType<LoginTicket, VERIFY_GOOGLE_ACCESS_TOKEN_ERROR>> => {
+): Promise<ResultReturnType<LoginTicket, VERIFY_GOOGLE_ID_TOKEN_ERROR>> => {
   try {
     const verified = await googleOAuthClient.verifyIdToken({
       idToken: accessToken,
@@ -20,9 +20,7 @@ const verifyGoogleAccessToken = async (
     return createSuccessResult(verified)
   } catch (e) {
     console.error(e)
-    return createErrorResult(
-      VERIFY_GOOGLE_ACCESS_TOKEN_ERROR.INVALID_ACCESS_TOKEN
-    )
+    return createErrorResult(VERIFY_GOOGLE_ID_TOKEN_ERROR.INVALID_ACCESS_TOKEN)
   }
 }
 
@@ -41,13 +39,29 @@ const checkExistingAccount = async (
   }
 }
 
+export enum VERIFY_GOOGLE_ACCESS_TOKEN_ERROR {
+  INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN',
+}
+
+const verifyGoogleAccessToken = async (accessToken: string) => {
+  try {
+    const result = await googleOAuthClient.getTokenInfo(accessToken)
+    return createSuccessResult(result)
+  } catch (e) {
+    return createErrorResult(
+      VERIFY_GOOGLE_ACCESS_TOKEN_ERROR.INVALID_ACCESS_TOKEN
+    )
+  }
+}
+
 export enum CHECK_EXISTING_ACCOUNT_ERROR {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
 const AuthSocialService = {
-  verifyGoogleAccessToken,
+  verifyGoogleIdToken,
   checkExistingAccount,
+  verifyGoogleAccessToken,
 }
 
 export default AuthSocialService

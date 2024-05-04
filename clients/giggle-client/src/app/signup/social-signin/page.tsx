@@ -8,6 +8,7 @@ import { useSignUpStore } from '@/stores/SignUpStore'
 import { useRouter } from 'next/navigation'
 import LoadingOverlay from '@/components/base/LoadingOverlay'
 import { StepEnum } from '@/components/SignUpForm/types'
+import { useEffectOnce } from 'react-use'
 
 const SignUpSocialSignIn = () => {
   const router = useRouter()
@@ -21,7 +22,7 @@ const SignUpSocialSignIn = () => {
     setPassword: state.setPassword,
     setMeta: state.setMeta,
   }))
-  useEffect(() => {
+  useEffectOnce(() => {
     const url = new URL(window.location.href)
     const parsedHash = new URLSearchParams(url.hash.substring(1))
     const accessToken = parsedHash.get('access_token')
@@ -42,15 +43,16 @@ const SignUpSocialSignIn = () => {
         >
         if (!responseJson.data?.email) return
         setEmail(responseJson.data.email)
-        setPassword('SKIP_PASSWORD')
+        setPassword('$k1p_pA$$w0rd!')
         setMeta({
           provider: 'google',
+          accessToken,
         })
       })
       .catch((e) => {
         router.replace('/')
       })
-  }, [router, setEmail, setMeta, setPassword])
+  })
 
   useEffect(() => {
     if (!email || !password || !meta.provider) {
