@@ -1,4 +1,6 @@
-import { MouseEventHandler, PropsWithChildren } from 'react'
+import { Url } from 'next/dist/shared/lib/router/router'
+import Link from 'next/link'
+import { Fragment, MouseEventHandler, PropsWithChildren } from 'react'
 import styled, { css } from 'styled-components'
 
 const LoginButtonStyled = styled.button<{
@@ -32,21 +34,28 @@ const LoginButton = ({
   withScale,
   children,
   onClick,
+  href,
   ...others
 }: PropsWithChildren<{
   fullWidth?: boolean
   withScale?: boolean
   onClick?: MouseEventHandler<HTMLButtonElement>
+  href?: Url
 }>) => {
+  const WrapperComponent = href ? Link : Fragment
+  const wrapperProps = href ? { href } : {}
   return (
-    <LoginButtonStyled
-      onClick={onClick}
-      $fullWidth={fullWidth}
-      $withScale={withScale}
-      {...others}
-    >
-      {children}
-    </LoginButtonStyled>
+    // @ts-ignore
+    <WrapperComponent {...wrapperProps}>
+      <LoginButtonStyled
+        onClick={onClick}
+        $fullWidth={fullWidth}
+        $withScale={withScale}
+        {...others}
+      >
+        {children}
+      </LoginButtonStyled>
+    </WrapperComponent>
   )
 }
 
