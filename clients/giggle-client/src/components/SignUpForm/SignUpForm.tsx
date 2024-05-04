@@ -1,20 +1,21 @@
 'use client'
 
 import LoginButton from '@/ui/Button/LoginButton'
-import { useCallback, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { useEffectOnce } from 'react-use'
 import useSignUpRoute from './hooks/useSignUpRoute'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
-import * as ReactAuth from 'next-auth/react'
 import { StepEnum } from './types'
 import SignUpProcessEmailVerification from '../SignUpProcess/SignUpProcessEmailVerification'
 import SignUpProcessEmail from '../SignUpProcess/SignUpProcessEmail'
 import SignUpProcessPassword from '../SignUpProcess/SignUpProcessPassword'
 import SignUpProcessUserInfo from '../SignUpProcess/SignUpProcessUserInfo'
 import SignUpProcessTermsAndConditions from '../SignUpProcess/SignUpProcessTermsAndConditions'
+import { ResultReturnType } from '@/libs/types'
+import { API_AUTH_GET_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/types'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -42,6 +43,7 @@ const Divider = styled.div`
 const StepSchema = z.number()
 
 export default function SignUpForm() {
+  const [authUrl, setAuthUrl] = useState('')
   const { initializeStepRoute, stepSearchParam } = useSignUpRoute()
 
   const step = useMemo<StepEnum | null>(() => {
@@ -71,9 +73,21 @@ export default function SignUpForm() {
     })
   )
 
-  const onClickGoogleLoginButton = useCallback(async () => {
-    await ReactAuth.signIn('google')
-  }, [])
+  useEffectOnce(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google`, {
+      method: 'GET',
+    }).then(async (response) => {
+      const responseJson = (await response.json()) as ResultReturnType<
+        {
+          authUrl: string
+        },
+        API_AUTH_GET_GOOGLE_ERROR_CODE
+      >
+      if (responseJson.data) {
+        setAuthUrl(responseJson.data.authUrl)
+      }
+    })
+  })
 
   useEffectOnce(() => {
     match(step)
@@ -116,11 +130,13 @@ export default function SignUpForm() {
         .with(3, () => <SignUpProcessTermsAndConditions />)
         .with(4, () => <SignUpProcessEmailVerification />)
         .exhaustive()}
-      <Divider />
-      <LoginButton
-        onClick={onClickGoogleLoginButton}
-        fullWidth
-      >{`${LOGIN_PRE_MESSAGE} Google`}</LoginButton>
+      {step === null && <Divider />}
+      {step === null && (
+        <LoginButton
+          fullWidth
+          href={authUrl}
+        >{`${LOGIN_PRE_MESSAGE} Google`}</LoginButton>
+      )}
     </Wrapper>
   )
 }

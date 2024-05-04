@@ -78,7 +78,7 @@ export const POST = async (request: Request): Promise<Response> => {
           : null,
       } satisfies API_AUTH_SIGNUP_POST_RESPONSE)
     } else if (requestBody.provider === 'google') {
-      const accessTokenResult = await AuthSocialService.verifyGoogleAccessToken(
+      const accessTokenResult = await AuthSocialService.verifyGoogleIdToken(
         requestBody.accessToken
       )
       if (accessTokenResult.isError) {

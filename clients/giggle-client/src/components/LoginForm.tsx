@@ -73,7 +73,10 @@ export default function LoginForm() {
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     startTransition(() => {
-      emailSignInAction(data)
+      emailSignInAction({
+        ...data,
+        provider: 'credentials',
+      })
         .then((result) => {
           if (result.isError) {
             setErrorMessage('Error Has Been Occurred')

@@ -7,13 +7,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback, useRef, useState } from 'react'
-import { z } from 'zod'
 import LoadingOverlay from '@/components/base/LoadingOverlay'
 import { match } from 'ts-pattern'
+import { CredentialsEmailVerificationCodeSchema } from '@/libs/types'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
-
-const EmailVerificationCodeSchema = z.string().max(6).min(6)
 
 type Inputs = {
   verificationCode: string
@@ -47,7 +45,7 @@ const SignUpFormEmailVerification = ({
 
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
-      const zodValidation = EmailVerificationCodeSchema.safeParse(
+      const zodValidation = CredentialsEmailVerificationCodeSchema.safeParse(
         data.verificationCode
       )
       if (!zodValidation.success) {

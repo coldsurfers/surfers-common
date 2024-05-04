@@ -1,4 +1,5 @@
 import { prismaClient } from '@/libs/database'
+import { CredentialsProviderSchema } from '@/libs/types'
 import { User } from '@prisma/client'
 import { z } from 'zod'
 
@@ -8,6 +9,7 @@ export const UserModelSchema = z.object({
   email: z.string().email(),
   password: z.string().nullable(),
   passwordSalt: z.string().nullable(),
+  provider: CredentialsProviderSchema,
 })
 
 export type UserModelSchemaType = z.infer<typeof UserModelSchema>
@@ -28,6 +30,7 @@ class UserModel {
   public email!: string
   public password: string | null
   public passwordSalt: string | null
+  public provider!: string
 
   constructor(params: UserModelSchemaType) {
     this.id = params.id
@@ -35,6 +38,7 @@ class UserModel {
     this.email = params.email
     this.password = params.password
     this.passwordSalt = params.passwordSalt
+    this.provider = params.provider
   }
 
   public serialize(): UserModelSerializedSchemaType {
@@ -49,13 +53,19 @@ class UserModel {
   }
 
   private static modelize(prismaModel: User) {
-    return new UserModel({
+    const userModel = {
       id: prismaModel.id,
       email: prismaModel.email,
       password: prismaModel.password,
       passwordSalt: prismaModel.passwordSalt,
       createdAt: prismaModel.createdAt.toISOString(),
-    })
+      provider: prismaModel.provider,
+    }
+    const parsed = UserModelSchema.safeParse(userModel)
+    if (!parsed.success) {
+      throw Error('UserModelSchema parser error on modelize')
+    }
+    return new UserModel(parsed.data)
   }
 
   async create() {
@@ -64,6 +74,7 @@ class UserModel {
         email: this.email,
         password: this.password,
         passwordSalt: this.passwordSalt,
+        provider: this.provider,
       },
     })
 

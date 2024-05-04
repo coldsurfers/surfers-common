@@ -6,6 +6,7 @@ import LoadingOverlay from '../base/LoadingOverlay'
 import {
   EmailSignUpActionParams,
   emailSignUpAction,
+  googleSignUpAction,
 } from '../../../actions/signup'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -14,13 +15,13 @@ import { emailSignInAction } from '../../../actions/login'
 const SignUpProcessEmailVerification = () => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-
-  const { errorMessage, email, password, emailVerificationCode } =
+  const { errorMessage, email, password, emailVerificationCode, meta } =
     useSignUpStore((state) => ({
       email: state.email,
       password: state.password,
       emailVerificationCode: state.emailVerificationCode,
       errorMessage: state.errorMessage,
+      meta: state.meta,
     }))
   const { setEmailVerificationCode, setErrorMessage } = useSignUpStore(
     (state) => ({
@@ -58,30 +59,64 @@ const SignUpProcessEmailVerification = () => {
       passwordConfirm: password,
       verificationCode: emailVerificationCode,
     }
+
     try {
-      const response = await emailSignUpAction(needData)
-      if (response.isError) {
-        setErrorMessage(response.errorCode)
-        return
+      if (meta.provider === 'google' && meta.accessToken) {
+        const googleSignUpResponse = await googleSignUpAction({
+          accessToken: meta.accessToken,
+        })
+        if (googleSignUpResponse.isError) return
+
+        const googleSignInResponse = await emailSignInAction({
+          ...needData,
+          provider: 'google',
+          accessToken: meta.accessToken,
+        })
+        if (googleSignInResponse.isError && googleSignInResponse.error) {
+          setErrorMessage(googleSignInResponse.error)
+          return
+        }
+        await signIn('credentials', {
+          redirect: true,
+          ...needData,
+          provider: 'google',
+          accessToken: meta.accessToken,
+        })
+        router.push('/')
+      } else {
+        const emailSignUpResponse = await emailSignUpAction(needData)
+        if (emailSignUpResponse.isError) {
+          setErrorMessage(emailSignUpResponse.errorCode)
+          return
+        }
+        const emailSignInResponse = await emailSignInAction({
+          ...needData,
+          provider: 'credentials',
+        })
+        if (emailSignInResponse.isError && emailSignInResponse.error) {
+          setErrorMessage(emailSignInResponse.error)
+          return
+        }
+        await signIn('credentials', {
+          redirect: true,
+          ...needData,
+        })
+        router.push('/')
       }
-      const signInResponse = await emailSignInAction({
-        ...needData,
-      })
-      if (signInResponse.isError) {
-        setErrorMessage(signInResponse.error)
-        return
-      }
-      await signIn('credentials', {
-        redirect: true,
-        ...needData,
-      })
-      router.push('/')
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      console.error(error)
     } finally {
       setIsLoading(false)
     }
-  }, [email, emailVerificationCode, password, router, setErrorMessage])
+  }, [
+    email,
+    emailVerificationCode,
+    meta.accessToken,
+    meta.provider,
+    password,
+    router,
+    setErrorMessage,
+  ])
 
   return (
     <>

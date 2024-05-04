@@ -5,6 +5,11 @@ export type SignUpTermsAndConditions = {
   collectionData: boolean
 } | null
 
+export type SignUpStoreStateMetaType = {
+  provider: 'google' | 'credentials' | null
+  accessToken: string | null
+}
+
 interface SignUpStoreState {
   errorMessage: string
   email: string
@@ -12,6 +17,7 @@ interface SignUpStoreState {
   username: string
   termsAndConditions: SignUpTermsAndConditions
   emailVerificationCode: string
+  meta: SignUpStoreStateMetaType
 }
 
 interface SignUpStoreAction {
@@ -21,6 +27,7 @@ interface SignUpStoreAction {
   setUsername: (username: string) => void
   setTermsAndConditions: (termsAndConditions: SignUpTermsAndConditions) => void
   setEmailVerificationCode: (emailVerificationCode: string) => void
+  setMeta: (meta: SignUpStoreStateMetaType) => void
 }
 
 type SignUpStore = SignUpStoreState & SignUpStoreAction
@@ -32,6 +39,10 @@ const initialState: SignUpStoreState = {
   username: '',
   termsAndConditions: null,
   emailVerificationCode: '',
+  meta: {
+    provider: null,
+    accessToken: null,
+  },
 }
 
 export const useSignUpStore = create<SignUpStore>((set) => ({
@@ -60,4 +71,5 @@ export const useSignUpStore = create<SignUpStore>((set) => ({
     set(() => ({
       emailVerificationCode,
     })),
+  setMeta: (meta) => set(() => ({ meta })),
 }))

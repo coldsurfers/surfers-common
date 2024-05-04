@@ -1,3 +1,4 @@
+import { CredentialsPasswordSchema } from '@/libs/types'
 import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -6,14 +7,8 @@ import { z } from 'zod'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
-// https://regexr.com/3bfsi
-// min 8, max 32, at least one letter and one number
-const InputsPasswordSchema = z
-  .string()
-  .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,32}$/)
-
 type Inputs = {
-  password: z.TypeOf<typeof InputsPasswordSchema>
+  password: z.TypeOf<typeof CredentialsPasswordSchema>
 }
 
 const SignUpFormPassword = ({
@@ -39,7 +34,7 @@ const SignUpFormPassword = ({
   })
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
-      const validation = InputsPasswordSchema.safeParse(data.password)
+      const validation = CredentialsPasswordSchema.safeParse(data.password)
       if (!validation.success) {
         onValidationError && onValidationError()
         return

@@ -30,6 +30,8 @@ model User {
   email        String  @unique
   password     String?
   passwordSalt String?
+
+  provider String
 }
 
 model Venue {
