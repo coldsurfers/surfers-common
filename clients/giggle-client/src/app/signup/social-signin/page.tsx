@@ -9,6 +9,7 @@ import LoadingOverlay from '@/components/base/LoadingOverlay'
 import { StepEnum } from '@/components/SignUpForm/types'
 import { useEffectOnce } from 'react-use'
 import { API_AUTH_POST_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/types'
+import httpRequest from '@/libs/httpRequest'
 
 const SignUpSocialSignIn = () => {
   const router = useRouter()
@@ -30,7 +31,7 @@ const SignUpSocialSignIn = () => {
       router.replace('/')
       return
     }
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google`, {
+    httpRequest(`/api/auth/google`, {
       method: 'POST',
       body: JSON.stringify({
         accessToken,

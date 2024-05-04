@@ -16,6 +16,7 @@ import SignUpProcessUserInfo from '../SignUpProcess/SignUpProcessUserInfo'
 import SignUpProcessTermsAndConditions from '../SignUpProcess/SignUpProcessTermsAndConditions'
 import { ResultReturnType } from '@/libs/types'
 import { API_AUTH_GET_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/types'
+import httpRequest from '@/libs/httpRequest'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -74,7 +75,7 @@ export default function SignUpForm() {
   )
 
   useEffectOnce(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google`, {
+    httpRequest(`/api/auth/google`, {
       method: 'GET',
     }).then(async (response) => {
       const responseJson = (await response.json()) as ResultReturnType<
