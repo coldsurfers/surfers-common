@@ -1,7 +1,6 @@
 'use client'
 
 import { useSignUpStore } from '@/stores/SignUpStore'
-import { sendSignUpAuthCodeTemplateEmail } from '../../../../actions/signup'
 import { useEffectOnce } from 'react-use'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -9,7 +8,12 @@ import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback, useRef, useState } from 'react'
 import LoadingOverlay from '@/components/base/LoadingOverlay'
 import { match } from 'ts-pattern'
-import { CredentialsEmailVerificationCodeSchema } from '@/libs/types'
+import {
+  CredentialsEmailVerificationCodeSchema,
+  ResultReturnType,
+} from '@/libs/types'
+import httpRequest from '@/libs/httpRequest'
+import { ApiPostAuthVerificationErrorCode } from '@/app/api/auth/verification/types'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
@@ -65,24 +69,49 @@ const SignUpFormEmailVerification = ({
     if (!email) return
 
     setIsLoading(true)
-    sendSignUpAuthCodeTemplateEmail(email).then((response) => {
-      setIsLoading(false)
-      if (response.isError) {
-        match(response.error)
-          .with('ALREADY_AUTHENTICATED', () => {
-            setMessage('Already verified email')
-          })
-          .with('UNKNOWN_ERROR', () => {
-            setMessage('Unknown error')
-          })
-          .exhaustive()
-        return
+
+    const fetch = async () => {
+      setIsLoading(true)
+      try {
+        const response = await httpRequest('/api/auth/verification', {
+          method: 'POST',
+          body: JSON.stringify({
+            emailTo: email,
+          }),
+        })
+        const responseJson = (await response.json()) as ResultReturnType<
+          string,
+          ApiPostAuthVerificationErrorCode
+        >
+        if (responseJson.isError) {
+          match(responseJson.error)
+            .with('ALREADY_AUTHENTICATED', () => {
+              setMessage('Already verified email')
+            })
+            .with('INVALID_BODY', () => {
+              setMessage('Invalid Email')
+            })
+            .with('UNKNOWN_ERROR', () => {
+              setMessage('Unknown error')
+            })
+            .with(undefined, () => {
+              // do nothing
+            })
+            .exhaustive()
+          return
+        }
+        if (responseJson.data) {
+          authcodeRef.current = responseJson.data
+        }
+        setMessage(
+          `Email Verification code has been sent to your email!\nDon't for get to check your spams too.`
+        )
+      } finally {
+        setIsLoading(false)
       }
-      authcodeRef.current = response.data.authcode
-      setMessage(
-        `Email Verification code has been sent to your email!\nDon't for get to check your spams too.`
-      )
-    })
+    }
+
+    void fetch()
   })
 
   return (
