@@ -1,16 +1,11 @@
 import googleOAuthClient from '@/database/libs/googleOAuthClient'
 import AuthSocialService from '@/database/services/auth/social'
 import { createErrorResult, createSuccessResult } from '@/libs/createResult'
-import { z } from 'zod'
-
-export const ApiAuthPostGoogleRequestBodySchema = z.object({
-  accessToken: z.string(),
-})
-
-export enum API_AUTH_POST_GOOGLE_ERROR_CODE {
-  INVALID_BODY = 'INVALID_BODY',
-  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
-}
+import {
+  API_AUTH_GET_GOOGLE_ERROR_CODE,
+  API_AUTH_POST_GOOGLE_ERROR_CODE,
+  ApiAuthPostGoogleRequestBodySchema,
+} from './types'
 
 export const POST = async (request: Request): Promise<Response> => {
   try {
@@ -34,10 +29,6 @@ export const POST = async (request: Request): Promise<Response> => {
       createErrorResult(API_AUTH_POST_GOOGLE_ERROR_CODE.UNKNOWN_ERROR)
     )
   }
-}
-
-export enum API_AUTH_GET_GOOGLE_ERROR_CODE {
-  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
 export const GET = async (req: Request): Promise<Response> => {

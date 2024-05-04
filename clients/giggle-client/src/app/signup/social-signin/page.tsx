@@ -3,12 +3,12 @@
 import { useEffect } from 'react'
 import { TokenInfo } from 'google-auth-library'
 import { ResultReturnType } from '@/libs/types'
-import { API_AUTH_POST_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/route'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { useRouter } from 'next/navigation'
 import LoadingOverlay from '@/components/base/LoadingOverlay'
 import { StepEnum } from '@/components/SignUpForm/types'
 import { useEffectOnce } from 'react-use'
+import { API_AUTH_POST_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/types'
 
 const SignUpSocialSignIn = () => {
   const router = useRouter()
