@@ -1,8 +1,12 @@
 'use client'
 
-import { startTransition, useCallback, useState } from 'react'
+import {
+  PropsWithChildren,
+  startTransition,
+  useCallback,
+  useState,
+} from 'react'
 import styled from 'styled-components'
-import LoginButton from '@/ui/Button/LoginButton'
 import Link from 'next/link'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import log from '@/libs/log'
@@ -18,11 +22,11 @@ const EMAIL_LOGIN_MESSAGE = 'Log In'
 const DONT_HAVE_AN_ACCOUNT_MESSAGE = `Don't have an account?`
 const SIGN_UP_MESSAGE = 'Sign up for ColdSurf'
 
-const Wrapper = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  width: 32rem;
-`
+const Wrapper = (props: PropsWithChildren) => {
+  return (
+    <div className="sm:mx-auto max-w-screen-sm ml-2 mr-2">{props.children}</div>
+  )
+}
 
 const TopTitle = styled.h1`
   text-align: center;
