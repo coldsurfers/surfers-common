@@ -1,4 +1,4 @@
-import AuthCodeTemplate from '@/components/email-templates/AuthCodeTemplate'
+import AuthCodeTemplate from '@/ui/EmailTemplates/AuthCodeTemplate'
 import AuthSignUpService from '@/database/services/auth/signUp'
 import { createErrorResult, createSuccessResult } from '@/libs/createResult'
 import { sendEmail } from '@/libs/mailer'

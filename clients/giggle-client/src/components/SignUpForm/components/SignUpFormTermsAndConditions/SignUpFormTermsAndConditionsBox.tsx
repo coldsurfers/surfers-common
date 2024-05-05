@@ -1,4 +1,4 @@
-import CheckBox from '@/components/base/CheckBox'
+import CheckBox from '@/ui/CheckBox/CheckBox'
 import Link from 'next/link'
 import styled from 'styled-components'
 

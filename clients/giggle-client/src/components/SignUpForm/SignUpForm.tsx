@@ -17,7 +17,7 @@ import SignUpProcessTermsAndConditions from '../SignUpProcess/SignUpProcessTerms
 import { ResultReturnType } from '@/libs/types'
 import { API_AUTH_GET_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/types'
 import httpRequest from '@/libs/httpRequest'
-import Button from '../base/Button'
+import Button from '../../ui/Button/Button'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 

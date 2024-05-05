@@ -4,7 +4,7 @@ import { useSignUpStore } from '@/stores/SignUpStore'
 import { useEffectOnce } from 'react-use'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useCallback, useRef, useState } from 'react'
-import LoadingOverlay from '@/components/base/LoadingOverlay'
+import LoadingOverlay from '@/ui/LoadingOverlay/LoadingOverlay'
 import { match } from 'ts-pattern'
 import {
   CredentialsEmailVerificationCodeSchema,
@@ -12,8 +12,8 @@ import {
 } from '@/libs/types'
 import httpRequest from '@/libs/httpRequest'
 import { ApiPostAuthVerificationErrorCode } from '@/app/api/auth/verification/types'
-import Button from '@/components/base/Button'
-import TextInput from '@/components/base/TextInput'
+import Button from '@/ui/Button/Button'
+import TextInput from '@/ui/TextInput/TextInput'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 

@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react'
 import { BRANDING_NAME } from '@/libs/constants'
-import Button from '@/components/base/Button'
+import Button from '@/ui/Button/Button'
 
 const Wrapper = (props: PropsWithChildren) => (
   <header className="flex flex-wrap w-full bg-white text-sm py-6 dark:bg-black">

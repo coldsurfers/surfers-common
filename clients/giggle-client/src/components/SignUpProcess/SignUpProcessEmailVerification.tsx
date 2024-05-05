@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import SignUpFormEmailVerification from '../SignUpForm/components/SignUpFormEmailVerification'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { match } from 'ts-pattern'
-import LoadingOverlay from '../base/LoadingOverlay'
+import LoadingOverlay from '../../ui/LoadingOverlay/LoadingOverlay'
 import {
   EmailSignUpActionParams,
   emailSignUpAction,

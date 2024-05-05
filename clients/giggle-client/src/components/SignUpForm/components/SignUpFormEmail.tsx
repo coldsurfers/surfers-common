@@ -1,5 +1,5 @@
-import Button from '@/components/base/Button'
-import TextInput from '@/components/base/TextInput'
+import Button from '@/ui/Button/Button'
+import TextInput from '@/ui/TextInput/TextInput'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'

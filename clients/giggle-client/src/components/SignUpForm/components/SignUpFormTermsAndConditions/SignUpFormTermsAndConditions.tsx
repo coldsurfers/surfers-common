@@ -2,7 +2,7 @@ import { SignUpTermsAndConditions } from '@/stores/SignUpStore'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SignUpFormTermsAndConditionsBox from './SignUpFormTermsAndConditionsBox'
-import Button from '@/components/base/Button'
+import Button from '@/ui/Button/Button'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 

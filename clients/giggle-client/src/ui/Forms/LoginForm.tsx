@@ -12,10 +12,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import log from '@/libs/log'
 import { BRANDING_NAME } from '@/libs/constants'
 import { signIn } from 'next-auth/react'
-import { emailSignInAction } from '../../actions/login'
+import { emailSignInAction } from '../../../actions/login'
 import * as ReactAuth from 'next-auth/react'
-import Button from './base/Button'
-import TextInput from './base/TextInput'
+import Button from '../Button/Button'
+import TextInput from '../TextInput/TextInput'
 
 const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
