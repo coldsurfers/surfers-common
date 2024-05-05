@@ -14,8 +14,10 @@ const Button = ({
   additionalStyles?: React.CSSProperties
 }>) => {
   const Wrapper = href ? Link : Fragment
+  const wrapperProps = href ? { href } : {}
   return (
-    <Wrapper href={href ? href : ''}>
+    // @ts-ignore
+    <Wrapper {...wrapperProps}>
       <button
         onClick={onClick}
         className={`py-2 px-3 ${
