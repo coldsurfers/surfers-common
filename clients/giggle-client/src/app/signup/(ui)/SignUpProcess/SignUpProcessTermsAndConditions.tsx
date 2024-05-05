@@ -1,7 +1,7 @@
 import { useSignUpStore } from '@/stores/SignUpStore'
-import SignUpFormTermsAndConditions from '../SignUpForm/components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
+import SignUpFormTermsAndConditions from '../../../../components/SignUpForm/components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
 import { useCallback } from 'react'
-import useSignUpRoute from '../SignUpForm/hooks/useSignUpRoute'
+import useSignUpRoute from '../../../../components/SignUpForm/hooks/useSignUpRoute'
 
 const SignUpProcessTermsAndConditions = () => {
   const { increaseStepRoute } = useSignUpRoute()

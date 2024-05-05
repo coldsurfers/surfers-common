@@ -1,16 +1,16 @@
 import { ChangeEvent, useCallback, useState } from 'react'
-import SignUpFormEmailVerification from '../SignUpForm/components/SignUpFormEmailVerification'
+import SignUpFormEmailVerification from '../../../../components/SignUpForm/components/SignUpFormEmailVerification'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { match } from 'ts-pattern'
-import LoadingOverlay from '../../ui/LoadingOverlay/LoadingOverlay'
+import LoadingOverlay from '../../../../ui/LoadingOverlay/LoadingOverlay'
 import {
   EmailSignUpActionParams,
   emailSignUpAction,
   googleSignUpAction,
-} from '../../../actions/signup'
+} from '../../../../../actions/signup'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { emailSignInAction } from '../../../actions/login'
+import { emailSignInAction } from '../../../../../actions/login'
 
 const SignUpProcessEmailVerification = () => {
   const router = useRouter()
