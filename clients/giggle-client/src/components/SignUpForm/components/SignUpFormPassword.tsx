@@ -1,6 +1,6 @@
 import Button from '@/components/base/Button'
+import TextInput from '@/components/base/TextInput'
 import { CredentialsPasswordSchema } from '@/libs/types'
-import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -66,14 +66,5 @@ const SignUpFormPassword = ({
 }
 
 const EmailForm = styled.form``
-
-const TextInput = styled.input`
-  padding: 1rem;
-  border-radius: 3px;
-  border: 1px solid black;
-  width: 100%;
-  font-size: 0.85rem;
-  font-weight: 600;
-`
 
 export default SignUpFormPassword

@@ -3,8 +3,6 @@
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { useEffectOnce } from 'react-use'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import styled from 'styled-components'
-import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback, useRef, useState } from 'react'
 import LoadingOverlay from '@/components/base/LoadingOverlay'
 import { match } from 'ts-pattern'
@@ -15,6 +13,7 @@ import {
 import httpRequest from '@/libs/httpRequest'
 import { ApiPostAuthVerificationErrorCode } from '@/app/api/auth/verification/types'
 import Button from '@/components/base/Button'
+import TextInput from '@/components/base/TextInput'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
@@ -133,14 +132,5 @@ const SignUpFormEmailVerification = ({
     </>
   )
 }
-
-const TextInput = styled.input`
-  padding: 1rem;
-  border-radius: 3px;
-  border: 1px solid black;
-  width: 100%;
-  font-size: 0.85rem;
-  font-weight: 600;
-`
 
 export default SignUpFormEmailVerification

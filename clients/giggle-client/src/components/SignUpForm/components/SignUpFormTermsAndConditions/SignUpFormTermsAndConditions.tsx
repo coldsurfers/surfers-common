@@ -1,5 +1,4 @@
 import { SignUpTermsAndConditions } from '@/stores/SignUpStore'
-import LoginButton from '@/ui/Button/LoginButton'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SignUpFormTermsAndConditionsBox from './SignUpFormTermsAndConditionsBox'
