@@ -15,6 +15,7 @@ import { signIn } from 'next-auth/react'
 import { emailSignInAction } from '../../actions/login'
 import * as ReactAuth from 'next-auth/react'
 import Button from './base/Button'
+import TextInput from './base/TextInput'
 
 const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
@@ -46,15 +47,6 @@ const EmailLoginForm = styled.form``
 const EmailLoginText = styled.p``
 const EmailLoginUnderlineText = styled.p`
   text-decoration: underline;
-`
-
-const TextInput = styled.input`
-  padding: 1rem;
-  border-radius: 3px;
-  border: 1px solid black;
-  width: 100%;
-  font-size: 0.85rem;
-  font-weight: 600;
 `
 
 type Inputs = {
