@@ -16,6 +16,7 @@ import { emailSignInAction } from '../../../../actions/login'
 import * as ReactAuth from 'next-auth/react'
 import Button from '../../../ui/Button/Button'
 import TextInput from '../../../ui/TextInput/TextInput'
+import TopTitleFormLayout from '@/ui/Forms/TopTitleFormLayout'
 
 const TITLE_MESSAGE = `Log in to ${BRANDING_NAME}`
 const LOGIN_PRE_MESSAGE = 'Continue with'
@@ -93,8 +94,7 @@ export default function LoginForm() {
   }
 
   return (
-    <Wrapper>
-      <TopTitle>{TITLE_MESSAGE}</TopTitle>
+    <TopTitleFormLayout title={TITLE_MESSAGE}>
       <Button
         fullWidth
         onClick={onClickGoogleLoginButton}
@@ -125,6 +125,6 @@ export default function LoginForm() {
         </Link>
       </div>
       {errorMessage && errorMessage}
-    </Wrapper>
+    </TopTitleFormLayout>
   )
 }

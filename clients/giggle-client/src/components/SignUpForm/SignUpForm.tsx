@@ -18,6 +18,7 @@ import { ResultReturnType } from '@/libs/types'
 import { API_AUTH_GET_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/types'
 import httpRequest from '@/libs/httpRequest'
 import Button from '../../ui/Button/Button'
+import TopTitleFormLayout from '@/ui/Forms/TopTitleFormLayout'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
@@ -124,8 +125,7 @@ export default function SignUpForm() {
   })
 
   return (
-    <Wrapper>
-      <TopTitle>{TITLE_MESSAGE}</TopTitle>
+    <TopTitleFormLayout title={TITLE_MESSAGE}>
       {match(step)
         .with(null, () => <SignUpProcessEmail />)
         .with(1, () => <SignUpProcessPassword />)
@@ -140,6 +140,6 @@ export default function SignUpForm() {
           href={authUrl}
         >{`${LOGIN_PRE_MESSAGE} Google`}</Button>
       )}
-    </Wrapper>
+    </TopTitleFormLayout>
   )
 }
