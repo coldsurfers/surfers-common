@@ -1,3 +1,4 @@
+import Button from '@/components/base/Button'
 import { CredentialsPasswordSchema } from '@/libs/types'
 import LoginButton from '@/ui/Button/LoginButton'
 import { useCallback } from 'react'
@@ -52,9 +53,14 @@ const SignUpFormPassword = ({
           onChange: onPasswordInputChange,
         })}
       />
-      <EmailNextButton withScale fullWidth>
+      <Button
+        fullWidth
+        additionalStyles={{
+          marginTop: '1rem',
+        }}
+      >
         {EMAIL_NEXT_MESSAGE}
-      </EmailNextButton>
+      </Button>
     </EmailForm>
   )
 }
@@ -68,10 +74,6 @@ const TextInput = styled.input`
   width: 100%;
   font-size: 0.85rem;
   font-weight: 600;
-`
-
-const EmailNextButton = styled(LoginButton)`
-  margin-top: 1rem;
 `
 
 export default SignUpFormPassword

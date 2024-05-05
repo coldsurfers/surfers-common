@@ -3,6 +3,7 @@ import LoginButton from '@/ui/Button/LoginButton'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SignUpFormTermsAndConditionsBox from './SignUpFormTermsAndConditionsBox'
+import Button from '@/components/base/Button'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
@@ -97,17 +98,13 @@ const SignUpFormTermsAndConditions = ({
           />
         )
       })}
-      <EmailNextButton withScale fullWidth>
+      <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
         {EMAIL_NEXT_MESSAGE}
-      </EmailNextButton>
+      </Button>
     </EmailForm>
   )
 }
 
 const EmailForm = styled.form``
-
-const EmailNextButton = styled(LoginButton)`
-  margin-top: 1rem;
-`
 
 export default SignUpFormTermsAndConditions

@@ -14,6 +14,7 @@ import {
 } from '@/libs/types'
 import httpRequest from '@/libs/httpRequest'
 import { ApiPostAuthVerificationErrorCode } from '@/app/api/auth/verification/types'
+import Button from '@/components/base/Button'
 
 const EMAIL_NEXT_MESSAGE = 'Next'
 
@@ -123,9 +124,9 @@ const SignUpFormEmailVerification = ({
             onChange: onVerificationCodeInputChange,
           })}
         />
-        <EmailNextButton withScale fullWidth>
+        <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
           {EMAIL_NEXT_MESSAGE}
-        </EmailNextButton>
+        </Button>
         {message}
       </form>
       <LoadingOverlay isLoading={isLoading} />
@@ -140,10 +141,6 @@ const TextInput = styled.input`
   width: 100%;
   font-size: 0.85rem;
   font-weight: 600;
-`
-
-const EmailNextButton = styled(LoginButton)`
-  margin-top: 1rem;
 `
 
 export default SignUpFormEmailVerification
