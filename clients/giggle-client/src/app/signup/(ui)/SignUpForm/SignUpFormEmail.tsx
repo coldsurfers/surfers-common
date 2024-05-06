@@ -3,6 +3,7 @@ import TextInput from '@/ui/TextInput/TextInput'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { ErrorMessage } from '@hookform/error-message'
 
 const InputsEmailSchema = z.string().email()
 
@@ -26,7 +27,10 @@ const SignUpFormEmail = ({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>({ values: { email: initialEmailValue ?? '' } })
+  } = useForm<Inputs>({
+    values: { email: initialEmailValue ?? '' },
+    criteriaMode: 'all',
+  })
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
       const validation = InputsEmailSchema.safeParse(data.email)
@@ -45,7 +49,24 @@ const SignUpFormEmail = ({
         placeholder="Email"
         {...register('email', {
           onChange: onEmailInputChange,
+          required: 'Invalid Email!',
+          pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: 'Entered value does not match email format',
+          },
         })}
+      />
+      <ErrorMessage
+        errors={errors}
+        name="email"
+        render={({ messages }) => {
+          return (
+            messages &&
+            Object.entries(messages).map(([type, message]) => (
+              <p key={type}>{message}</p>
+            ))
+          )
+        }}
       />
     </BottomCTAFormLayout>
   )
