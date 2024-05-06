@@ -12,7 +12,7 @@ import { BRANDING_NAME } from '@/libs/constants'
 import Button from '@/ui/Button/Button'
 
 const Wrapper = (props: PropsWithChildren) => (
-  <header className="flex flex-wrap w-full bg-white text-sm py-6 dark:bg-black">
+  <header className="flex flex-wrap w-full dark:bg-black bg-white text-sm py-6">
     <div className="w-full flex">{props.children}</div>
   </header>
 )
