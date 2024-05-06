@@ -1,10 +1,8 @@
 import { SignUpTermsAndConditions } from '@/stores/SignUpStore'
-import { useEffect, useState } from 'react'
+import { FormEventHandler, useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SignUpFormTermsAndConditionsBox from './SignUpFormTermsAndConditionsBox'
-import Button from '@/components/base/Button'
-
-const EMAIL_NEXT_MESSAGE = 'Next'
+import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
 
 type TermsAndConditionsStateEach = {
   title: string
@@ -47,6 +45,30 @@ const SignUpFormTermsAndConditions = ({
         isMandatory: true,
       },
     })
+  const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+    (e) => {
+      e.preventDefault()
+      const isAllMandatoryChecked = Object.keys(termsAndConditions).every(
+        (key) => {
+          const currKey = key as keyof typeof termsAndConditions
+          if (
+            termsAndConditions[currKey].isMandatory &&
+            !termsAndConditions[currKey].checked
+          ) {
+            return false
+          }
+          return true
+        }
+      )
+      if (!isAllMandatoryChecked) {
+        onValidationError?.()
+        return
+      }
+
+      onSubmit?.()
+    },
+    [onSubmit, onValidationError, termsAndConditions]
+  )
 
   useEffect(() => {
     onUserCheckedTermsAndConditions?.({
@@ -56,29 +78,7 @@ const SignUpFormTermsAndConditions = ({
   }, [onUserCheckedTermsAndConditions, termsAndConditions])
 
   return (
-    <EmailForm
-      onSubmit={(e) => {
-        e.preventDefault()
-        const isAllMandatoryChecked = Object.keys(termsAndConditions).every(
-          (key) => {
-            const currKey = key as keyof typeof termsAndConditions
-            if (
-              termsAndConditions[currKey].isMandatory &&
-              !termsAndConditions[currKey].checked
-            ) {
-              return false
-            }
-            return true
-          }
-        )
-        if (!isAllMandatoryChecked) {
-          onValidationError?.()
-          return
-        }
-
-        onSubmit?.()
-      }}
-    >
+    <BottomCTAFormLayout onSubmit={handleSubmit}>
       {Object.keys(termsAndConditions).map((key) => {
         const targetKey = key as keyof typeof termsAndConditions
         const target = termsAndConditions[targetKey]
@@ -97,10 +97,7 @@ const SignUpFormTermsAndConditions = ({
           />
         )
       })}
-      <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
-        {EMAIL_NEXT_MESSAGE}
-      </Button>
-    </EmailForm>
+    </BottomCTAFormLayout>
   )
 }
 

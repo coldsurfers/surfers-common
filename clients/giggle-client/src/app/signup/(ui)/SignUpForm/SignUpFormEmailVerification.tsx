@@ -4,7 +4,6 @@ import { useSignUpStore } from '@/stores/SignUpStore'
 import { useEffectOnce } from 'react-use'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useCallback, useRef, useState } from 'react'
-import LoadingOverlay from '@/components/base/LoadingOverlay'
 import { match } from 'ts-pattern'
 import {
   CredentialsEmailVerificationCodeSchema,
@@ -12,10 +11,8 @@ import {
 } from '@/libs/types'
 import httpRequest from '@/libs/httpRequest'
 import { ApiPostAuthVerificationErrorCode } from '@/app/api/auth/verification/types'
-import Button from '@/components/base/Button'
-import TextInput from '@/components/base/TextInput'
-
-const EMAIL_NEXT_MESSAGE = 'Next'
+import TextInput from '@/ui/TextInput/TextInput'
+import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
 
 type Inputs = {
   verificationCode: string
@@ -115,21 +112,18 @@ const SignUpFormEmailVerification = ({
   })
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextInput
-          placeholder="Verification Code"
-          {...register('verificationCode', {
-            onChange: onVerificationCodeInputChange,
-          })}
-        />
-        <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
-          {EMAIL_NEXT_MESSAGE}
-        </Button>
-        {message}
-      </form>
-      <LoadingOverlay isLoading={isLoading} />
-    </>
+    <BottomCTAFormLayout
+      onSubmit={handleSubmit(onSubmit)}
+      isLoading={isLoading}
+    >
+      <TextInput
+        placeholder="Verification Code"
+        {...register('verificationCode', {
+          onChange: onVerificationCodeInputChange,
+        })}
+      />
+      {message}
+    </BottomCTAFormLayout>
   )
 }
 

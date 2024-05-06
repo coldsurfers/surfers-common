@@ -1,7 +1,6 @@
 'use client'
 
-import LoginButton from '@/ui/Button/LoginButton'
-import { PropsWithChildren, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { useEffectOnce } from 'react-use'
@@ -17,23 +16,12 @@ import SignUpProcessTermsAndConditions from '../SignUpProcess/SignUpProcessTerms
 import { ResultReturnType } from '@/libs/types'
 import { API_AUTH_GET_GOOGLE_ERROR_CODE } from '@/app/api/auth/google/types'
 import httpRequest from '@/libs/httpRequest'
-import Button from '../base/Button'
+import Button from '../../../../ui/Button/Button'
+import TopTitleFormLayout from '@/ui/Forms/TopTitleFormLayout'
 
 const TITLE_MESSAGE = `Sign up to start finding venues`
 
 const LOGIN_PRE_MESSAGE = 'Sign up with'
-
-const Wrapper = (props: PropsWithChildren) => {
-  return (
-    <div className="sm:mx-auto max-w-screen-sm ml-2 mr-2">{props.children}</div>
-  )
-}
-
-const TopTitle = styled.h1`
-  text-align: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-`
 
 const Divider = styled.div`
   height: 1px;
@@ -124,8 +112,7 @@ export default function SignUpForm() {
   })
 
   return (
-    <Wrapper>
-      <TopTitle>{TITLE_MESSAGE}</TopTitle>
+    <TopTitleFormLayout title={TITLE_MESSAGE}>
       {match(step)
         .with(null, () => <SignUpProcessEmail />)
         .with(1, () => <SignUpProcessPassword />)
@@ -140,6 +127,6 @@ export default function SignUpForm() {
           href={authUrl}
         >{`${LOGIN_PRE_MESSAGE} Google`}</Button>
       )}
-    </Wrapper>
+    </TopTitleFormLayout>
   )
 }

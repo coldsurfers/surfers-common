@@ -1,5 +1,5 @@
 import { useSignUpStore } from '@/stores/SignUpStore'
-import SignUpFormEmail from '../SignUpForm/components/SignUpFormEmail'
+import SignUpFormEmail from '../SignUpForm/SignUpFormEmail'
 import useSignUpRoute from '../SignUpForm/hooks/useSignUpRoute'
 
 const SignUpProcessEmail = () => {

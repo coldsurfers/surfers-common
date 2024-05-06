@@ -1,11 +1,8 @@
-import Button from '@/components/base/Button'
-import TextInput from '@/components/base/TextInput'
+import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
+import TextInput from '@/ui/TextInput/TextInput'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import styled from 'styled-components'
 import { z } from 'zod'
-
-const EMAIL_NEXT_MESSAGE = 'Next'
 
 // https://regexr.com/3cg7r
 // instagram style username schema
@@ -47,21 +44,17 @@ const SignUpFormUserInfo = ({
     },
     [onValidationError, onValidationSuccess]
   )
+
   return (
-    <EmailForm onSubmit={handleSubmit(onSubmit)}>
+    <BottomCTAFormLayout onSubmit={handleSubmit(onSubmit)}>
       <TextInput
         placeholder="Username"
         {...register('username', {
           onChange: onUsernameInputChange,
         })}
       />
-      <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
-        {EMAIL_NEXT_MESSAGE}
-      </Button>
-    </EmailForm>
+    </BottomCTAFormLayout>
   )
 }
-
-const EmailForm = styled.form``
 
 export default SignUpFormUserInfo

@@ -1,5 +1,5 @@
 import { useSignUpStore } from '@/stores/SignUpStore'
-import SignUpFormTermsAndConditions from '../SignUpForm/components/SignUpFormTermsAndConditions/SignUpFormTermsAndConditions'
+import SignUpFormTermsAndConditions from '../SignUpForm/SignUpFormTermsAndConditions'
 import { useCallback } from 'react'
 import useSignUpRoute from '../SignUpForm/hooks/useSignUpRoute'
 
