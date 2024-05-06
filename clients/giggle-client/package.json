@@ -5,6 +5,8 @@
   "scripts": {
     "prebuild": "prisma generate",
     "build": "next build",
+    "deploy:prod": "vercel build --prod && vercel deploy --prebuilt --prod",
+    "deploy:preview": "vercel build && vercel deploy --prebuilt",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
