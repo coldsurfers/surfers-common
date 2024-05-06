@@ -1,12 +1,10 @@
-import Button from '@/ui/Button/Button'
 import TextInput from '@/ui/TextInput/TextInput'
 import { CredentialsPasswordSchema } from '@/libs/types'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
-
-const EMAIL_NEXT_MESSAGE = 'Next'
+import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
 
 type Inputs = {
   password: z.TypeOf<typeof CredentialsPasswordSchema>
@@ -45,7 +43,7 @@ const SignUpFormPassword = ({
     [onValidationError, onValidationSuccess]
   )
   return (
-    <EmailForm onSubmit={handleSubmit(onSubmit)}>
+    <BottomCTAFormLayout onSubmit={handleSubmit(onSubmit)}>
       <TextInput
         type="password"
         placeholder="password"
@@ -53,18 +51,8 @@ const SignUpFormPassword = ({
           onChange: onPasswordInputChange,
         })}
       />
-      <Button
-        fullWidth
-        additionalStyles={{
-          marginTop: '1rem',
-        }}
-      >
-        {EMAIL_NEXT_MESSAGE}
-      </Button>
-    </EmailForm>
+    </BottomCTAFormLayout>
   )
 }
-
-const EmailForm = styled.form``
 
 export default SignUpFormPassword

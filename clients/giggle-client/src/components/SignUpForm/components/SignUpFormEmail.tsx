@@ -1,11 +1,8 @@
-import Button from '@/ui/Button/Button'
+import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
 import TextInput from '@/ui/TextInput/TextInput'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import styled from 'styled-components'
 import { z } from 'zod'
-
-const EMAIL_NEXT_MESSAGE = 'Next'
 
 const InputsEmailSchema = z.string().email()
 
@@ -41,21 +38,17 @@ const SignUpFormEmail = ({
     },
     [onValidationError, onValidationSuccess]
   )
+
   return (
-    <EmailForm onSubmit={handleSubmit(onSubmit)}>
+    <BottomCTAFormLayout onSubmit={handleSubmit(onSubmit)}>
       <TextInput
         placeholder="Email"
         {...register('email', {
           onChange: onEmailInputChange,
         })}
       />
-      <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
-        {EMAIL_NEXT_MESSAGE}
-      </Button>
-    </EmailForm>
+    </BottomCTAFormLayout>
   )
 }
-
-const EmailForm = styled.form``
 
 export default SignUpFormEmail

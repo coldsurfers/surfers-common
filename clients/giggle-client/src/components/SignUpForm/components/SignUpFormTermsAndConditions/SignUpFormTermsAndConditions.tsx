@@ -2,9 +2,7 @@ import { SignUpTermsAndConditions } from '@/stores/SignUpStore'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SignUpFormTermsAndConditionsBox from './SignUpFormTermsAndConditionsBox'
-import Button from '@/ui/Button/Button'
-
-const EMAIL_NEXT_MESSAGE = 'Next'
+import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
 
 type TermsAndConditionsStateEach = {
   title: string
@@ -56,7 +54,7 @@ const SignUpFormTermsAndConditions = ({
   }, [onUserCheckedTermsAndConditions, termsAndConditions])
 
   return (
-    <EmailForm
+    <BottomCTAFormLayout
       onSubmit={(e) => {
         e.preventDefault()
         const isAllMandatoryChecked = Object.keys(termsAndConditions).every(
@@ -97,10 +95,7 @@ const SignUpFormTermsAndConditions = ({
           />
         )
       })}
-      <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
-        {EMAIL_NEXT_MESSAGE}
-      </Button>
-    </EmailForm>
+    </BottomCTAFormLayout>
   )
 }
 
