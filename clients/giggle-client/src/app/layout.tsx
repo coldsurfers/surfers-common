@@ -5,6 +5,8 @@ import HeaderContainer from '@/app/(ui)/HeaderContainer'
 import { SessionProvider } from 'next-auth/react'
 import { auth } from '@/libs/auth'
 import { BRANDING_NAME } from '@/libs/constants'
+import { ThemeProvider } from 'next-themes'
+import ThemeLayoutEffector from '@/libs/ThemeLayoutEffector'
 
 export const metadata: Metadata = {
   title: `${BRANDING_NAME} Official Website`,
@@ -18,14 +20,17 @@ export default async function RootLayout({
 }) {
   const session = await auth()
   return (
-    <html lang="en">
-      <body>
-        <SessionProvider session={session}>
-          <GlobalProviders>
-            <HeaderContainer />
-            {children}
-          </GlobalProviders>
-        </SessionProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className="dark:bg-black">
+        <ThemeProvider attribute="class">
+          <SessionProvider session={session}>
+            <GlobalProviders>
+              <HeaderContainer />
+              {children}
+            </GlobalProviders>
+          </SessionProvider>
+          <ThemeLayoutEffector />
+        </ThemeProvider>
       </body>
     </html>
   )
