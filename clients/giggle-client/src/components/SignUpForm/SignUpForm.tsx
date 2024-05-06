@@ -24,18 +24,6 @@ const TITLE_MESSAGE = `Sign up to start finding venues`
 
 const LOGIN_PRE_MESSAGE = 'Sign up with'
 
-const Wrapper = (props: PropsWithChildren) => {
-  return (
-    <div className="sm:mx-auto max-w-screen-sm ml-2 mr-2">{props.children}</div>
-  )
-}
-
-const TopTitle = styled.h1`
-  text-align: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-`
-
 const Divider = styled.div`
   height: 1px;
   background: black;
