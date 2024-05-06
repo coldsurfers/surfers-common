@@ -1,5 +1,5 @@
 import { SignUpTermsAndConditions } from '@/stores/SignUpStore'
-import { useEffect, useState } from 'react'
+import { FormEventHandler, useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SignUpFormTermsAndConditionsBox from './SignUpFormTermsAndConditionsBox'
 import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
@@ -45,6 +45,30 @@ const SignUpFormTermsAndConditions = ({
         isMandatory: true,
       },
     })
+  const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+    (e) => {
+      e.preventDefault()
+      const isAllMandatoryChecked = Object.keys(termsAndConditions).every(
+        (key) => {
+          const currKey = key as keyof typeof termsAndConditions
+          if (
+            termsAndConditions[currKey].isMandatory &&
+            !termsAndConditions[currKey].checked
+          ) {
+            return false
+          }
+          return true
+        }
+      )
+      if (!isAllMandatoryChecked) {
+        onValidationError?.()
+        return
+      }
+
+      onSubmit?.()
+    },
+    [onSubmit, onValidationError, termsAndConditions]
+  )
 
   useEffect(() => {
     onUserCheckedTermsAndConditions?.({
@@ -54,29 +78,7 @@ const SignUpFormTermsAndConditions = ({
   }, [onUserCheckedTermsAndConditions, termsAndConditions])
 
   return (
-    <BottomCTAFormLayout
-      onSubmit={(e) => {
-        e.preventDefault()
-        const isAllMandatoryChecked = Object.keys(termsAndConditions).every(
-          (key) => {
-            const currKey = key as keyof typeof termsAndConditions
-            if (
-              termsAndConditions[currKey].isMandatory &&
-              !termsAndConditions[currKey].checked
-            ) {
-              return false
-            }
-            return true
-          }
-        )
-        if (!isAllMandatoryChecked) {
-          onValidationError?.()
-          return
-        }
-
-        onSubmit?.()
-      }}
-    >
+    <BottomCTAFormLayout onSubmit={handleSubmit}>
       {Object.keys(termsAndConditions).map((key) => {
         const targetKey = key as keyof typeof termsAndConditions
         const target = termsAndConditions[targetKey]

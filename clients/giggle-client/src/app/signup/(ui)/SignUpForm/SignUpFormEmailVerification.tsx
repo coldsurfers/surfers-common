@@ -11,11 +11,8 @@ import {
 } from '@/libs/types'
 import httpRequest from '@/libs/httpRequest'
 import { ApiPostAuthVerificationErrorCode } from '@/app/api/auth/verification/types'
-import Button from '@/ui/Button/Button'
 import TextInput from '@/ui/TextInput/TextInput'
 import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
-
-const EMAIL_NEXT_MESSAGE = 'Next'
 
 type Inputs = {
   verificationCode: string
@@ -125,9 +122,6 @@ const SignUpFormEmailVerification = ({
           onChange: onVerificationCodeInputChange,
         })}
       />
-      <Button fullWidth additionalStyles={{ marginTop: '1rem' }}>
-        {EMAIL_NEXT_MESSAGE}
-      </Button>
       {message}
     </BottomCTAFormLayout>
   )
