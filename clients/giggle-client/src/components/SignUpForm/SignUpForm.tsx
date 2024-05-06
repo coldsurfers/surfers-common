@@ -1,7 +1,6 @@
 'use client'
 
-import LoginButton from '@/ui/Button/LoginButton'
-import { PropsWithChildren, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { useEffectOnce } from 'react-use'
