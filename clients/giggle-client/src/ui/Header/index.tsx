@@ -5,14 +5,16 @@ import {
   MouseEventHandler,
   PropsWithChildren,
   memo,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
 import { BRANDING_NAME } from '@/libs/constants'
 import Button from '@/ui/Button/Button'
+import { useTheme } from 'next-themes'
 
 const Wrapper = (props: PropsWithChildren) => (
-  <header className="flex flex-wrap w-full dark:bg-black bg-white text-sm py-6">
+  <header className="flex flex-wrap w-full dark:bg-black bg-white text-sm py-6 items-center">
     <div className="w-full flex">{props.children}</div>
   </header>
 )
@@ -24,8 +26,8 @@ const Title = ({ children }: PropsWithChildren) => (
 )
 
 const MenusUl = ({ children }: PropsWithChildren) => (
-  <nav className="w-full px-4 hidden sm:block">
-    <ul className="flex flex-row flex-nowrap items-center gap-5 mt-5 sm:justify-end sm:mt-0 sm:ps-5">
+  <nav className="w-full px-4 hidden sm:flex items-center justify-end">
+    <ul className="flex flex-col sm:flex-row flex-nowrap items-center gap-5 mt-5 sm:mt-0 sm:ps-5">
       {children}
     </ul>
   </nav>
@@ -44,7 +46,11 @@ const MobileMenuButton = ({
 }
 
 const MenusLi = ({ children }: PropsWithChildren) => {
-  return <li className="hover:text-gray-300 dark:text-slate-50">{children}</li>
+  return (
+    <li className="hover:text-gray-300 dark:text-slate-50 items-center text-center">
+      {children}
+    </li>
+  )
 }
 
 const DropdownList = ({
@@ -92,6 +98,44 @@ const DropdownList = ({
         </div>
       </div>
     )
+  )
+}
+
+const ThemeSwitcher = () => {
+  const { setTheme, resolvedTheme } = useTheme()
+
+  const toggleTheme = () => {
+    const nextTheme = resolvedTheme?.includes('dark') ? 'light' : 'dark'
+    setTheme(nextTheme)
+  }
+
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
+  return (
+    <div className="flex items-center justify-center mr-4">
+      <label htmlFor="toggle" className="flex items-center cursor-pointer">
+        <div className="relative">
+          <input
+            type="checkbox"
+            id="toggle"
+            className="sr-only"
+            checked={resolvedTheme === 'dark'}
+            onChange={toggleTheme}
+          />
+          <div className="block bg-gray-600 dark:bg-gray-800 w-7 h-4 rounded-full"></div>
+          <div className="dot absolute left-1 top-1 bg-white dark:bg-gray-900 w-2 h-2 rounded-full transition"></div>
+        </div>
+        <div className="ml-3 text-gray-700 dark:text-gray-300 font-medium">
+          {resolvedTheme === 'dark' ? 'Light' : 'Dark'}
+        </div>
+      </label>
+    </div>
   )
 }
 
@@ -162,6 +206,7 @@ const Header = ({ isLoggedIn = false, onClickLogout }: HeaderProps) => {
           )
         })}
       </MenusUl>
+      <ThemeSwitcher />
     </Wrapper>
   )
 }
