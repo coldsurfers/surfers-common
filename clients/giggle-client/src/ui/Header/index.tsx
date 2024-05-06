@@ -152,7 +152,7 @@ const Header = ({ isLoggedIn = false, onClickLogout }: HeaderProps) => {
           return (
             <MenusLi key={item.text}>
               {item.onClick ? (
-                <Button>{item.text}</Button>
+                <Button onClick={item.onClick}>{item.text}</Button>
               ) : item.href ? (
                 <Link href={item.href} target={item.hrefTarget}>
                   {item.text}
