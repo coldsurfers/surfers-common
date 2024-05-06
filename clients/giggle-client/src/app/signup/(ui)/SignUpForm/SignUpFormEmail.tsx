@@ -4,6 +4,7 @@ import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { ErrorMessage } from '@hookform/error-message'
+import FormError from '@/ui/Forms/FormError'
 
 const InputsEmailSchema = z.string().email()
 
@@ -63,7 +64,9 @@ const SignUpFormEmail = ({
           return (
             messages &&
             Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
+              <div key={type} className="mt-4 mb-4">
+                <FormError>{message}</FormError>
+              </div>
             ))
           )
         }}
