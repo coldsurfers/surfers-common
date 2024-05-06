@@ -11,7 +11,7 @@ const TextInput = forwardRef<
   return (
     <input
       ref={ref}
-      className="px-4 py-2 rounded border border-black w-full text-sm font-semibold"
+      className="px-4 py-2 rounded border border-gray-200 w-full text-sm font-semibold dark:border-neutral-700"
       {...props}
     />
   )
