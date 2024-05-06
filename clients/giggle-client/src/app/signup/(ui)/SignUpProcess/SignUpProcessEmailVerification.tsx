@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useState } from 'react'
-import SignUpFormEmailVerification from '../../../../components/SignUpForm/components/SignUpFormEmailVerification'
+import SignUpFormEmailVerification from '../SignUpForm/SignUpFormEmailVerification'
 import { useSignUpStore } from '@/stores/SignUpStore'
 import { match } from 'ts-pattern'
 import LoadingOverlay from '../../../../ui/LoadingOverlay/LoadingOverlay'

@@ -1,6 +1,6 @@
 import { useSignUpStore } from '@/stores/SignUpStore'
-import SignUpFormUserInfo from '../../../../components/SignUpForm/components/SignUpFormUserInfo'
-import useSignUpRoute from '../../../../components/SignUpForm/hooks/useSignUpRoute'
+import SignUpFormUserInfo from '../SignUpForm/SignUpFormUserInfo'
+import useSignUpRoute from '../SignUpForm/hooks/useSignUpRoute'
 
 const SignUpProcessUserInfo = () => {
   const { increaseStepRoute } = useSignUpRoute()
