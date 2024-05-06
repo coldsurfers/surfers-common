@@ -6,7 +6,7 @@ import { SessionProvider } from 'next-auth/react'
 import { auth } from '@/libs/auth'
 import { BRANDING_NAME } from '@/libs/constants'
 import { ThemeProvider } from 'next-themes'
-import ThemeLayoutEffector from '@/libs/ThemeLayoutEffector'
+import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
   title: `${BRANDING_NAME} Official Website`,
@@ -19,6 +19,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await auth()
+  const theme = cookies().get('theme')?.value === 'dark' ? 'dark' : 'light'
+  console.log(theme)
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="dark:bg-black">
@@ -29,7 +31,6 @@ export default async function RootLayout({
               {children}
             </GlobalProviders>
           </SessionProvider>
-          <ThemeLayoutEffector />
         </ThemeProvider>
       </body>
     </html>
