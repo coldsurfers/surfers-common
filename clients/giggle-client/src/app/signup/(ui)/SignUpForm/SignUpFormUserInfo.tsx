@@ -1,16 +1,18 @@
+import { CredentialsUsernameSchema } from '@/libs/types'
 import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
+import FormError from '@/ui/Forms/FormError'
 import TextInput from '@/ui/TextInput/TextInput'
+import { ErrorMessage } from '@hookform/error-message'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-// https://regexr.com/3cg7r
-// instagram style username schema
-const UsernameSchema = z.string().regex(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
+const InputsSchema = z.object({
+  username: CredentialsUsernameSchema,
+})
 
-type Inputs = {
-  username: z.TypeOf<typeof UsernameSchema>
-}
+type Inputs = z.TypeOf<typeof InputsSchema>
 
 const SignUpFormUserInfo = ({
   initialUsernameValue,
@@ -32,15 +34,17 @@ const SignUpFormUserInfo = ({
     values: {
       username: initialUsernameValue ?? '',
     },
+    criteriaMode: 'all',
+    resolver: zodResolver(InputsSchema),
   })
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
-      const validation = UsernameSchema.safeParse(data.username)
+      const validation = InputsSchema.safeParse(data)
       if (!validation.success) {
         onValidationError && onValidationError()
         return
       }
-      onValidationSuccess && onValidationSuccess(validation.data)
+      onValidationSuccess && onValidationSuccess(validation.data.username)
     },
     [onValidationError, onValidationSuccess]
   )
@@ -52,6 +56,20 @@ const SignUpFormUserInfo = ({
         {...register('username', {
           onChange: onUsernameInputChange,
         })}
+      />
+      <ErrorMessage
+        errors={errors}
+        name="username"
+        render={({ messages }) => {
+          return (
+            messages &&
+            Object.entries(messages).map(([type, message]) => (
+              <div key={type} className="mt-4 mb-4">
+                <FormError>{message}</FormError>
+              </div>
+            ))
+          )
+        }}
       />
     </BottomCTAFormLayout>
   )
