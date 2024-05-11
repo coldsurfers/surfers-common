@@ -1,5 +1,6 @@
 import CheckBox from '@/ui/CheckBox/CheckBox'
 import Link from 'next/link'
+import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 
 const TermsAndConditionsBox = ({
@@ -34,19 +35,13 @@ const TermsAndConditionsBox = ({
   )
 }
 
-const Box = styled.div`
-  border-radius: 4px;
-  background-color: white;
-  border: 1px solid black;
-
-  padding: 0.5rem;
-
-  & + & {
-    margin-top: 1rem;
-  }
-
-  display: flex;
-`
+const Box = ({ children }: PropsWithChildren) => {
+  return (
+    <div className="rounded-md border border-gray-200 dark:border-neutral-700 p-2 mt-1 flex">
+      {children}
+    </div>
+  )
+}
 
 const Title = styled.span`
   margin-left: 0.5rem;

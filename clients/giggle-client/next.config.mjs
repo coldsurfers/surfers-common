@@ -1,3 +1,5 @@
+import withTwin from './withTwin.mjs'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   compiler: {
@@ -5,4 +7,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+export default withTwin(nextConfig)

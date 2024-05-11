@@ -3,12 +3,16 @@ import TextInput from '@/ui/TextInput/TextInput'
 import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { ErrorMessage } from '@hookform/error-message'
+import FormError from '@/ui/Forms/FormError'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CredentialsEmailSchema } from '@/libs/types'
 
-const InputsEmailSchema = z.string().email()
+const InputsSchema = z.object({
+  email: CredentialsEmailSchema,
+})
 
-type Inputs = {
-  email: z.TypeOf<typeof InputsEmailSchema>
-}
+type Inputs = z.TypeOf<typeof InputsSchema>
 
 const SignUpFormEmail = ({
   initialEmailValue,
@@ -26,15 +30,20 @@ const SignUpFormEmail = ({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>({ values: { email: initialEmailValue ?? '' } })
+  } = useForm<Inputs>({
+    values: { email: initialEmailValue ?? '' },
+    criteriaMode: 'all',
+    resolver: zodResolver(InputsSchema),
+  })
+
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
-      const validation = InputsEmailSchema.safeParse(data.email)
+      const validation = InputsSchema.safeParse(data)
       if (!validation.success) {
         onValidationError && onValidationError()
         return
       }
-      onValidationSuccess && onValidationSuccess(validation.data)
+      onValidationSuccess && onValidationSuccess(validation.data.email)
     },
     [onValidationError, onValidationSuccess]
   )
@@ -46,6 +55,20 @@ const SignUpFormEmail = ({
         {...register('email', {
           onChange: onEmailInputChange,
         })}
+      />
+      <ErrorMessage
+        errors={errors}
+        name="email"
+        render={({ messages }) => {
+          return (
+            messages &&
+            Object.entries(messages).map(([type, message]) => (
+              <div key={type} className="mt-4 mb-4">
+                <FormError>{message}</FormError>
+              </div>
+            ))
+          )
+        }}
       />
     </BottomCTAFormLayout>
   )

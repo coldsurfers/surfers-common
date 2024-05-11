@@ -2,6 +2,7 @@ import { useSignUpStore } from '@/stores/SignUpStore'
 import SignUpFormTermsAndConditions from '../SignUpForm/SignUpFormTermsAndConditions'
 import { useCallback } from 'react'
 import useSignUpRoute from '../SignUpForm/hooks/useSignUpRoute'
+import FormError from '@/ui/Forms/FormError'
 
 const SignUpProcessTermsAndConditions = () => {
   const { increaseStepRoute } = useSignUpRoute()
@@ -31,7 +32,7 @@ const SignUpProcessTermsAndConditions = () => {
           increaseStepRoute()
         }}
       />
-      {errorMessage}
+      {errorMessage && <FormError>{errorMessage}</FormError>}
     </>
   )
 }

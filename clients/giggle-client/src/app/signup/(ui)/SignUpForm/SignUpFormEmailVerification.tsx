@@ -13,10 +13,16 @@ import httpRequest from '@/libs/httpRequest'
 import { ApiPostAuthVerificationErrorCode } from '@/app/api/auth/verification/types'
 import TextInput from '@/ui/TextInput/TextInput'
 import BottomCTAFormLayout from '@/ui/Forms/BottomCTAFormLayout'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ErrorMessage } from '@hookform/error-message'
+import FormError from '@/ui/Forms/FormError'
 
-type Inputs = {
-  verificationCode: string
-}
+const InputsSchema = z.object({
+  verificationCode: CredentialsEmailVerificationCodeSchema,
+})
+
+type Inputs = z.TypeOf<typeof InputsSchema>
 
 const SignUpFormEmailVerification = ({
   onVerificationCodeInputChange,
@@ -42,18 +48,18 @@ const SignUpFormEmailVerification = ({
     values: {
       verificationCode: '',
     },
+    criteriaMode: 'all',
+    resolver: zodResolver(InputsSchema),
   })
 
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
-      const zodValidation = CredentialsEmailVerificationCodeSchema.safeParse(
-        data.verificationCode
-      )
+      const zodValidation = InputsSchema.safeParse(data)
       if (!zodValidation.success) {
         onValidationError && onValidationError('ZodValidation')
         return
       }
-      if (authcodeRef.current !== zodValidation.data) {
+      if (authcodeRef.current !== zodValidation.data.verificationCode) {
         onValidationError?.('VerificationCodeNotCorrect')
         return
       }
@@ -123,6 +129,20 @@ const SignUpFormEmailVerification = ({
         })}
       />
       {message}
+      <ErrorMessage
+        errors={errors}
+        name="verificationCode"
+        render={({ messages }) => {
+          return (
+            messages &&
+            Object.entries(messages).map(([type, message]) => (
+              <div key={type} className="mt-4 mb-4">
+                <FormError>{message}</FormError>
+              </div>
+            ))
+          )
+        }}
+      />
     </BottomCTAFormLayout>
   )
 }
