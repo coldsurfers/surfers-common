@@ -1,6 +1,0 @@
-export enum StepEnum {
-  EMAIL = 1,
-  PASSWORD,
-  TERMS_AND_CONDITIONS,
-  EMAIL_VERIFICATION,
-}
