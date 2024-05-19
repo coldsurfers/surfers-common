@@ -1,8 +1,0 @@
-schema: http://localhost:3001/api/graphql
-generates:
-  ./gql/resolvers-types.ts:
-    config:
-      contextType: ./Context#GraphqlContext
-    plugins:
-      - typescript
-      - typescript-resolvers

@@ -1,8 +1,0 @@
-node_modules/
-.eslintcache
-dist/
-.vercel
-.env
-src/data/
-
-prisma/schema.prisma
