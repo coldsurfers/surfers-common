@@ -1,6 +1,0 @@
-node_modules
-.eslintcache
-dist
-.vercel
-.env
-src/prisma/schema.prisma
