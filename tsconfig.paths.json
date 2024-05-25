@@ -4,7 +4,6 @@
     "rootDir": "./",
     "paths": {
       "@coldsurfers/accounts-kit": ["./utils/accounts-kit/src/core.ts"],
-      "@coldsurfers/accounts-schema": ["./utils/accounts-schema/src/index.ts"],
       "@coldsurfers/cloudinary-utils": [
         "./utils/cloudinary-utils/src/index.ts"
       ],
