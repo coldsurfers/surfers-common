@@ -11,14 +11,10 @@
     "build": "next build",
     "create:env:ci": "yarn ts-node ./libs/createDotEnv.ts",
     "dev": "next dev",
-    "postinstall": "yarn prisma:copy && yarn prisma generate",
     "lint": "next lint --fix",
-    "prisma:copy": "mkdir -p ./prisma && cp ../../database/prisma/schema.prisma ./prisma/schema.prisma",
     "start": "next start"
   },
   "dependencies": {
-    "@coldsurfers/accounts-kit": "1.0.0",
-    "@coldsurfers/accounts-schema": "1.0.1-rc.4",
     "@coldsurfers/hotsurf": "0.3.0",
     "@coldsurfers/ocean-road": "1.5.1-rc.4",
     "@prisma/client": "5.8.0",
