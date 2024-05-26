@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin-arm64", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  Promoter   Promoter? @relation(fields: [promoterId], references: [id])
+  promoterId Int?
+  Venue      Venue?    @relation(fields: [venueId], references: [id])
+  venueId    Int?
+  Artist     Artist?   @relation(fields: [artistId], references: [id])
+  artistId   Int?
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  email        String  @unique
+  password     String?
+  passwordSalt String?
+
+  provider String
+
+  staff Staff?
+}
+
+model Venue {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  events Event[]
+}
+
+model Promoter {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  events Event[]
+}
+
+model Artist {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  events Event[]
+}
+
+model EmailAuthRequest {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  authcode        String
+  authenticated   Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  authenticatedAt DateTime?
+}
+
+// admin
+model Staff {
+  id            String          @id @default(uuid())
+  created_at    DateTime        @default(now())
+  is_authorized Boolean         @default(false)
+  user          User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       Int             @unique
+  auth_token    StaffAuthToken?
+}
+
+model StaffAuthToken {
+  id            String   @id @default(uuid())
+  access_token  String   @db.Text
+  refresh_token String   @db.Text
+  staff         Staff    @relation(fields: [staff_id], references: [id], onDelete: Cascade)
+  staff_id      String   @unique
+  created_at    DateTime @default(now())
+}
+
+model ConcertCategory {
+  id        Int            @id @default(autoincrement())
+  title     String
+  concerts  Concert[]
+  createdAt DateTime       @default(now())
+}
+
+model Concert {
+  id                String               @id @default(uuid())
+  artist            String?
+  title             String
+  location          String?
+  date              DateTime?
+  html              String?              @db.Text
+  concertCategoryId Int                  @default(1)
+  concertCategory   ConcertCategory @relation(fields: [concertCategoryId], references: [id])
+  posters           ConcertPoster[]
+  tickets           ConcertTicket[]
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime?
+
+  @@index([concertCategoryId])
+}
+
+model ConcertPoster {
+  id        String       @id @default(uuid())
+  concertId String
+  concert   Concert @relation(fields: [concertId], references: [id])
+  imageURL  String
+  createdAt DateTime     @default(now())
+
+  @@index([concertId])
+}
+
+model ConcertTicket {
+  id           String                    @id @default(uuid())
+  concertId    String
+  concert      Concert              @relation(fields: [concertId], references: [id])
+  openDate     DateTime
+  seller       String
+  sellingURL   String
+  createdAt    DateTime                  @default(now())
+  ticketPrices ConcertTicketPrice[]
+
+  @@index([concertId])
+}
+
+model ConcertTicketPrice {
+  id              String             @id @default(uuid())
+  concertTicketId String
+  concertTicket   ConcertTicket @relation(fields: [concertTicketId], references: [id])
+  title           String
+  price           Float
+  priceCurrency   String
+  createdAt       DateTime           @default(now())
+
+  @@index([concertTicketId])
+}

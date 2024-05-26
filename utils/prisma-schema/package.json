@@ -1,0 +1,46 @@
+{
+  "name": "@coldsurfers/prisma-schema",
+  "version": "0.2.1-rc.2",
+  "repository": "https://github.com/coldsurfers/prisma-schema",
+  "license": "MIT",
+  "author": "yungblud <killi8n@gmail.com>",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "generate": "npx prisma generate",
+    "postinstall": "npm run generate",
+    "prerelease": "yarn generate",
+    "release": "release-it minor --ci",
+    "prerelease:rc": "yarn generate",
+    "release:rc": "release-it --ci --preRelease=rc"
+  },
+  "devDependencies": {
+    "@prisma/client": "^5.14.0",
+    "prisma": "^5.14.0",
+    "release-it": "^17.2.1"
+  },
+  "peerDependencies": {
+    "@prisma/client": ">=5"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release @coldsurfers/prisma-schema v${version}",
+      "tagName": "prisma-schema-v${version}"
+    },
+    "github": {
+      "release": true
+    },
+    "hooks": {
+      "after:git:release": "git reset --hard HEAD"
+    },
+    "npm": {
+      "versionArgs": [
+        "--allow-same-version",
+        "--workspaces-update=false"
+      ]
+    }
+  }
+}
