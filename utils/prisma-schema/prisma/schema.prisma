@@ -84,16 +84,6 @@ model Staff {
   is_authorized Boolean         @default(false)
   user          User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id       Int             @unique
-  auth_token    StaffAuthToken?
-}
-
-model StaffAuthToken {
-  id            String   @id @default(uuid())
-  access_token  String   @db.Text
-  refresh_token String   @db.Text
-  staff         Staff    @relation(fields: [staff_id], references: [id], onDelete: Cascade)
-  staff_id      String   @unique
-  created_at    DateTime @default(now())
 }
 
 model ConcertCategory {
