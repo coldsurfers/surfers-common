@@ -1,7 +1,7 @@
 {
   "name": "@coldsurfers/prisma-schema",
   "version": "0.2.1-rc.3",
-  "repository": "https://github.com/coldsurfers/prisma-schema",
+  "repository": "https://github.com/coldsurfers/surfers-common",
   "license": "MIT",
   "author": "yungblud <killi8n@gmail.com>",
   "main": "index.js",
