@@ -4,9 +4,10 @@
   "repository": "https://github.com/coldsurfers/surfers-common",
   "license": "MIT",
   "author": "yungblud <killi8n@gmail.com>",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "generate": "npx prisma generate",
     "postinstall": "npm run generate",
     "prerelease": "yarn generate",
