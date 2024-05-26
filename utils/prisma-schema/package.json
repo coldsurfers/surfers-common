@@ -1,6 +1,6 @@
 {
   "name": "@coldsurfers/prisma-schema",
-  "version": "0.2.1-rc.2",
+  "version": "0.2.1-rc.3",
   "repository": "https://github.com/coldsurfers/prisma-schema",
   "license": "MIT",
   "author": "yungblud <killi8n@gmail.com>",
