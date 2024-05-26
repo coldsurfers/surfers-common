@@ -10,9 +10,9 @@
     "build": "tsc",
     "generate": "npx prisma generate",
     "postinstall": "npm run generate",
-    "prerelease": "yarn generate",
+    "prerelease": "yarn generate && yarn build",
     "release": "release-it minor --ci",
-    "prerelease:rc": "yarn generate",
+    "prerelease:rc": " yarn generate && yarn build",
     "release:rc": "release-it --ci --preRelease=rc"
   },
   "devDependencies": {
