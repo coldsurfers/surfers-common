@@ -70,7 +70,7 @@ model Artist {
 
 model EmailAuthRequest {
   id              String    @id @default(uuid())
-  email           String    @unique
+  email           String
   authcode        String
   authenticated   Boolean   @default(false)
   createdAt       DateTime  @default(now())
@@ -79,11 +79,11 @@ model EmailAuthRequest {
 
 // admin
 model Staff {
-  id            String          @id @default(uuid())
-  created_at    DateTime        @default(now())
-  is_authorized Boolean         @default(false)
-  user          User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id       Int             @unique
+  id            String   @id @default(uuid())
+  created_at    DateTime @default(now())
+  is_authorized Boolean  @default(false)
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       Int      @unique
 }
 
 model ConcertCategory {
