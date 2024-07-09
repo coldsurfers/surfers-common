@@ -35,7 +35,7 @@ model User {
 
   staff Staff?
 
-  auth_token AuthToken?
+  auth_token AuthToken[]
 }
 
 model AuthToken {
@@ -43,7 +43,7 @@ model AuthToken {
   access_token  String   @db.Text
   refresh_token String   @db.Text
   user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id       Int      @unique
+  user_id       Int
   created_at    DateTime @default(now())
 }
 
