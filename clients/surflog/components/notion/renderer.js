@@ -229,14 +229,16 @@ export function renderBlock(block) {
       if (isSupportedVideoUrl) {
         return (
           <iframe
-            id="player"
-            type="text/html"
+            src={videoUrl}
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowfullscreen
             style={{
               width: '100%',
               minHeight: '360px',
             }}
-            src={videoUrl}
-            frameBorder="0"
           />
         )
       }
