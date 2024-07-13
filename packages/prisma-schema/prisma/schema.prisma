@@ -38,6 +38,11 @@ model User {
   auth_token AuthToken[]
 }
 
+// relative table 엮어주는 (정규화)
+// model UserToAuthToken {
+
+// }
+
 model AuthToken {
   id            String   @id @default(uuid())
   access_token  String   @db.Text

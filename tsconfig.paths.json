@@ -4,13 +4,12 @@
     "rootDir": "./",
     "paths": {
       "@coldsurfers/cloudinary-utils": [
-        "./utils/cloudinary-utils/src/index.ts"
+        "./packages/cloudinary-utils/src/index.ts"
       ],
-      "@coldsurfers/mailer-utils": ["./utils/mailer-utils/src/index.ts"],
-      "@coldsurfers/notion-utils": ["./utils/notion-utils/src/index.ts"],
-      "@coldsurfers/shared-utils": ["./utils/shared-utils/src/index.ts"],
-      "@coldsurfers/store-client/*": ["./clients/store-client/*"],
-      "@coldsurfers/notion-renderer": ["./utils/notion-renderer/src/index.ts"]
+      "@coldsurfers/mailer-utils": ["./packages/mailer-utils/src/index.ts"],
+      "@coldsurfers/notion-utils": ["./packages/notion-utils/src/index.ts"],
+      "@coldsurfers/shared-utils": ["./packages/shared-utils/src/index.ts"],
+      "@coldsurfers/notion-renderer": ["./packages/notion-renderer/src/index.ts"]
     }
   }
 }

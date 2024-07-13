@@ -1,5 +1,2 @@
 packages:
-  - 'utils/*'
-  - 'clients/*'
-  - 'servers/*'
-  - 'database/*'
+  - 'packages/*'
