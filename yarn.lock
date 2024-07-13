@@ -763,6 +763,13 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
+"@coldsurfers/cloudinary-utils@1.0.1-rc.0":
+  version "1.0.1-rc.0"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/cloudinary-utils/1.0.1-rc.0/c26e0f09d355a409738814b97b0e082917dc2522#c26e0f09d355a409738814b97b0e082917dc2522"
+  integrity sha512-YWj3ZEQa6BiZDwBje1W/JG4fcWMAFitgVMlHBp/VvkjlxL4NHBAox/Z7eltW03+RXWCobVLC52kwMUp26iUq0A==
+  dependencies:
+    "@coldsurfers/shared-utils" "1.0.0"
+
 "@coldsurfers/design-tokens@1.10.0":
   version "1.10.0"
   resolved "https://npm.pkg.github.com/download/@coldsurfers/design-tokens/1.10.0/5de0ababed32a75c695afe2c506266568a9431fe"
@@ -785,6 +792,11 @@
   integrity sha512-o8ogWQzPTttF9KfQiaKV/ULQaahKGoOBZCfu8rkfOxBCTb6SOP7bcZBAUwYj684aXisIyCyOy3T2GasKFiT4Yg==
   dependencies:
     "@coldsurfers/design-tokens" "1.10.0"
+
+"@coldsurfers/shared-utils@1.0.0":
+  version "1.0.0"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/shared-utils/1.0.0/45a4e1f48ef1ab29c228aee99f266976cc2094ac#45a4e1f48ef1ab29c228aee99f266976cc2094ac"
+  integrity sha512-IGcQP3ILFaRBqFxUUlGfPOew6ScnHJjG5yNgfzm5CPcSYR/ggk/KMVJhrI3kUxy6DVnwqlufjD78OrdPyycoaQ==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
