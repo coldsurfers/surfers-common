@@ -149,3 +149,10 @@ model ConcertTicketPrice {
 
   @@index([concertTicketId])
 }
+
+model Career {
+  id        String   @id @default(uuid())
+  company   String
+  startDate DateTime
+  endDate   DateTime
+}
