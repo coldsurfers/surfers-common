@@ -17,8 +17,6 @@ model Event {
 
   Promoter   Promoter? @relation(fields: [promoterId], references: [id])
   promoterId Int?
-  Venue      Venue?    @relation(fields: [venueId], references: [id])
-  venueId    Int?
 }
 
 model User {
@@ -46,10 +44,13 @@ model AuthToken {
 }
 
 model Venue {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-
-  events Event[]
+  id        String             @id @default(uuid())
+  name      String
+  lat       Float
+  lng       Float
+  geohash   String
+  concerts  ConcertsOnVenues[]
+  createdAt DateTime           @default(now())
 }
 
 model Promoter {
@@ -85,13 +86,6 @@ model Staff {
   userId       String   @unique
 }
 
-model ConcertCategory {
-  id        String    @id @default(uuid())
-  title     String
-  concerts  Concert[]
-  createdAt DateTime  @default(now())
-}
-
 model ConcertsOnArtists {
   concert   Concert  @relation(fields: [concertId], references: [id])
   concertId String
@@ -102,56 +96,82 @@ model ConcertsOnArtists {
   @@id([concertId, artistId])
 }
 
-model Concert {
-  id                String              @id @default(uuid())
-  artists           ConcertsOnArtists[]
-  title             String
-  location          String?
-  date              DateTime?
-  html              String?             @db.Text
-  concertCategoryId String              @default(uuid())
-  concertCategory   ConcertCategory     @relation(fields: [concertCategoryId], references: [id])
-  posters           ConcertPoster[]
-  tickets           ConcertTicket[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime?
-
-  @@index([concertCategoryId])
-}
-
-model ConcertPoster {
-  id        String   @id @default(uuid())
-  concertId String
+model ConcertsOnVenues {
   concert   Concert  @relation(fields: [concertId], references: [id])
-  imageURL  String
+  concertId String
+  venue     Venue    @relation(fields: [venueId], references: [id])
+  venueId   String
   createdAt DateTime @default(now())
 
-  @@index([concertId])
+  @@id([concertId, venueId])
 }
 
-model ConcertTicket {
-  id           String               @id @default(uuid())
-  concertId    String
-  concert      Concert              @relation(fields: [concertId], references: [id])
-  openDate     DateTime
-  seller       String
-  sellingURL   String
-  createdAt    DateTime             @default(now())
-  ticketPrices ConcertTicketPrice[]
+model ConcertsOnPosters {
+  concert   Concert  @relation(fields: [concertId], references: [id])
+  concertId String
+  poster    Poster   @relation(fields: [posterId], references: [id])
+  posterId  String
+  createdAt DateTime @default(now())
 
-  @@index([concertId])
+  @@id([concertId, posterId])
 }
 
-model ConcertTicketPrice {
-  id              String        @id @default(uuid())
-  concertTicketId String
-  concertTicket   ConcertTicket @relation(fields: [concertTicketId], references: [id])
-  title           String
-  price           Float
-  priceCurrency   String
-  createdAt       DateTime      @default(now())
+model ConcertsOnTickets {
+  concert   Concert  @relation(fields: [concertId], references: [id])
+  concertId String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  ticketId  String
+  createdAt DateTime @default(now())
 
-  @@index([concertTicketId])
+  @@id([concertId, ticketId])
+}
+
+model Concert {
+  id        String              @id @default(uuid())
+  artists   ConcertsOnArtists[]
+  title     String
+  venues    ConcertsOnVenues[]
+  date      DateTime?
+  posters   ConcertsOnPosters[]
+  tickets   ConcertsOnTickets[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime?
+}
+
+model Poster {
+  id        String              @id @default(uuid())
+  imageURL  String
+  concerts  ConcertsOnPosters[]
+  createdAt DateTime            @default(now())
+}
+
+model TicketsOnPrices {
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  ticketId  String
+  price     Price    @relation(fields: [priceId], references: [id])
+  priceId   String
+  createdAt DateTime @default(now())
+
+  @@id([ticketId, priceId])
+}
+
+model Ticket {
+  id         String              @id @default(uuid())
+  concerts   ConcertsOnTickets[]
+  openDate   DateTime
+  seller     String
+  sellingURL String
+  createdAt  DateTime            @default(now())
+  prices     TicketsOnPrices[]
+}
+
+model Price {
+  id            String            @id @default(uuid())
+  title         String
+  price         Float
+  priceCurrency String
+  tickets       TicketsOnPrices[]
+  createdAt     DateTime          @default(now())
 }
 
 model Career {
