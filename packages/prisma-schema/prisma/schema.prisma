@@ -19,12 +19,10 @@ model Event {
   promoterId Int?
   Venue      Venue?    @relation(fields: [venueId], references: [id])
   venueId    Int?
-  Artist     Artist?   @relation(fields: [artistId], references: [id])
-  artistId   Int?
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 
   email        String  @unique
@@ -38,17 +36,12 @@ model User {
   auth_token AuthToken[]
 }
 
-// relative table 엮어주는 (정규화)
-// model UserToAuthToken {
-
-// }
-
 model AuthToken {
   id            String   @id @default(uuid())
   access_token  String   @db.Text
   refresh_token String   @db.Text
   user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id       Int
+  user_id       String
   created_at    DateTime @default(now())
 }
 
@@ -67,10 +60,11 @@ model Promoter {
 }
 
 model Artist {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
+  name      String
 
-  events Event[]
+  concerts ConcertsOnArtists[]
 }
 
 model EmailAuthRequest {
@@ -84,32 +78,42 @@ model EmailAuthRequest {
 
 // admin
 model Staff {
-  id            Int      @id @default(autoincrement())
-  created_at    DateTime @default(now())
-  is_authorized Boolean  @default(false)
-  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id       Int      @unique
+  id           String   @id @default(uuid())
+  created_at   DateTime @default(now())
+  isAuthorized Boolean  @default(false)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String   @unique
 }
 
 model ConcertCategory {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(uuid())
   title     String
   concerts  Concert[]
   createdAt DateTime  @default(now())
 }
 
+model ConcertsOnArtists {
+  concert   Concert  @relation(fields: [concertId], references: [id])
+  concertId String
+  artist    Artist   @relation(fields: [artistId], references: [id])
+  artistId  String
+  createdAt DateTime @default(now())
+
+  @@id([concertId, artistId])
+}
+
 model Concert {
-  id                String          @id @default(uuid())
-  artist            String?
+  id                String              @id @default(uuid())
+  artists           ConcertsOnArtists[]
   title             String
   location          String?
   date              DateTime?
-  html              String?         @db.Text
-  concertCategoryId Int             @default(1)
-  concertCategory   ConcertCategory @relation(fields: [concertCategoryId], references: [id])
+  html              String?             @db.Text
+  concertCategoryId String              @default(uuid())
+  concertCategory   ConcertCategory     @relation(fields: [concertCategoryId], references: [id])
   posters           ConcertPoster[]
   tickets           ConcertTicket[]
-  createdAt         DateTime        @default(now())
+  createdAt         DateTime            @default(now())
   updatedAt         DateTime?
 
   @@index([concertCategoryId])
@@ -151,7 +155,7 @@ model ConcertTicketPrice {
 }
 
 model Career {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   company   String
   startDate DateTime
   endDate   DateTime?
