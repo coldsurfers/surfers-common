@@ -197,6 +197,7 @@ model CareerChapter {
   careerId           String
   Career             Career               @relation(fields: [careerId], references: [id])
   CareerSmallChapter CareerSmallChapter[]
+  sortOrder          Int
 }
 
 model CareerSmallChapter {
