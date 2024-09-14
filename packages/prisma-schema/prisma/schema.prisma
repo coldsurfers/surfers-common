@@ -204,4 +204,5 @@ model CareerSmallChapter {
   description     String        @db.Text
   CareerChapter   CareerChapter @relation(fields: [careerChapterId], references: [id])
   careerChapterId String
+  sortOrder       Int
 }
