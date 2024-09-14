@@ -184,8 +184,24 @@ model Price {
 }
 
 model Career {
-  id        String    @id @default(uuid())
-  company   String
-  startDate DateTime
-  endDate   DateTime?
+  id            String          @id @default(uuid())
+  company       String
+  startDate     DateTime
+  endDate       DateTime?
+  CareerChapter CareerChapter[]
+}
+
+model CareerChapter {
+  id                 String               @id @default(uuid())
+  title              String
+  careerId           String
+  Career             Career               @relation(fields: [careerId], references: [id])
+  CareerSmallChapter CareerSmallChapter[]
+}
+
+model CareerSmallChapter {
+  id              String        @id @default(uuid())
+  description     String        @db.Text
+  CareerChapter   CareerChapter @relation(fields: [careerChapterId], references: [id])
+  careerChapterId String
 }
