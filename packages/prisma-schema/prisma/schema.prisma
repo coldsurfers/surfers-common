@@ -74,8 +74,19 @@ model Artist {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   name      String
+  aristProfileImage ArtistProfileImage[]
 
   concerts ConcertsOnArtists[]
+}
+
+model ArtistProfileImage {
+  id String @id @default(uuid())
+  imageURL String
+
+  artist Artist @relation(fields: [artistId], references: [id])
+  artistId String
+
+  createdAt DateTime @default(now())
 }
 
 model EmailAuthRequest {
