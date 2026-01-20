@@ -1,0 +1,39 @@
+{
+  "name": "@coldsurfers/analytics",
+  "version": "1.0.1",
+  "description": "shared analytics tools",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "main": "core/index.ts",
+  "types": "core/index.ts",
+  "exports": {
+    ".": {
+      "types": "./core/index.ts",
+      "default": "./core/index.ts"
+    },
+    "./next": {
+      "types": "./next/index.ts",
+      "default": "./next/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "format": "biome format .",
+    "format:fix": "biome format --write .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write ."
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "react": "19.1.4",
+    "zod": "3.23.8"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "zod": "^3.23.8"
+  },
+  "packageManager": "pnpm@10.4.1"
+}
