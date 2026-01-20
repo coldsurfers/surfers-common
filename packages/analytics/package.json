@@ -1,20 +1,34 @@
 {
   "name": "@coldsurfers/analytics",
-  "version": "1.0.1",
+  "version": "1.0.2-rc.0",
   "description": "shared analytics tools",
   "keywords": [],
-  "license": "ISC",
-  "author": "",
-  "main": "core/index.ts",
-  "types": "core/index.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Dong-Ho Choi",
+    "email": "imcoldsurf@gmail.com",
+    "url": "https://coldsurf.io"
+  },
+  "bugs": {
+    "url": "https://github.com/coldsurfers/surfers-common/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coldsurfers/surfers-common",
+    "directory": "packages/analytics"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./core/index.ts",
-      "default": "./core/index.ts"
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
     },
     "./next": {
-      "types": "./next/index.ts",
-      "default": "./next/index.ts"
+      "types": "./dist/next.d.ts",
+      "require": "./dist/next.js",
+      "import": "./dist/next.mjs"
     }
   },
   "scripts": {
