@@ -1,4 +1,4 @@
-export default function generateUUID() {
+export function generateUUID() {
   // Public Domain/MIT
   let d = new Date().getTime(); // Timestamp
   let d2 =
