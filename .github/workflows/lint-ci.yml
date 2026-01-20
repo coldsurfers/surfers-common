@@ -10,3 +10,5 @@ on:
 jobs:
   call_workflow:
     uses: coldsurfers/workflows/.github/workflows/lint-ci.yml@main
+    secrets:
+      npm_token: ${{ secrets.GITHUB_TOKEN }}
