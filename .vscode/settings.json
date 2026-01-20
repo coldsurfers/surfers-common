@@ -26,6 +26,6 @@
   },
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "conventionalCommits.scopes": ["shared-utils"],
+  "conventionalCommits.scopes": ["shared-utils", "analytics"],
   "cSpell.words": []
 }
