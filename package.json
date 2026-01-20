@@ -1,41 +1,64 @@
 {
   "name": "@coldsurfers/surfers-common",
+  "private": true,
   "license": "MIT",
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["**/react-native", "**/react-native/**"]
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/react-native",
+      "**/react-native/**"
+    ]
   },
   "scripts": {
-    "clean": "sh ./clean-modules.sh",
-    "lint": "biome lint .",
-    "lint:fix": "biome lint --write .",
-    "format": "biome format .",
-    "format:fix": "biome format --write .",
     "check": "biome check .",
     "check:fix": "biome check --write .",
+    "clean": "sh ./clean-modules.sh",
+    "format": "biome format .",
+    "format:fix": "biome format --write .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
     "lint:nx": "yarn nx run-many --target=lint",
     "tsc:nx": "yarn nx run-many --target=tsc",
-    "prevalidate": "yarn format:write",
-    "validate": "run-p lint tsc format:check",
     "turbo:build:all": "turbo run build",
     "turbo:build:clients": "turbo run build --filter=@coldsurfers/*-client",
     "turbo:build:servers": "turbo run build --filter=@coldsurfers/*-server",
     "turbo:build:utils": "turbo run build --filter=@coldsurfers/*-utils --filter=@coldsurfers/accounts-kit --filter=@coldsurfers/acounts-schema --filter=@coldsurfers/notion-renderer",
-    "turbo:lint:all": "turbo run lint"
+    "turbo:lint:all": "turbo run lint",
+    "prevalidate": "yarn format:write",
+    "validate": "run-p lint tsc format:check"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "header-max-length": [
+        2,
+        "always",
+        200
+      ],
+      "body-max-line-length": [
+        2,
+        "always",
+        200
+      ]
+    }
   },
   "devDependencies": {
-    "eslint": "^8.19.0",
-    "@react-native/eslint-config": "0.81.4",
     "@biomejs/biome": "1.9.4",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.12.3",
+    "@react-native/eslint-config": "0.81.4",
     "@types/node": "20.12.0",
     "commitlint": "^17.0.2",
-    "typescript": "5.8.3",
+    "eslint": "^8.19.0",
+    "nx": "17.3.0",
     "turbo": "2.4.2",
-    "nx": "17.3.0"
+    "typescript": "5.8.3"
   },
   "packageManager": "pnpm@10.4.1"
 }
