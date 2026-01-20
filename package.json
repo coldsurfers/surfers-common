@@ -1,5 +1,6 @@
 {
   "name": "@coldsurfers/surfers-common",
+  "private": true,
   "license": "MIT",
   "workspaces": {
     "packages": [
@@ -11,31 +12,53 @@
     ]
   },
   "scripts": {
-    "super-install": "yarn install --immutable --force || yarn install --immutable --force",
-    "super-remove": "rm -rf ./**/*/node_modules && rm -rf ./node_modules",
-    "prettier": "prettier \"./**/*.{ts,tsx,js,json}\"",
-    "format:check": "yarn prettier --check",
-    "format:write": "yarn prettier --write",
-    "lint": "yarn nx run-many --target=lint",
-    "tsc": "yarn nx run-many --target=tsc",
-    "prepare": "husky install",
-    "prevalidate": "yarn format:write",
-    "validate": "run-p lint tsc format:check",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "clean": "sh ./clean-modules.sh",
+    "format": "biome format .",
+    "format:fix": "biome format --write .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "lint:nx": "yarn nx run-many --target=lint",
+    "tsc:nx": "yarn nx run-many --target=tsc",
     "turbo:build:all": "turbo run build",
     "turbo:build:clients": "turbo run build --filter=@coldsurfers/*-client",
     "turbo:build:servers": "turbo run build --filter=@coldsurfers/*-server",
     "turbo:build:utils": "turbo run build --filter=@coldsurfers/*-utils --filter=@coldsurfers/accounts-kit --filter=@coldsurfers/acounts-schema --filter=@coldsurfers/notion-renderer",
-    "turbo:lint:all": "turbo run lint"
+    "turbo:lint:all": "turbo run lint",
+    "prevalidate": "yarn format:write",
+    "validate": "run-p lint tsc format:check"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "header-max-length": [
+        2,
+        "always",
+        200
+      ],
+      "body-max-line-length": [
+        2,
+        "always",
+        200
+      ]
+    }
   },
   "devDependencies": {
-    "husky": "^8.0.0",
-    "lint-staged": "^15.2.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^3.2.4",
-    "typescript": "5.3.3",
+    "@biomejs/biome": "1.9.4",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@evilmartians/lefthook": "^1.12.3",
+    "@react-native/eslint-config": "0.81.4",
+    "@types/node": "20.12.0",
+    "commitlint": "^17.0.2",
+    "eslint": "^8.19.0",
     "nx": "17.3.0",
-    "prisma": "^5.7.1",
-    "@prisma/client": "5.8.0"
+    "turbo": "2.4.2",
+    "typescript": "5.8.3"
   },
   "packageManager": "pnpm@10.4.1"
 }
