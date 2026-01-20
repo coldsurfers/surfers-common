@@ -33,4 +33,4 @@ module.exports = {
     'no-return-await': 'off',
     'react/no-array-index-key': 'off',
   },
-}
+};
