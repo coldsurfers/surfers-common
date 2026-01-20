@@ -14,10 +14,6 @@
       "dependsOn": ["^lint"],
       "outputs": []
     },
-    "build:packages": {
-      "dependsOn": ["@coldsurfers/shared-utils#build"],
-      "outputs": ["dist/**"]
-    },
     "types:packages": {
       "dependsOn": ["@coldsurfers/shared-utils#types"],
       "outputs": ["dist/**"]
