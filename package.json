@@ -2,15 +2,6 @@
   "name": "@coldsurfers/surfers-common",
   "private": true,
   "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ],
-    "nohoist": [
-      "**/react-native",
-      "**/react-native/**"
-    ]
-  },
   "scripts": {
     "check": "biome check .",
     "check:fix": "biome check --write .",
@@ -30,20 +21,10 @@
     "validate": "run-p lint tsc format:check"
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
+    "extends": ["@commitlint/config-conventional"],
     "rules": {
-      "header-max-length": [
-        2,
-        "always",
-        200
-      ],
-      "body-max-line-length": [
-        2,
-        "always",
-        200
-      ]
+      "header-max-length": [2, "always", 200],
+      "body-max-line-length": [2, "always", 200]
     }
   },
   "devDependencies": {

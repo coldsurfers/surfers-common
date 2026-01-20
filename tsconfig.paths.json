@@ -9,7 +9,9 @@
       "@coldsurfers/mailer-utils": ["./packages/mailer-utils/src/index.ts"],
       "@coldsurfers/notion-utils": ["./packages/notion-utils/src/index.ts"],
       "@coldsurfers/shared-utils": ["./packages/shared-utils/src/index.ts"],
-      "@coldsurfers/notion-renderer": ["./packages/notion-renderer/src/index.ts"]
+      "@coldsurfers/notion-renderer": [
+        "./packages/notion-renderer/src/index.ts"
+      ]
     }
   }
 }
