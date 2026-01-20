@@ -1,0 +1,43 @@
+name: Changesets
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  changesets:
+    if: github.repository == 'coldsurfers/surfers-common'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/workflows/composites/setup
+        with:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint files
+        run: pnpm lint
+
+      - name: Typecheck files
+        run: pnpm turbo check:type
+
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        with:
+          title: 'chore: version packages'
+          commit: 'chore: version packages'
+          version: pnpm changeset version
+          publish: pnpm changeset publish
+          createGithubReleases: true     # 릴리즈 생성 활성화
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

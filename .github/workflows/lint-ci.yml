@@ -1,0 +1,26 @@
+name: Lint
+on:
+  pull_request:
+    branches:
+      - main
+  merge_group:
+    types:
+      - checks_requested
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/workflows/composites/setup
+        with:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint files
+        run: pnpm turbo run lint
+
+      - name: Typecheck files
+        run: pnpm turbo check:type

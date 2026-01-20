@@ -1,25 +1,50 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "globalDependencies": ["pnpm-lock.yaml"],
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": ["dist/**"]
     },
-    "test": {
-      "dependsOn": ["^build"],
+    "types": {
+      "dependsOn": ["^types"],
       "outputs": []
     },
     "lint": {
+      "dependsOn": ["^lint"],
       "outputs": []
     },
-    "dev": {
-      "cache": false
+    "build:packages": {
+      "dependsOn": ["@coldsurfers/shared-utils#build"],
+      "outputs": ["dist/**"]
     },
-    "start": {
-      "cache": false
+    "types:packages": {
+      "dependsOn": ["@coldsurfers/shared-utils#types"],
+      "outputs": ["dist/**"]
     },
-    "clean": {
-      "cache": false
+    "lint:packages": {
+      "dependsOn": ["@coldsurfers/shared-utils#lint"],
+      "outputs": ["dist/**"]
+    },
+    "lint:fix": {
+      "outputs": []
+    },
+    "format": {
+      "outputs": []
+    },
+    "format:fix": {
+      "outputs": []
+    },
+    "check:fix": {
+      "outputs": []
+    },
+    "check:lint": {
+      "dependsOn": ["lint:packages"],
+      "outputs": []
+    },
+    "check:type": {
+      "dependsOn": ["types:packages"],
+      "cache": true
     }
   }
 }
