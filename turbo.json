@@ -14,10 +14,6 @@
       "dependsOn": ["^lint"],
       "outputs": []
     },
-    "types:packages": {
-      "dependsOn": ["@coldsurfers/shared-utils#types"],
-      "outputs": ["dist/**"]
-    },
     "lint:packages": {
       "dependsOn": ["@coldsurfers/shared-utils#lint"],
       "outputs": ["dist/**"]
@@ -39,7 +35,6 @@
       "outputs": []
     },
     "check:type": {
-      "dependsOn": ["types:packages"],
       "cache": true
     }
   }
