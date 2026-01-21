@@ -22,6 +22,12 @@ type BaseData = {
       app_store_id: string;
       url: string;
     };
+    android?: {
+      package: string;
+      url?: string | URL;
+      class?: string;
+      app_name?: string;
+    };
   };
   twitter?: {
     app?: {
