@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.5
+
+### Patch Changes
+
+- [#98](https://github.com/coldsurfers/surfers-common/pull/98) [`b2d4545`](https://github.com/coldsurfers/surfers-common/commit/b2d454546c614c57d1562c81e9ccc48807c7cc62) Thanks [@yungblud](https://github.com/yungblud)! - support metadata app links android
+
 ## 1.1.3
 
 ### Patch Changes
