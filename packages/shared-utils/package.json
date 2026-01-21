@@ -60,9 +60,6 @@
     },
     "schema-dts": {
       "optional": true
-    },
-    "zod": {
-      "optional": true
     }
   },
   "publishConfig": {
