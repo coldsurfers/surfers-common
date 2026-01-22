@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.7
+
+### Patch Changes
+
+- [`a8099fe`](https://github.com/coldsurfers/surfers-common/commit/a8099fe28e966410faed1ff93889f4a569c809d8) Thanks [@yungblud](https://github.com/yungblud)! - Added SNS link constants
+
 ## 1.1.6
 
 ### Patch Changes
