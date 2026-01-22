@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.6
+
+### Patch Changes
+
+- [`d290b28`](https://github.com/coldsurfers/surfers-common/commit/d290b2808eada00090d68184a475e51fb4cc3fad) Thanks [@yungblud](https://github.com/yungblud)! - Fixed app store url
+
 ## 1.1.5
 
 ### Patch Changes
