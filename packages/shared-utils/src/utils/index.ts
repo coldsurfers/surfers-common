@@ -8,3 +8,4 @@ export * from './utils.slug';
 export * from './utils.event-category';
 export * from './utils.location-city';
 export * from './utils.date';
+export * from './utils.uri';
