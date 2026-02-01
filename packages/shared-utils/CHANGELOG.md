@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.8
+
+### Patch Changes
+
+- [#104](https://github.com/coldsurfers/surfers-common/pull/104) [`b55622a`](https://github.com/coldsurfers/surfers-common/commit/b55622a5551c1d8b27cb7de6dec51e43b3682c25) Thanks [@yungblud](https://github.com/yungblud)! - Added uri utils
+
 ## 1.1.7
 
 ### Patch Changes
