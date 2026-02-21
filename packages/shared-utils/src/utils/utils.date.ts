@@ -1,8 +1,9 @@
-import { format, isSameYear } from 'date-fns';
+import { format, isSameYear, addDays, getDay, parse, startOfDay } from 'date-fns';
+import { fromZonedTime } from 'date-fns-tz';
 import { toZonedTime } from 'date-fns-tz';
 import { enUS, ko } from 'date-fns/locale';
 
-const GLOBAL_TIME_ZONE = 'Asia/Seoul';
+const timeZone = 'Asia/Seoul';
 
 function isDifferentYear(date: Date, now: Date = new Date()) {
   return !isSameYear(date, now);
@@ -14,7 +15,7 @@ function parseEventDate(
     formatStyle: 'korean' | 'english';
   }
 ) {
-  const zonedDate = toZonedTime(eventDate, GLOBAL_TIME_ZONE);
+  const zonedDate = toZonedTime(eventDate, timeZone);
   const minutes = zonedDate.getMinutes();
   if (options?.formatStyle === 'english') {
     const timeFormat = (() => {
@@ -36,6 +37,73 @@ function parseEventDate(
   return format(zonedDate, timeFormat, { locale: ko });
 }
 
+function toUTCDayRangeFromYYYYMMDD({
+  yyyymmdd,
+}: {
+  yyyymmdd: string;
+}) {
+  if (!/^\d{8}$/.test(yyyymmdd)) {
+    throw new Error('Invalid date format. Expected YYYYMMDD');
+  }
+  const kstStart = parse(yyyymmdd, 'yyyyMMdd', new Date());
+  const kstEnd = addDays(kstStart, 1);
+  // 2. KST → UTC 변환
+  const utcStart = fromZonedTime(kstStart, timeZone);
+  const utcEnd = fromZonedTime(kstEnd, timeZone);
+  return [utcStart, utcEnd];
+}
+
+type UTCDayRange = {
+  label: 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
+  utcStart: Date;
+  utcEnd: Date;
+};
+
+/**
+ * 기준 날짜(yyyymmdd)가 속한 주의
+ * 금/토/일 KST 00:00 → UTC Date 반환
+ *
+ * yyyymmdd가 없으면 현재 시점 기준
+ */
+function getWeekendUTCStartDates(params?: {
+  yyyymmdd?: string;
+}): UTCDayRange[] {
+  const baseDate = params?.yyyymmdd ? parse(params.yyyymmdd, 'yyyyMMdd', new Date()) : new Date();
+
+  // JS 기준: Sun=0, Mon=1, ... Sat=6
+  const baseDay = getDay(baseDate);
+
+  // 해당 주의 금요일(5)까지의 offset
+  const diffToFriday = (5 - baseDay + 7) % 7;
+
+  const kstFridayStart = startOfDay(addDays(baseDate, diffToFriday));
+  const kstSaturdayStart = addDays(kstFridayStart, 1);
+  const kstSundayStart = addDays(kstFridayStart, 2);
+  const kstMondayStart = addDays(kstFridayStart, 3); // Sunday end
+
+  return [
+    {
+      label: 'FRIDAY',
+      utcStart: fromZonedTime(kstFridayStart, timeZone),
+      utcEnd: fromZonedTime(kstSaturdayStart, timeZone),
+    },
+    {
+      label: 'SATURDAY',
+      utcStart: fromZonedTime(kstSaturdayStart, timeZone),
+      utcEnd: fromZonedTime(kstSundayStart, timeZone),
+    },
+    {
+      label: 'SUNDAY',
+      utcStart: fromZonedTime(kstSundayStart, timeZone),
+      utcEnd: fromZonedTime(kstMondayStart, timeZone),
+    },
+  ];
+}
+
+
 export const dateUtils = {
   parseEventDate,
+  toUTCDayRangeFromYYYYMMDD,
+  getWeekendUTCStartDates,
 };
+
