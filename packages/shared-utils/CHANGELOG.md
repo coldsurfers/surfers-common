@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.9
+
+### Patch Changes
+
+- [#106](https://github.com/coldsurfers/surfers-common/pull/106) [`93cdfd7`](https://github.com/coldsurfers/surfers-common/commit/93cdfd7cf05d0823b1a744e19d805161bcf5f138) Thanks [@yungblud](https://github.com/yungblud)! - added weekend date utils, added day range date utils
+
 ## 1.1.8
 
 ### Patch Changes
