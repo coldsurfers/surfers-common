@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.13
+
+### Patch Changes
+
+- [`931c9c9`](https://github.com/coldsurfers/surfers-common/commit/931c9c93ebe3361288d391adb480e2d886291ab0) Thanks [@yungblud](https://github.com/yungblud)! - chore(shared-utils): version bump for OIDC deploy
+
 ## 1.1.12
 
 ### Patch Changes
