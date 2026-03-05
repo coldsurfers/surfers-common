@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.14
+
+### Patch Changes
+
+- [`4be3488`](https://github.com/coldsurfers/surfers-common/commit/4be3488b73ef5afb6e562b443e61c8a7d8eaa901) Thanks [@yungblud](https://github.com/yungblud)! - fix(shared-utils): fixed changeset config access
+
 ## 1.1.13
 
 ### Patch Changes
