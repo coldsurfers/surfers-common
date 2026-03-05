@@ -28,6 +28,14 @@ jobs:
         with:
           node-version-file: .nvmrc
 
+      - name: Ensure npm supports trusted publishing
+        shell: bash
+        run: |
+          npm install -g npm@^11.5.1
+          node -v
+          npm -v
+          pnpm -v
+
       - name: Get pnpm store directory
         id: get-pnpm-store-path
         shell: bash
