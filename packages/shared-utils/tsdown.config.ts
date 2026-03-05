@@ -1,9 +1,15 @@
 import { type UserConfig, defineConfig } from 'tsdown';
+import pkg from './package.json';
+
+const { peerDependencies } = pkg;
+
+const peerDepsArray = Object.keys(peerDependencies);
 
 const commonConfigs: UserConfig = {
   outDir: 'dist',
   dts: true,
-  external: ['jwt-decode', 'schema-dts', 'zod'],
+  minify: true,
+  external: peerDepsArray,
   treeshake: true,
   tsconfig: 'tsconfig.json',
 };
