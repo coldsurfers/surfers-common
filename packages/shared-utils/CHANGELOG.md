@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.11
+
+### Patch Changes
+
+- [#111](https://github.com/coldsurfers/surfers-common/pull/111) [`d52a72c`](https://github.com/coldsurfers/surfers-common/commit/d52a72ce827666d932312c6b7a98d46e6deefbc5) Thanks [@yungblud](https://github.com/yungblud)! - Prepare shared-utils for npm public release by tightening publish artifacts and build config.
+
 ## 1.1.10
 
 ### Patch Changes
