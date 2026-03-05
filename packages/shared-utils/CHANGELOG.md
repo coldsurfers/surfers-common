@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.15
+
+### Patch Changes
+
+- [`a82b630`](https://github.com/coldsurfers/surfers-common/commit/a82b630209ef4eb8976f5d6dd31cbce28445d4dd) Thanks [@yungblud](https://github.com/yungblud)! - chore(shared-utils): test publish via trusted publishing flow
+
 ## 1.1.14
 
 ### Patch Changes
