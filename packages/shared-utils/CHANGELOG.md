@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.12
+
+### Patch Changes
+
+- [`0485eb0`](https://github.com/coldsurfers/surfers-common/commit/0485eb0cbd8bf2ed7f671da5d01f272af7990c05) Thanks [@yungblud](https://github.com/yungblud)! - chore(shared-utils): modify npm scope
+
 ## 1.1.11
 
 ### Patch Changes
