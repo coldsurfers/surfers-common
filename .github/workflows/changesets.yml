@@ -5,6 +5,7 @@ on:
     branches: [main]
 
 permissions:
+  id-token: write
   contents: write
   pull-requests: write
   packages: write
@@ -45,7 +46,6 @@ jobs:
         run: pnpm install --frozen-lockfile
         shell: bash
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache dependencies
@@ -69,4 +69,3 @@ jobs:
           createGithubReleases: true     # 릴리즈 생성 활성화
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
