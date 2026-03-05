@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.10
+
+### Patch Changes
+
+- [#109](https://github.com/coldsurfers/surfers-common/pull/109) [`683da97`](https://github.com/coldsurfers/surfers-common/commit/683da97691f769ddb3d8091eabb7cc010e47aadf) Thanks [@yungblud](https://github.com/yungblud)! - Public Deployment for shared-utils
+
 ## 1.1.9
 
 ### Patch Changes
