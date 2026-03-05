@@ -1,8 +1,7 @@
 import { type UserConfig, defineConfig } from 'tsdown';
-import pkg from './package.json';
+import pkg from './package.json' with { type: 'json' };
 
 const { peerDependencies } = pkg;
-
 const peerDepsArray = Object.keys(peerDependencies);
 
 const commonConfigs: UserConfig = {
