@@ -1,5 +1,5 @@
 {
-  "name": "@coldsurfers/shared-utils",
+  "name": "@coldsurf/shared-utils",
   "author": {
     "name": "Dong-Ho Choi",
     "email": "imcoldsurf@gmail.com",
@@ -26,10 +26,7 @@
   "type": "module",
   "source": "src/",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "package.json"
-  ],
+  "files": ["dist", "package.json"],
   "scripts": {
     "build": "pnpm build:core",
     "build:core": "tsdown",
