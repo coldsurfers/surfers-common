@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.1.16
+
+### Patch Changes
+
+- [#117](https://github.com/coldsurfers/surfers-common/pull/117) [`1e68777`](https://github.com/coldsurfers/surfers-common/commit/1e6877720aaac6db7cbb3fc7c3e495b503d6e2d5) Thanks [@yungblud](https://github.com/yungblud)! - fix(shared-utils): fixed exports paths package.json
+
 ## 1.1.15
 
 ### Patch Changes
