@@ -21,4 +21,11 @@ export default defineConfig([
     format: ['esm', 'cjs'],
     ...commonConfigs,
   },
+  {
+    entry: {
+      'next/index': 'src/next/index.ts',
+    },
+    format: ['esm', 'cjs'],
+    ...commonConfigs,
+  },
 ]);
