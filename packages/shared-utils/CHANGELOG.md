@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.2.0
+
+### Minor Changes
+
+- [#119](https://github.com/coldsurfers/surfers-common/pull/119) [`9668e91`](https://github.com/coldsurfers/surfers-common/commit/9668e915d1f6d8a16cb52337347a08da0d17ab78) Thanks [@yungblud](https://github.com/yungblud)! - `/next` 서브 익스포트 추가 — `createCommonCookieOptions` (Next.js 전용 쿠키 옵션 헬퍼)
+
 ## 1.1.16
 
 ### Patch Changes
