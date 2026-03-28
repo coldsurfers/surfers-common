@@ -69,7 +69,7 @@ packages/shared-utils/
 
 - [x] `pnpm build` 빌드 성공
 - [x] `pnpm check:type` 타입 에러 없음
-- [ ] `billets-admin`의 `libs/hooks/use-debounced-callback.ts` →
+- [x] `billets-admin`의 `libs/hooks/use-debounced-callback.ts` 삭제 →
       `@coldsurf/shared-utils/react`로 교체
 
 ---
