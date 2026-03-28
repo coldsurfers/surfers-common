@@ -6,6 +6,7 @@
     "module": "esnext",
     "baseUrl": ".",
     "paths": {
+      "react": ["./node_modules/@types/react"],
       "@/": ["./src"],
       "@/*": ["./src/*"]
     }
