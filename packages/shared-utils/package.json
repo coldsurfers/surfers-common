@@ -5,7 +5,7 @@
     "email": "imcoldsurf@gmail.com",
     "url": "https://coldsurf.io"
   },
-  "version": "1.2.0-alpha.0",
+  "version": "1.2.0",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/coldsurfers/surfers-common/issues"
@@ -36,7 +36,12 @@
   "type": "module",
   "source": "src/",
   "types": "dist/index.d.ts",
-  "files": ["dist", "next", "react", "package.json"],
+  "files": [
+    "dist",
+    "next",
+    "react",
+    "package.json"
+  ],
   "scripts": {
     "build": "pnpm build:core",
     "build:core": "tsdown",
