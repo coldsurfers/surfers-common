@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.3.0
+
+### Minor Changes
+
+- [#121](https://github.com/coldsurfers/surfers-common/pull/121) [`17eae5e`](https://github.com/coldsurfers/surfers-common/commit/17eae5ebfec9946530238f46a2daef98cdb31d47) Thanks [@yungblud](https://github.com/yungblud)! - `/react` 서브 익스포트 추가 — `useDebouncedCallback` (콜백 debounce React 훅)
+
 ## 1.2.0
 
 ### Minor Changes
