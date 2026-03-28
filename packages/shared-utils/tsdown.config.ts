@@ -28,4 +28,11 @@ export default defineConfig([
     format: ['esm', 'cjs'],
     ...commonConfigs,
   },
+  {
+    entry: {
+      'react/index': 'src/react/index.ts',
+    },
+    format: ['esm', 'cjs'],
+    ...commonConfigs,
+  },
 ]);
