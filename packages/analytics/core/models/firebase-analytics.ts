@@ -80,6 +80,10 @@ export const fbLogEventClickEmailPopupAgreeSchema = z.object({
   name: z.literal('click_email_popup_agree'),
   params: z.object({}),
 });
+export const fbLogEventClickEmailPopupSubscribeSchema = z.object({
+  name: z.literal('click_email_popup_subscribe'),
+  params: z.object({}),
+});
 export const fbLogEventClickEmailPopupCloseSchema = z.object({
   name: z.literal('click_email_popup_close'),
   params: z.object({}),
