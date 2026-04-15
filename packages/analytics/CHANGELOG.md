@@ -1,5 +1,11 @@
 # @coldsurfers/analytics
 
+## 1.0.4
+
+### Patch Changes
+
+- [`3bdeea0`](https://github.com/coldsurfers/surfers-common/commit/3bdeea05e47a719c2e9c606055703b0dc768237a) Thanks [@yungblud](https://github.com/yungblud)! - add fbLogEventClickEmailPopupSubscribeSchema to discriminatedUnion
+
 ## 1.0.3
 
 ### Patch Changes
