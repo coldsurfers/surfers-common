@@ -259,5 +259,6 @@ const fbLogEventSchema = z.discriminatedUnion('name', [
   fbLogEventClickSetFeedGenres,
   fbLogEventClickDiscoverFeed,
   fbLogEventLiveEventsPageView,
+  fbLogEventClickEmailPopupSubscribeSchema,
 ]);
 export type FBLogEvent = z.infer<typeof fbLogEventSchema>;
