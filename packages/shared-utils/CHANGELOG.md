@@ -1,5 +1,11 @@
 # @coldsurfers/shared-utils
 
+## 1.3.1
+
+### Patch Changes
+
+- [#125](https://github.com/coldsurfers/surfers-common/pull/125) [`44e35d1`](https://github.com/coldsurfers/surfers-common/commit/44e35d1e66b33ba0b49a0082d316ea95629da931) Thanks [@yungblud](https://github.com/yungblud)! - Add Hochiminh
+
 ## 1.3.0
 
 ### Minor Changes
