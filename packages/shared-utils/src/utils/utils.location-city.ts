@@ -40,6 +40,8 @@ const getLocationCityUIName = (originalName: string) => {
       return '도쿄';
     case 'osaka':
       return '오사카';
+    case 'hochiminh':
+      return '호치민';
     default:
       return originalName;
   }
